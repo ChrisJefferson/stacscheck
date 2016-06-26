@@ -1,0 +1,22 @@
+<h1>Autocheck v0.4.2</h1>
+<p>Autocheck should be run from the directory containing the submission (scripts assume this directory is the current working directory).</p>
+<p>A <em>practical</em> is a directory, which is recursively searched through through by the following algorithm:</p>
+<p>autocheck(practdir)</p>
+<ul>
+<li>Execute each file matching the regex 'build.*.sh'. If any fails, return immediately.</li>
+<li>Execute each file matching the regex 'test.*.sh', storing stdout and stderr. The test SUCCEEDS if it's return value is 0.</li>
+<li>Execute each file matching the regex 'info.<em>.sh'. These are run the same as 'test.</em>.sh' tests, but their output is always shown.</li>
+<li>For each file P matching the regex 'prog.<em>.sh', for each file Fout matching the regex '.</em>.out':
+<ul>
+<li>Create the name Fin by replacing the '.out' extension of Fout with '.in'.</li>
+<li>If Fin exists, run P with Fin as stdin, else run P with no stdin.</li>
+<li>Diff the output of P with Fout, using the diffwhite algorithm described below. The test SUCCEEDS if there are no differences in the diff.</li>
+</ul>
+</li>
+<li>For each directory D in practdir, run autocheck(D)</li>
+</ul>
+<p>Files are always considered in lexicographic order of filename.</p>
+<p>The following environment variable will be defined when any external program is run.</p>
+<ul>
+<li>TESTDIR : The full directory name of the test script being run was contained. This can be used to read other files.</li>
+</ul>

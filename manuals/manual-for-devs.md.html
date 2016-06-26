@@ -1,0 +1,22 @@
+<h1>Quickstart / Manual</h1>
+<p>Please read 'practical-specification' for a guide to how practicals should be laid out.</p>
+<h2>Examples build.sh</h2>
+<p>Here are some example build scripts:</p>
+<p>** Basic Java Build **</p>
+<pre><code>javac *.java
+</code></pre>
+<pre><code>javac BaseClass.java
+</code></pre>
+<p>** Basic C build **</p>
+<pre><code>make target1
+</code></pre>
+<h2>Example tests.sh</h2>
+<p>Test a program runs cleanly with no arguments:</p>
+<pre><code>./program
+</code></pre>
+<p>Test a program produces the output contained in file out.txt, when run with arguments 1 2 3.</p>
+<p>There are many ways to do this in bash. Here is one way, which makes use of SCRATCH_DIR and TEST_DIR.</p>
+<pre><code>./program 1 2 3 &gt; &quot;${SCRATCH_DIR}/output&quot;
+diff -w &quot;${SCRATCH_DIR}/output&quot; &quot;${TEST_DIR}/out.txt&quot;
+</code></pre>
+<p>It is very common to want to run a program, feeding in a particular input, and checking a particular output is given, there is a special shorter format for this, see the 'prog*.sh' discussion above.</p>

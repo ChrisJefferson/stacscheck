@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+
+\title{AutoCheck - Simple automated marking}
+
+\begin{document}
+\maketitle
+
+\section{Aims and Objectives}
+
+\begin{enumerate}
+\item Create a system to enable automated checking of student's practicals in various courses.
+\item Focus initially on CS1001, 1002, 2001 and 2002.
+\item Students will be able to run a subset of the tests.
+\item A report will be generated for every student automatically, from a student submission.
+\end{enumerate}
+
+Not aims and objectives:
+
+\begin{enumerate}
+\item Not automating everything (such as GUIs).
+\item Will not 100\% protect against malicious students (will be much better than current situation, where many staff run student's codes on their own machines, as themselves).
+\item Will not provide a server-based architecture which provides students with continuous feedback.\\
+We might do this in a later, but the server capacity/maintenance required is excessive. If such a server only ran daily / twice daily it would not give students feedback fast enough, and if it ran continuously students may overload it / complain if it breaks before deadlines.
+\end{enumerate}
+
+\section{Design Principles}
+
+\begin{enumerate}
+\item Transparency\\
+It should be as clear how the tester is running a particular test.
+\item Extensibility\\
+The tester should be easy to extend with new types of tests.
+\item Simplicity\\
+Writing tests (particularly of common existing types) should be as simple as possible.
+\item Fallback\\
+If the tester / a server explodes, we should be in no worse position than this year.
+\end{enumerate}
+
+\section{System Design}
+
+The system can be thought of as three major components:
+
+\begin{itemize}
+\item[tests:] The actual tests which are to be run for each practical.
+\item[Student runner:] A method for students to quickly run the tests on their practical, and get feedback.
+\item[MMS runner:] A method of running tests on a large number of students.
+\end{itemize}
+
+
+
+\subsection{Tests}
+
+All tests will fundamentally be a \textbf{shell script}. This is (I believe) the only option which can meet the requirements for transparency, extensibility and simplicity.
+
+Each test will be by default be a single shell script which returns a value based on if the test passes or fails. The tester will run each of these tests in turn, and return their result, and the script's output (if any) for inspection.
+
+A mercurial repository will be set up to share ``best practices'' in writing tests, in particular including some common kinds of tests (such as running a program with a given stdin / arguments, and checking the output).
+
+\subsection{Student Runner}
+
+The student runner will run a set of tests on a student's current submissions. These tests will accept a zip file, as could be submitted to MMS, and run the tests.
+
+These tests will be run by default on a host server, under the student's own account. Students who choose to copy the scripts to their own machines do so at their own risk.
+
+This introduces some slight dependencies (student's code may work in their account, but not when submitted), but removes the need to provide students access to virtual machines (which is, I am told, prohibitively difficult).
+
+\subsection{MMS Runner}
+
+Automatically run tests for all students, based on a download from MMS.
+
+This tester will take a full set of files downloaded from MMS, and run the tester on all of them. This will be done within virtual machines, using vagrant.
+
+\section{Requirements}
+
+\subsection{Physical Requirements}
+
+\begin{enumerate}
+\item A virtual machine image which closely matches the lab/host servers. This will be used for running student's code in an environment which closely matches where the will be testing.
+\item Servers for running the MMS Runner. Assume 3GB ram per student. It would be nice to be able to cycle the whole set in 1 hour. Assuming 5 minutes per student, that is 10 cores. These numbers are initial figures.
+\end{enumerate}
+
+\subsection{Software Requirements}
+
+\begin{enumerate}
+\item Maintain Student runners and MMS runners.
+\item Write practical testers.\\
+Fundamentally, writing practical testers is the \textbf{lecturer's responsibility}. In particular, there are some practicals which will be almost impossible to test.
+\end{enumerate}
+
+\section{Low Level Issues}
+
+This is a collection of low level issues I have observed during initial design.
+
+\begin{enumerate}
+\item intelliJ is very hard to control from the command line, so accepting intelliJ projects for automatic checking may be difficult.
+\item Students who submit binaries in CS2002 practicals with Makefiles cause problems, as Make is too stupid to realise it needs to delete the mac binary and build a linux one. We could try to auto-detect this mistake and clean it up.
+\item Should the tester for students work directly in their source directory, or require a zip?
+\end{enumerate}
+
+
+
+\end{document}  
