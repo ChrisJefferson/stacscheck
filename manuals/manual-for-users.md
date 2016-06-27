@@ -3,13 +3,13 @@ Quickstart / Manual
 
 Go into the directory of your practical submission and run:
 
-autocheck.py <path to practical tests>
+stacscheck.py <path to practical tests>
 
 For example:
 
-autocheck.py /studres/CS1002/Practicals/PracticalW04-Tests
+stacscheck.py /studres/CS1002/Practicals/PracticalW04-Tests
 
-Useful options for autocheck:
+Useful options for stacscheck:
 
   --help      : See all options
   --html=FILE : Output a nice HTML output to FILE

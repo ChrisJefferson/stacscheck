@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# Autocheck
+# Stacscheck
 
 import os
 import subprocess
