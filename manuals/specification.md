@@ -9,10 +9,10 @@ A _practical_ is a directory, which is recursively searched through through by t
 
 stacscheck(practdir)
 
-* Execute each file matching the regex 'build.*\.sh'. If any fails, return immediately.
-* Execute each file matching the regex 'test.*\.sh'. The test SUCCEEDS if it's return value is 0.
-* Execute each file matching the regex 'info.*\.sh'. These are run the same as 'test.*\.sh' tests, but their output is always shown.
-* For each file P matching the regex 'prog.*\.sh', for each file Fout matching the regex '.*\.out':
+* Execute each file matching the regex 'build*.sh'. If any of the files fail (return a non-0 value), return immediately.
+* Execute each file matching the regex 'test*.sh'. The test SUCCEEDS if it's return value is 0.
+* Execute each file matching the regex 'info*.sh'. These are run the same as 'test*.sh' tests, but their output is always shown.
+* For each file P matching the regex 'prog*.sh', for each file Fout matching the regex '*.out':
   * Create the name Fin by replacing the '.out' extension of Fout with '.in'.
   * If Fin exists, run P with Fin as stdin, else run P with no stdin.
   * Diff the output of P with Fout, using the diffwhite algorithm described below. The test SUCCEEDS if there are no differences in the diff.
