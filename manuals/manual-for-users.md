@@ -11,9 +11,9 @@ stacscheck.py /studres/CS1002/Practicals/PracticalW04-Tests
 
 Useful options for stacscheck:
 
-  --help      : See all options
-  --html=FILE : Output a nice HTML output to FILE
-  --verbose   : Output lots of information about how the testing is progressing (probably too much)
+*  `--help`      : See all options
+*  `--html=FILE` : Output a nice HTML output to FILE
+*  `--verbose`   : Output lots of information about how the testing is progressing (probably too much)
 
 Understanding tests
 -------------------
