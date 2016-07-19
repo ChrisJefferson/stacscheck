@@ -3,7 +3,7 @@ Quickstart / Manual
 
 Go into the directory of your practical submission and run:
 
-stacscheck.py <path to practical tests>
+stacscheck.py &lt;path to practical tests&gt;
 
 For example:
 
