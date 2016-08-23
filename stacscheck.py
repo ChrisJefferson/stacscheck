@@ -299,6 +299,10 @@ def run():
 
     run_tests_recursive(TESTBASE)
 
+    if len(testStore) == 0:
+        print("ERROR: No tests found in '" + TESTBASE + "'")
+        sys.exit(1)
+
     if options.htmlout is not None:
         env = jinja2.Environment(autoescape=True)
         template = env.from_string(JINJAPAGE)
