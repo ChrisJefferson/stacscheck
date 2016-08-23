@@ -98,19 +98,20 @@ testStore = []
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
-        print("** Test pass : " + test["name"])
+        print("** " + test["type"] + " pass : " + test["name"])
         test["pass"] = True
     else:
-        print("** Test fail : " + test["name"])
+        print("** " + test["type"] + " fail : " + test["name"])
     
     if test["returnval"] != 0 or test.get("alwaysoutput", False):
-        print("---stdout---")
-        print(test.get("stdout", ""))
-        if test.get("stderr", False):
+        if test.get("stderr", False) and test.get("stdout", False):
+            print("---stdout---")
+            print(test.get("stdout", ""))
             print("---stderr---")
-            print(test["stderr"])
-        print("---");
-        
+            print(test.get("stderr", ""))
+            print("---")
+        else:
+            print(test.get("stdout", "") + test.get("stderr", ""))        
         test["pass"] = False
     testStore.append(test)
 
@@ -231,6 +232,7 @@ def run_tests_recursive(testdir):
     for buildsh in buildscripts:
         buildshret = run_program([buildsh], None, None)
         buildshret["name"] = nice_name(buildsh)
+        buildshret["type"] = "Build"
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
             verbose_print("Exiting early due to failed " + buildsh)
@@ -241,6 +243,7 @@ def run_tests_recursive(testdir):
     for test in testscripts:
         result = run_program([test], None, None)
         result["name"] = nice_name(test)
+        result["type"] = "Test"
         register_returnval_test(result)
 
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
@@ -248,6 +251,7 @@ def run_tests_recursive(testdir):
     for info in infoscripts:
         result = run_program([info], None, None)
         result["name"] = nice_name(info)
+        result["type"] = "Info"
         result["alwaysoutput"] = True
         register_returnval_test(result)
 

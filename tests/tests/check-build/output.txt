@@ -1,0 +1,4 @@
+** Build pass : /build1
+** Build fail : /build2
+Build 2
+
