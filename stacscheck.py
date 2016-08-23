@@ -107,7 +107,8 @@ def register_returnval_test(test):
         print("---stdout---")
         print(test.get("stdout", ""))
         if test.get("stderr", False):
-            print("---stderr---" + test["stderr"])
+            print("---stderr---")
+            print(test["stderr"])
         print("---");
         
         test["pass"] = False
