@@ -105,13 +105,15 @@ def register_returnval_test(test):
     
     if test["returnval"] != 0 or test.get("alwaysoutput", False):
         if test.get("stderr", False) and test.get("stdout", False):
-            print("---stdout---")
-            print(test.get("stdout", ""))
-            print("---stderr---")
-            print(test.get("stderr", ""))
-            print("---")
+            print("--- output ---")
+            print(test.get("stdout", "").rstrip())
+            print("--- error output ---")
+            print(test.get("stderr", "").rstrip())
+            print("")
         else:
-            print(test.get("stdout", "") + test.get("stderr", ""))        
+            print("--- output ---")
+            print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())        
+            print("")
         test["pass"] = False
     testStore.append(test)
 

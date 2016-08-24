@@ -1,0 +1,21 @@
+** Test pass : /test1
+** Test fail : /test2
+--- output ---
+Build 2
+
+** Test pass : /test3
+** Test fail : /test4
+--- output ---
+Build 4
+
+** Test fail : /test5
+--- output ---
+Build 5-stderr
+
+** Test fail : /test6
+--- output ---
+Build 6-stdout
+--- error output ---
+Build 6-stderr
+
+** Test pass : /test7
