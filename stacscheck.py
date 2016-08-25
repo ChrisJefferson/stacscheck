@@ -32,8 +32,15 @@ import sys
 import time
 from threading import Thread
 import difflib
-import jinja2
 
+try:
+    import jinja2
+except ImportError:
+    jinja = False
+else:
+    jinja = True
+
+print(jinja)
 
 from optparse import OptionParser
 
@@ -311,6 +318,9 @@ def run():
     (options, args) = parser.parse_args()
     if len(args) != 1:
         sys.exit("Must give exactly one test to run")
+
+    if options.htmlout is not None and not jinja:
+        sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
     VERBOSE = options.verbose
     TESTBASE = args[0]
