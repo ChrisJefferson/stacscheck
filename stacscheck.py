@@ -29,6 +29,7 @@ import os
 import subprocess
 import re
 import sys
+import time
 from threading import Thread
 import difflib
 import jinja2
@@ -200,7 +201,9 @@ def run_program(program, stdin, extra_env):
 
         if stdin is not None:
             stdinfd = open(stdin, "r")
-            proc.stdin.write(stdinfd.read())
+            for line in stdinfd.readlines():
+                proc.stdin.write(line)
+                time.sleep(1)
             stdinfd.close()
         # Either we have filled stdin, or we are putting nothing in it
         proc.stdin.close()
