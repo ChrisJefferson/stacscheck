@@ -12,3 +12,4 @@ z
 y
 ---
 
+0 out of 2 tests passed

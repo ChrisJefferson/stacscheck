@@ -3,3 +3,5 @@
 --- output ---
 Build 2
 
+1 out of 2 tests passed
+Note: A build step failed, so some tests may have been skipped

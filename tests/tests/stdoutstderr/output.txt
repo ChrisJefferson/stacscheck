@@ -19,3 +19,4 @@ Build 6-stdout
 Build 6-stderr
 
 ** Test /test7 : pass
+3 out of 7 tests passed

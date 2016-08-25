@@ -101,6 +101,8 @@ def warn_print(arg):
 # Store the results of all tests
 testStore = []
 
+# Store if any build ever fails
+anyBuildTestFailed = False
 
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
@@ -250,6 +252,8 @@ def run_tests_recursive(testdir):
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
             verbose_print("Exiting early due to failed " + buildsh)
+            global anyBuildTestFailed
+            anyBuildTestFailed = True
             return
 
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
@@ -329,6 +333,10 @@ def run():
     if len(testStore) == 0:
         print("ERROR: No tests found in '" + TESTBASE + "'")
         sys.exit(1)
+
+    print(str(len([t for t in testStore if t["pass"] ])) + " out of " + str(len(testStore)) + " tests passed")
+    if anyBuildTestFailed:
+        print("Note: A build step failed, so some tests may have been skipped")
 
     if options.htmlout is not None:
         env = jinja2.Environment(autoescape=True)

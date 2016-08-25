@@ -8,3 +8,4 @@ x
    x
 ---
 
+3 out of 4 tests passed
