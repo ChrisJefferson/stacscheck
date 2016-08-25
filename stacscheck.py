@@ -32,17 +32,15 @@ import sys
 import time
 from threading import Thread
 import difflib
+from optparse import OptionParser
 
+# Try importing jinja2, but don't complain if it isn't there
 try:
     import jinja2
 except ImportError:
     jinja = False
 else:
     jinja = True
-
-print(jinja)
-
-from optparse import OptionParser
 
 # The HTML output
 JINJAPAGE = """
@@ -96,8 +94,9 @@ def verbose_print(arg):
     if VERBOSE:
         print(str(arg)+"\n")
 
+# Check function for problems in practical
 def warn_print(arg):
-    print("WARNING: " + str(arg) + "\n")
+    print("Problem in practical: " + str(arg) + "\n")
 
 # Store the results of all tests
 testStore = []
@@ -131,7 +130,7 @@ def register_returnval_test(test):
 def strip_string(string):
     return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != '']
 
-
+# Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
     verbose_print(test)
     with open(comparefile, 'r') as stream:
@@ -290,7 +289,7 @@ def run_tests_recursive(testdir):
             if not os.path.isfile(infile):
                 infile = None
             name = nice_name(progsh) + "-" + os.path.basename(out)
-            print "** Comparison test " + name + " :",
+            sys.stdout.write("** Comparison test " + name + " :")
             result = run_program([progsh], infile, None)
             result["name"] = name
             register_diff_test(result, out)
