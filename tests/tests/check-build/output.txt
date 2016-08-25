@@ -1,5 +1,5 @@
-** Build pass : /build1
-** Build fail : /build2
+** Build /build1 : pass
+** Build /build2 : fail
 --- output ---
 Build 2
 

@@ -99,10 +99,10 @@ testStore = []
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
-        print("** " + test["type"] + " pass : " + test["name"])
+        print("pass")
         test["pass"] = True
     else:
-        print("** " + test["type"] + " fail : " + test["name"])
+        print("fail")
     
     if test["returnval"] != 0 or test.get("alwaysoutput", False):
         if test.get("stderr", False) and test.get("stdout", False):
@@ -122,7 +122,7 @@ def register_returnval_test(test):
 # We strip all whitespace, then add a "\n" on the end
 # This is to deal with differences in invisible whitespaces
 def strip_string(string):
-    return [l.strip() + "\n" for l in string.split("\n") if l.strip() != '']
+    return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != '']
 
 
 def register_diff_test(test, comparefile):
@@ -134,10 +134,10 @@ def register_diff_test(test, comparefile):
     test["comparelines"] = comparelines
     test["userlines"] = userlines
     if comparelines == userlines:
-        print("** Compare test pass : " + test["name"])
+        print("pass")
         test["pass"] = True
     else:
-        print("** Compare test fail : " + test["name"])
+        print("fail")
         test["textdiff"] = ["--- expected ---\n"] + comparelines + ["--- submission ---\n" ] + userlines + ["---\n"]
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
         test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
@@ -236,8 +236,10 @@ def run_tests_recursive(testdir):
 
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
     for buildsh in buildscripts:
+        name = nice_name(buildsh)
+        sys.stdout.write("** Build " + name + " : ")
         buildshret = run_program([buildsh], None, None)
-        buildshret["name"] = nice_name(buildsh)
+        buildshret["name"] = name
         buildshret["type"] = "Build"
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
@@ -247,16 +249,20 @@ def run_tests_recursive(testdir):
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
     for test in testscripts:
+        name = nice_name(test)
+        sys.stdout.write("** Test " + name + " : ")
         result = run_program([test], None, None)
-        result["name"] = nice_name(test)
+        result["name"] = name
         result["type"] = "Test"
         register_returnval_test(result)
 
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
 
     for info in infoscripts:
+        name = nice_name(info)
+        sys.stdout.write("** Info " + name + " : ")
         result = run_program([info], None, None)
-        result["name"] = nice_name(info)
+        result["name"] = name
         result["type"] = "Info"
         result["alwaysoutput"] = True
         register_returnval_test(result)
@@ -276,8 +282,10 @@ def run_tests_recursive(testdir):
             infile = out[:-4] + ".in"
             if not os.path.isfile(infile):
                 infile = None
+            name = nice_name(progsh) + "-" + os.path.basename(out)
+            print "** Comparison test " + name + " :",
             result = run_program([progsh], infile, None)
-            result["name"] = nice_name(progsh) + "-" + os.path.basename(out)
+            result["name"] = name
             register_diff_test(result, out)
 
     subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
