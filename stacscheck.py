@@ -138,7 +138,8 @@ def register_diff_test(test, comparefile):
         test["pass"] = True
     else:
         print("** Compare test fail : " + test["name"])
-        test["textdiff"] =  list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
+        test["textdiff"] = ["--- expected ---\n"] + comparelines + ["--- submission ---\n" ] + userlines + ["---\n"]
+        # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
         test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
         print("".join(test["textdiff"]))
         test["pass"] = False

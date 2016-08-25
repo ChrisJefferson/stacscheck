@@ -1,0 +1,14 @@
+** Compare test fail : /progcat-test1.out
+--- expected ---
+z
+--- submission ---
+x
+---
+
+** Compare test fail : /progcat-test2.out
+--- expected ---
+z
+--- submission ---
+y
+---
+
