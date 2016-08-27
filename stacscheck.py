@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Version 0.2.0
+
 # MIT License
 
 # Copyright (c) 2016 University of St Andrews
@@ -242,11 +244,13 @@ def run_tests_recursive(testdir):
     verbose_print("Checking in " + testdir)
     # First check for a build*.sh
 
+    extra_env = { "TESTDIR" : testdir }
+
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
     for buildsh in buildscripts:
         name = nice_name(buildsh)
         sys.stdout.write("** Build " + name + " : ")
-        buildshret = run_program([buildsh], None, None)
+        buildshret = run_program([buildsh], None, extra_env)
         buildshret["name"] = name
         buildshret["type"] = "Build"
         register_returnval_test(buildshret)
@@ -261,7 +265,7 @@ def run_tests_recursive(testdir):
     for test in testscripts:
         name = nice_name(test)
         sys.stdout.write("** Test " + name + " : ")
-        result = run_program([test], None, None)
+        result = run_program([test], None, extra_env)
         result["name"] = name
         result["type"] = "Test"
         register_returnval_test(result)
@@ -271,7 +275,7 @@ def run_tests_recursive(testdir):
     for info in infoscripts:
         name = nice_name(info)
         sys.stdout.write("** Info " + name + " : ")
-        result = run_program([info], None, None)
+        result = run_program([info], None, extra_env)
         result["name"] = name
         result["type"] = "Info"
         result["alwaysoutput"] = True

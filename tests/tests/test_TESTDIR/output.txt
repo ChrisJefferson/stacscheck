@@ -1,0 +1,7 @@
+** Build /build1 : fail
+--- output ---
+testdir
+I am a file
+
+0 out of 1 tests passed
+Note: A build step failed, so some tests may have been skipped
