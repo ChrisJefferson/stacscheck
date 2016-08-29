@@ -4,13 +4,31 @@ Stacscheck v0.4.2
 Stacscheck should be run from the directory containing the submission (scripts assume this directory is the current working directory).
 
 
-A _practical_ is a directory, which is recursively searched through through by the following algorithm:
+A _practical_ is a directory, which can have a configuration file called practical.config
+
+practical.config should contain:
+
+[info]
+practical = <practical name>
+course = <course name>
+
+It can optionally contain:
+
+srcdir = <name of directory>
+
+Which specifies the name of the directory the practical's source is contained in.
+
+
+Running tests
+-------------
+
+The practical is recursively searched by the following algorithm:
 
 
 stacscheck(practdir)
 
-* Execute each file matching the regex 'build*.sh'. If any of the files fail (return a non-0 value), return immediately.
-* Execute each file matching the regex 'test*.sh'. The test SUCCEEDS if it's return value is 0.
+* Execute each file matching the regex 'build*.sh'. If any of the files fail, return immediately.
+* Execute each file matching the regex 'test*.sh'. The test SUCCEEDS if its return value is 0.
 * Execute each file matching the regex 'info*.sh'. These are run the same as 'test*.sh' tests, but their output is always shown.
 * For each file P matching the regex 'prog*.sh', for each file Fout matching the regex '*.out':
   * Create the name Fin by replacing the '.out' extension of Fout with '.in'.
@@ -18,7 +36,7 @@ stacscheck(practdir)
   * Diff the output of P with Fout, using the diffwhite algorithm described below. The test SUCCEEDS if there are no differences in the diff.
 * For each directory D in practdir, run stacscheck(D)
 
-Files are always considered in lexicographic order of filename.
+Files are always considered in alphabetical order of filename.
 
 The following environment variable will be defined when any external program is run.
 
