@@ -1,7 +1,10 @@
-** Comparison test /progcat-empty.out :pass
-** Comparison test /progcat-empty2.out :pass
-** Comparison test /progcat-space-end-of-line.out :pass
-** Comparison test /progcat-space-start-of-line.out :fail
+* COMPARISON TEST - progcat-empty.out : pass
+
+* COMPARISON TEST - progcat-empty2.out : pass
+
+* COMPARISON TEST - progcat-space-end-of-line.out : pass
+
+* COMPARISON TEST - progcat-space-start-of-line.out : fail
 --- expected ---
 x
 --- submission ---

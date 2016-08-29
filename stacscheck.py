@@ -217,10 +217,20 @@ def register_diff_test(test, comparefile):
         test["pass"] = True
     else:
         print("fail")
-        test["textdiff"] = ["--- expected ---\n"] + comparelines + ["--- submission ---\n" ] + userlines + ["---\n"]
+        textdiff = []
+        if len(comparelines) > 0:
+            textdiff.extend(["--- expected ---\n"] + comparelines)
+        else:
+            textdiff.extend(["--- no output expected ---\n"])
+        
+        if len(userlines) > 0:
+            textdiff.extend(["--- submission ---\n" ] + userlines + ["---\n"])
+        else:
+            textdiff.extend(["--- no output from submission ---\n"])
+        test["textdiff"] = textdiff
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
         test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
-        print("".join(test["textdiff"]))
+        sys.stdout.write("".join(test["textdiff"]))
         test["pass"] = False
     testStore.append(test)
 
@@ -228,7 +238,9 @@ def register_diff_test(test, comparefile):
 # Given a filename of a test, get a nicer, shorter name which
 # describes the test. First drop extension, then remove TESTBASE
 def nice_name(name):
-    return os.path.splitext(name)[0][len(TESTBASE):]
+    noextension = os.path.splitext(name)[0]
+    dropdir = noextension[len(TESTBASE):]
+    return dropdir.lstrip("/")
 
 
 # Read from a stream, recording result in a record
@@ -326,7 +338,7 @@ def run_tests_recursive(testdir):
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
     for buildsh in buildscripts:
         name = nice_name(buildsh)
-        sys.stdout.write("** Build " + name + " : ")
+        sys.stdout.write("* BUILD TEST - " + name + " : ")
         buildshret = run_program([buildsh], None, extra_env)
         buildshret["name"] = name
         buildshret["type"] = "Build"
@@ -336,27 +348,30 @@ def run_tests_recursive(testdir):
             global anyBuildTestFailed
             anyBuildTestFailed = True
             return
+        print("")
 
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
     for test in testscripts:
         name = nice_name(test)
-        sys.stdout.write("** Test " + name + " : ")
+        sys.stdout.write("* TEST - " + name + " : ")
         result = run_program([test], None, extra_env)
         result["name"] = name
         result["type"] = "Test"
         register_returnval_test(result)
+        print("")
 
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
 
     for info in infoscripts:
         name = nice_name(info)
-        sys.stdout.write("** Info " + name + " : ")
+        sys.stdout.write("* INFO - " + name + " : ")
         result = run_program([info], None, extra_env)
         result["name"] = name
         result["type"] = "Info"
         result["alwaysoutput"] = True
         register_returnval_test(result)
+        print("")
 
 
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
@@ -374,10 +389,11 @@ def run_tests_recursive(testdir):
             if not os.path.isfile(infile):
                 infile = None
             name = nice_name(progsh) + "-" + os.path.basename(out)
-            sys.stdout.write("** Comparison test " + name + " :")
+            sys.stdout.write("* COMPARISON TEST - " + name + " : ")
             result = run_program([progsh], infile, extra_env)
             result["name"] = name
             register_diff_test(result, out)
+            print("")
 
     subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
                if os.path.isdir(os.path.join(testdir, d))]
@@ -435,7 +451,7 @@ def run():
 
     print(str(len([t for t in testStore if t["pass"] ])) + " out of " + str(len(testStore)) + " tests passed")
     if anyBuildTestFailed:
-        print("Note: A build step failed, so some tests may have been skipped")
+        print("Building failing, skipping tests")
 
     if options.htmlout is not None:
         env = jinja2.Environment(autoescape=True)

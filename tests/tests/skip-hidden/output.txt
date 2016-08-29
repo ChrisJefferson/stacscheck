@@ -1,2 +1,3 @@
-** Comparison test /progread-long.out :pass
+* COMPARISON TEST - progread-long.out : pass
+
 1 out of 1 tests passed

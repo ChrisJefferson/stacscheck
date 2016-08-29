@@ -1,3 +1,5 @@
-** Comparison test /progread-empty.out :pass
-** Comparison test /progread-long.out :pass
+* COMPARISON TEST - progread-empty.out : pass
+
+* COMPARISON TEST - progread-long.out : pass
+
 2 out of 2 tests passed

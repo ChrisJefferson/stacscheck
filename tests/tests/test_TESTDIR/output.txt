@@ -1,20 +1,22 @@
-** Test /test1 : fail
+* TEST - test1 : fail
 --- output ---
 I am a file
 
-** Info /info1 : fail
+
+* INFO - info1 : fail
 --- output ---
 I am a file
 
-** Comparison test /prog1-empty.out :fail
---- expected ---
+
+* COMPARISON TEST - prog1-empty.out : fail
+--- no output expected ---
 --- submission ---
 I am a file
 ---
 
-** Build /build-subdir/build1 : fail
+* BUILD TEST - build-subdir/build1 : fail
 --- output ---
 I am a file in a sub-directory
 
 0 out of 4 tests passed
-Note: A build step failed, so some tests may have been skipped
+Building failing, skipping tests

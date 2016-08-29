@@ -1,5 +1,7 @@
 Testing CS2002 Practical 1
 - Looking for directory 'srcdir': Already in it!
-** Build /build : pass
-** Test /test : pass
+* BUILD TEST - build : pass
+
+* TEST - test : pass
+
 2 out of 2 tests passed

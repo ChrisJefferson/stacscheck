@@ -1,3 +1,5 @@
-** Test /test-length : pass
-** Test /test-no-arguments : pass
+* TEST - test-length : pass
+
+* TEST - test-no-arguments : pass
+
 2 out of 2 tests passed

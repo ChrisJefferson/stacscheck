@@ -1,7 +1,8 @@
-** Build /build1 : pass
-** Build /build2 : fail
+* BUILD TEST - build1 : pass
+
+* BUILD TEST - build2 : fail
 --- output ---
 Build 2
 
 1 out of 2 tests passed
-Note: A build step failed, so some tests may have been skipped
+Building failing, skipping tests
