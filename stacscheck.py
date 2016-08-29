@@ -239,9 +239,10 @@ def run_program(program, stdin, extra_env):
 
 # Find files in 'directory' matching 'regex'
 def files_in_dir_matching_regex(directory, regex):
-    files = [os.path.join(directory, f) for f in sorted(os.listdir(directory))
-             if re.match(regex, f) and
-             os.path.isfile(os.path.join(directory, f))]
+    names = [f for f in sorted(os.listdir(directory))
+             if re.match(regex, f) and not f.startswith('.') ]
+    files = [os.path.join(directory, f) for f in names
+             if os.path.isfile(os.path.join(directory, f))]
     verbose_print("Found " + str(files) + " matching " + str(regex) + " in " + str(directory))
     return files
 

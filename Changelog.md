@@ -2,6 +2,8 @@
 ==============
 
 * Fix TESTDIR variable
+* Handle program wanting less than all the input file
+* Skip hidden files
 
 
 0.0.1 -> 0.1.0
