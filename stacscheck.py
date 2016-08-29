@@ -103,8 +103,11 @@ def warn_print(arg):
 # Store the results of all tests
 testStore = []
 
-# Store if any build ever fails
+# Store if any build step failed
 anyBuildTestFailed = False
+
+
+#### Beginning of functions
 
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
