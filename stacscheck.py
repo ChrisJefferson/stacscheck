@@ -35,6 +35,7 @@ import time
 from threading import Thread
 import difflib
 from optparse import OptionParser
+import ConfigParser
 
 # Try importing jinja2, but don't complain if it isn't there
 try:
@@ -90,6 +91,9 @@ JINJAPAGE = """
 # Store the base test directory
 TESTBASE = None
 
+# Store the submission directory
+SUBMISSIONBASE = None
+
 # Simple function to print out more verbose information if -v is passed
 VERBOSE = True
 def verbose_print(arg):
@@ -98,7 +102,7 @@ def verbose_print(arg):
 
 # Check function for problems in practical
 def warn_print(arg):
-    print("Problem in practical: " + str(arg) + "\n")
+    print("Problem in practical specification: " + str(arg) + "\n")
 
 # Store the results of all tests
 testStore = []
@@ -106,8 +110,70 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
+CONFIG = { 'course' : '', 'practical' : '' }
 
 #### Beginning of functions
+def try_parse_config_file(basedir):
+    config = ConfigParser.ConfigParser()
+    filename = os.path.join(basedir, "practical.config")
+    if not os.path.isfile(filename):
+        return
+    
+    try:
+        config.read(filename)
+    except:
+        warn_print("practical.config is malformed")
+    
+    if config.sections() != ['info']:
+        warn_print("practical.config should only have an [info] section")
+
+    valid_options = ['course', 'practical', 'srcdir']
+    for option in config.options('info'):
+        if not (option in valid_options):
+            warn_print("Don't understand option '" + option + "'")
+        CONFIG[option] = config.get('info', option)
+
+def find_all_directories_with_name(name, rootdir):
+    dirlist = []
+    for root, subfolders, _ in os.walk(rootdir):
+        for dirname in subfolders:
+            if dirname == name:
+                dirlist.append(os.path.join(root, dirname))
+    return dirlist
+
+def find_code_directory():
+    if not 'srcdir' in CONFIG:
+        return None
+    current_dir = os.path.realpath(os.getcwd())
+    in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
+    recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
+    sys.stdout.write("- Looking for directory '" + CONFIG['srcdir'] + "': ")
+    if in_srcdir and len(recursive_srcdir) == 0:
+        print("Already in it!")
+        return None
+        
+    if len(recursive_srcdir) == 1 and not in_srcdir:
+        reldir = os.path.relpath(recursive_srcdir[0], current_dir)
+        if reldir == CONFIG['srcdir']:
+            print("found in current directory")
+        else:
+            print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
+        return recursive_srcdir[0]
+    
+    # There is more than one place the source might be. Take a best guess.
+    if len(recursive_srcdir) >= 1 and in_srcdir:
+        print("- Warning: in a directory called '" + CONFIG['srcdir'] + ", with subdirectories also with the same name.")
+        print("- Guessing the practical source is in the current directory.")
+        print("- If that's wrong, go into the correct directory.")
+        return None
+
+    # There is multiple recursive_srcdir, and we are not in directory of the right name
+    print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
+    for d in recursive_srcdir:
+        print(" - found " + d)
+    print(" - I'm going to guess '" + recursive_srcdir[0] +"'.")
+    print(" - If that's wrong, go into the correct directory.")
+    return recursive_srcdir[0]
 
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
@@ -207,7 +273,8 @@ def run_program(program, stdin, extra_env):
 
     try:
         proc = subprocess.Popen(program, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, close_fds=True, shell=True, env=env_copy)
+                                stderr=subprocess.PIPE, close_fds=True, shell=True, 
+                                cwd=SUBMISSIONBASE, env=env_copy)
 
         retdict = dict()
 
@@ -322,7 +389,7 @@ def run_tests_recursive(testdir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE
+    global VERBOSE, TESTBASE, SUBMISSIONBASE
     parser = OptionParser(usage="%prog [options] test1 test2 ... ")
     parser.add_option("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
@@ -340,12 +407,30 @@ def run():
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
     VERBOSE = options.verbose
-    TESTBASE = args[0]
+
+    if not os.path.exists(args[0]):
+        print("There is no directory called '" + args[0] + "'")
+        sys.exit(1)
+    
+    if not os.path.isdir(args[0]):
+        print("'" + args[0] + "' is not a directory")
+        sys.exit(1)
+    
+
+    TESTBASE = os.path.realpath(args[0])
+
+    try_parse_config_file(TESTBASE)
+
+    if CONFIG['course'] != '' or CONFIG['practical'] != '':
+        print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])
+
+    SUBMISSIONBASE = find_code_directory()
 
     run_tests_recursive(TESTBASE)
 
     if len(testStore) == 0:
-        print("ERROR: No tests found in '" + TESTBASE + "'")
+        # Use args[0] as it is shorter
+        print("ERROR: No tests found in '" + args[0] + "'")
         sys.exit(1)
 
     print(str(len([t for t in testStore if t["pass"] ])) + " out of " + str(len(testStore)) + " tests passed")
@@ -356,7 +441,7 @@ def run():
         env = jinja2.Environment(autoescape=True)
         template = env.from_string(JINJAPAGE)
         with open(options.htmlout, "w") as html:
-            html.write(template.render(Practical=TESTBASE,
+            html.write(template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
                                        SubmissionID=options.subid,
                                        Tests=testStore))
 

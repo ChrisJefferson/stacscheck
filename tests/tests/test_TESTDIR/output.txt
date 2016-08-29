@@ -1,6 +1,6 @@
 ** Build /build1 : fail
 --- output ---
-testdir
+/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir
 I am a file
 
 0 out of 1 tests passed
