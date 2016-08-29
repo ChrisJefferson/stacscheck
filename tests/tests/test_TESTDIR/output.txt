@@ -1,7 +1,20 @@
-** Build /build1 : fail
+** Test /test1 : fail
 --- output ---
-/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir
 I am a file
 
-0 out of 1 tests passed
+** Info /info1 : fail
+--- output ---
+I am a file
+
+** Comparison test /prog1-empty.out :fail
+--- expected ---
+--- submission ---
+I am a file
+---
+
+** Build /build-subdir/build1 : fail
+--- output ---
+I am a file in a sub-directory
+
+0 out of 4 tests passed
 Note: A build step failed, so some tests may have been skipped
