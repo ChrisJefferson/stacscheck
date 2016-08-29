@@ -168,22 +168,25 @@ def read_stream(outdict, name, stream):
     stream_limit = 10000000
     outstr = ''
     while True:
-        chunk = stream.read(stream_limit - len(outstr))
-        # End of file reached
-        if chunk == '':
-            outdict[name] = outstr
-            return
+        try:
+            chunk = stream.read(stream_limit - len(outstr))
+            # End of file reached
+            if chunk == '':
+                outdict[name] = outstr
+                return
 
-        # Add chunk
-        outstr = outstr + chunk
+            # Add chunk
+            outstr = outstr + chunk
 
-        if len(outstr) == stream_limit:
-            outstr += "\n ... Output truncated\n"
+            if len(outstr) == stream_limit:
+                outstr += "\n ... Output truncated\n"
+                outdict[name] = outstr
+                # Throw away rest of stream
+                while stream.read(1024) != '':
+                    pass
+                return
+        except IOError:
             outdict[name] = outstr
-            # Throw away rest of stream
-            while stream.read(1024) != '':
-                pass
-            return
 
 
 # Run a program, given as a list [prog, arg1, arg2], with
@@ -212,9 +215,12 @@ def run_program(program, stdin, extra_env):
 
         if stdin is not None:
             stdinfd = open(stdin, "r")
-            for line in stdinfd.readlines():
-                proc.stdin.write(line)
-                time.sleep(1)
+            try: 
+                for line in stdinfd.readlines():
+                    proc.stdin.write(line)
+                    time.sleep(1)
+            except IOError:
+                pass
             stdinfd.close()
         # Either we have filled stdin, or we are putting nothing in it
         proc.stdin.close()
