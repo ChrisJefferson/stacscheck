@@ -375,7 +375,7 @@ def run_tests_recursive(testdir):
                 infile = None
             name = nice_name(progsh) + "-" + os.path.basename(out)
             sys.stdout.write("** Comparison test " + name + " :")
-            result = run_program([progsh], infile, None)
+            result = run_program([progsh], infile, extra_env)
             result["name"] = name
             register_diff_test(result, out)
 
