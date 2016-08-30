@@ -4,7 +4,7 @@ Stacscheck v0.4.2
 Stacscheck should be run from the directory containing the submission (scripts assume this directory is the current working directory).
 
 
-A _practical_ is a directory, which can have a configuration file called practical.config
+A _practical_ is a directory, which can contain a configuration file called practical.config
 
 practical.config should contain:
 

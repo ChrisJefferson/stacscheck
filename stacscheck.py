@@ -48,6 +48,15 @@ else:
 # The HTML output
 JINJAPAGE = """
 <!DOCTYPE html>
+<style type="text/css">
+        table.diff {font-family:Courier; border:medium;}
+        .diff_header {background-color:#e0e0e0}
+        td.diff_header {text-align:right}
+        .diff_next {background-color:#c0c0c0}
+        .diff_add {background-color:#aaffaa}
+        .diff_chg {background-color:#ffff77}
+        .diff_sub {background-color:#ffaaaa}
+</style>
 <html lang="en">
 <head>
     <title>{{Practical}} - {{ SubmissionID }} </title>
@@ -57,7 +66,7 @@ JINJAPAGE = """
     {% for test in Tests %}
     <tr id="test{{ loop.index }}" bgcolor=
     {% if test.pass %} "#BFB" {% else %} "#FBB" {% endif %} >
-    <td>{% if test.pass %} Tick {% else %} Cross {% endif %}</td>
+    <td>{% if test.pass %} Pass {% else %} Fail {% endif %}</td>
 
         <td> {{ test.name }} </td>
         <td> {{ test.pass }} </td>
@@ -418,6 +427,7 @@ def run():
     (options, args) = parser.parse_args()
     if len(args) != 1:
         sys.exit("Must give exactly one test to run")
+
 
     if options.htmlout is not None and not jinja:
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
