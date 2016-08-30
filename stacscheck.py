@@ -309,7 +309,7 @@ def run_program(program, stdin, extra_env):
             try: 
                 for line in stdinfd.readlines():
                     proc.stdin.write(line)
-                    time.sleep(1)
+                    time.sleep(0.1)
             except IOError:
                 pass
             stdinfd.close()
