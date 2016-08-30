@@ -8,7 +8,7 @@ Quick Overview:
 * Make a directory which contains the practical. You can nest directories how you like.
 * Go into the directory of the student's submission / model answer and run:
 
-    <stacscheckdirectory>/stacscheck.py <directory of tests>
+    <stacscheckdirectory>/stacscheck (directory of tests)
 
 If you add '-v', you can see some (not nicely formatted) output showing how the tester is going as it runs.
 

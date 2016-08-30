@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHECKPROG=$(pwd)/../stacscheck.py
+CHECKPROG=$(pwd)/../stacscheck
 for i in $(ls -d tests/*/); do
     echo Testing $i
     diff $i/output.txt <( cd $i && ./go.sh "$CHECKPROG")

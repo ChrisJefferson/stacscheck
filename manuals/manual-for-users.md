@@ -3,11 +3,11 @@ Quickstart / Manual
 
 Go into the directory of your practical submission and run:
 
-stacscheck.py &lt;path to practical tests&gt;
+stacscheck (path to practical)
 
 For example:
 
-stacscheck.py /studres/CS1002/Practicals/PracticalW04-Tests
+stacscheck /studres/CS1002/Practicals/PracticalW04-Tests
 
 Useful options for stacscheck:
 
