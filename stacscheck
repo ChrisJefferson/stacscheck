@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Version 0.2.0
+# Version 0.3.0
 
 # MIT License
 
@@ -142,6 +142,7 @@ def try_parse_config_file(basedir):
             warn_print("Don't understand option '" + option + "'")
         CONFIG[option] = config.get('info', option)
 
+# Walk directory tree under 'rootdir', finding all directories with 'name'.
 def find_all_directories_with_name(name, rootdir):
     dirlist = []
     for root, subfolders, _ in os.walk(rootdir):
@@ -150,6 +151,9 @@ def find_all_directories_with_name(name, rootdir):
                 dirlist.append(os.path.join(root, dirname))
     return dirlist
 
+# Find the directory the code is stored in, using 'srcdir' from CONFIG.
+# If 'srcdir' is not defined, assume current directory, else search for a directory called
+# CONFIG['srcdir'] (or check if we are already in it!)
 def find_code_directory():
     if not 'srcdir' in CONFIG:
         return None
@@ -184,6 +188,19 @@ def find_code_directory():
     print(" - If that's wrong, go into the correct directory.")
     return recursive_srcdir[0]
 
+
+def print_test_or_info_output(test):
+    if test.get("stderr", False) and test.get("stdout", False):
+        print("--- output ---")
+        print(test.get("stdout", "").rstrip())
+        print("--- error output ---")
+        print(test.get("stderr", "").rstrip())
+        print("")
+    else:
+        print("--- output ---")
+        print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())
+        print("")
+
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
@@ -191,19 +208,11 @@ def register_returnval_test(test):
         test["pass"] = True
     else:
         print("fail")
-    
-    if test["returnval"] != 0 or test.get("alwaysoutput", False):
-        if test.get("stderr", False) and test.get("stdout", False):
-            print("--- output ---")
-            print(test.get("stdout", "").rstrip())
-            print("--- error output ---")
-            print(test.get("stderr", "").rstrip())
-            print("")
-        else:
-            print("--- output ---")
-            print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())        
-            print("")
         test["pass"] = False
+
+    if not test["pass"] or test.get("alwaysoutput", False):
+        print_test_or_info_output(test)
+
     testStore.append(test)
 
 # Takes a single string with newlines, and returns a list of lines

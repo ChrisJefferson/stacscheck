@@ -1,3 +1,12 @@
+0.2.0 -> 0.3.0
+==============
+
+* Improve HTML outputting
+* Rename stacscheck.py -> stacscheck
+* Reduce time between line outputs (1 sec -> 0.1 sec)
+* Fix bug with 'INFO' options always counting as failure
+
+
 0.1.0 -> 0.2.0
 ==============
 
