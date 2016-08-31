@@ -119,7 +119,7 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
-CONFIG = { 'course' : '', 'practical' : '' }
+CONFIG = {'course' : '', 'practical' : ''}
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
@@ -127,12 +127,12 @@ def try_parse_config_file(basedir):
     filename = os.path.join(basedir, "practical.config")
     if not os.path.isfile(filename):
         return
-    
+
     try:
         config.read(filename)
     except:
         warn_print("practical.config is malformed")
-    
+
     if config.sections() != ['info']:
         warn_print("practical.config should only have an [info] section")
 
@@ -164,7 +164,7 @@ def find_code_directory():
     if in_srcdir and len(recursive_srcdir) == 0:
         print("Already in it!")
         return None
-        
+
     if len(recursive_srcdir) == 1 and not in_srcdir:
         reldir = os.path.relpath(recursive_srcdir[0], current_dir)
         if reldir == CONFIG['srcdir']:
@@ -172,7 +172,7 @@ def find_code_directory():
         else:
             print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
         return recursive_srcdir[0]
-    
+
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
         print("- Warning: in a directory called '" + CONFIG['srcdir'] + ", with subdirectories also with the same name.")
@@ -240,9 +240,9 @@ def register_diff_test(test, comparefile):
             textdiff.extend(["--- expected ---\n"] + comparelines)
         else:
             textdiff.extend(["--- no output expected ---\n"])
-        
+
         if len(userlines) > 0:
-            textdiff.extend(["--- submission ---\n" ] + userlines + ["---\n"])
+            textdiff.extend(["--- submission ---\n"] + userlines + ["---\n"])
         else:
             textdiff.extend(["--- no output from submission ---\n"])
         test["textdiff"] = textdiff
@@ -303,7 +303,7 @@ def run_program(program, stdin, extra_env):
 
     try:
         proc = subprocess.Popen(program, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, close_fds=True, shell=True, 
+                                stderr=subprocess.PIPE, close_fds=True, shell=True,
                                 cwd=SUBMISSIONBASE, env=env_copy)
 
         retdict = dict()
@@ -315,7 +315,7 @@ def run_program(program, stdin, extra_env):
 
         if stdin is not None:
             stdinfd = open(stdin, "r")
-            try: 
+            try:
                 for line in stdinfd.readlines():
                     proc.stdin.write(line)
                     time.sleep(0.1)
@@ -340,7 +340,7 @@ def run_program(program, stdin, extra_env):
 # Find files in 'directory' matching 'regex'
 def files_in_dir_matching_regex(directory, regex):
     names = [f for f in sorted(os.listdir(directory))
-             if re.match(regex, f) and not f.startswith('.') ]
+             if re.match(regex, f) and not f.startswith('.')]
     files = [os.path.join(directory, f) for f in names
              if os.path.isfile(os.path.join(directory, f))]
     verbose_print("Found " + str(files) + " matching " + str(regex) + " in " + str(directory))
@@ -351,7 +351,7 @@ def run_tests_recursive(testdir):
     verbose_print("Checking in " + testdir)
     # First check for a build*.sh
 
-    extra_env = { "TESTDIR" : testdir }
+    extra_env = {"TESTDIR" : testdir}
 
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
     for buildsh in buildscripts:
@@ -446,11 +446,11 @@ def run():
     if not os.path.exists(args[0]):
         print("There is no directory called '" + args[0] + "'")
         sys.exit(1)
-    
+
     if not os.path.isdir(args[0]):
         print("'" + args[0] + "' is not a directory")
         sys.exit(1)
-    
+
 
     TESTBASE = os.path.realpath(args[0])
 
@@ -468,7 +468,7 @@ def run():
         print("ERROR: No tests found in '" + args[0] + "'")
         sys.exit(1)
 
-    print(str(len([t for t in testStore if t["pass"] ])) + " out of " + str(len(testStore)) + " tests passed")
+    print(str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed")
     if anyBuildTestFailed:
         print("Building failing, skipping tests")
 
