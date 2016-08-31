@@ -111,7 +111,10 @@ def verbose_print(arg):
 
 # Check function for problems in practical
 def warn_print(arg):
-    print("Problem in practical specification: " + str(arg) + "\n")
+    print("\n- ERROR - There is a problem in the practical specification.")
+    print("The problem is: " + str(arg) + ".")
+    print("This may be caused by an incorrect practical specification, or")
+    print("the practical may have been copied incorrectly.")
 
 # Store the results of all tests
 testStore = []
@@ -339,10 +342,14 @@ def run_program(program, stdin, extra_env):
 
 # Find files in 'directory' matching 'regex'
 def files_in_dir_matching_regex(directory, regex):
-    names = [f for f in sorted(os.listdir(directory))
-             if re.match(regex, f) and not f.startswith('.')]
-    files = [os.path.join(directory, f) for f in names
-             if os.path.isfile(os.path.join(directory, f))]
+    try:
+        names = [f for f in sorted(os.listdir(directory))
+                if re.match(regex, f) and not f.startswith('.')]
+        files = [os.path.join(directory, f) for f in names
+                if os.path.isfile(os.path.join(directory, f))]
+    except OSError:
+        warn_print("Do not have permission to read files in '" + directory + "'")
+        return []
     verbose_print("Found " + str(files) + " matching " + str(regex) + " in " + str(directory))
     return files
 
@@ -413,11 +420,14 @@ def run_tests_recursive(testdir):
             register_diff_test(result, out)
             print("")
 
-    subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
-               if os.path.isdir(os.path.join(testdir, d))]
+    try:
+        subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
+                if os.path.isdir(os.path.join(testdir, d))]
 
-    for d in subdirs:
-        run_tests_recursive(d)
+        for d in subdirs:
+            run_tests_recursive(d)
+    except OSError:
+        warn_print("Do not have permission to read files in '" + testdir + "'")
 
 
 ##################################################################
