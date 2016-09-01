@@ -1,0 +1,61 @@
+How to run for a full list of students.
+
+Step 1 - Decide where you are running. On a lab machine,
+on a VM (see optional section below),
+or just on your own machine.
+
+Step 2 - Download all students from MMS.
+
+Step 3 - extract the student zip. I would recommend using the program 'dtrx', and writing:
+
+dtrx -rn FileFromMMS.zip
+
+As this will deal with students who submitted tar or gzip files.
+
+Step 4 - run:
+
+./all-students.sh <directory of tests> <directory containing students> <output dir>
+
+Example
+=======
+
+Assume we have downloaded CS1002_Assignment1.zip from MMS
+
+- First we'll get the VM:
+
+hg clone https://sysc-public.hg.cs.st-andrews.ac.uk/vagrant-f24
+cd vagrant-f24
+vagrant up
+
+- Now we will put the files into it (and a copy of all-students.sh
+
+mkdir submissions
+mv ~/Downloads/CS1002_Assignment.zip submissions
+scp -r staffres.cs.st-andrews.ac.uk:/staffres/CS1002/Practicals/Practical1-Tests submissions
+cp -r staffres.cs.st-andrews.ac.uk:/staffres/0-General/stacscheck stacscheckcpy
+
+- Now enter the VM
+
+vagrant ssh
+
+- Now go and run the tests
+
+cd /vagrant/submissions
+dtrx -rn CS1002_Assignment.zip
+/vagrant/stacscheckcpy/running-all-students/all-students.sh Practical1-Tests CS1002_Assignment outputdir
+
+
+
+
+
+
+Optional - Installing a lab-like virtual machine on your own laptop
+===================================================================
+
+Follow the instructions at:
+
+https://sysc.host.cs.st-andrews.ac.uk/vagrant/
+
+Any files you put into the 'vagrant' subdirectory of this repository will appear, readable and writable, in
+the '/vagrant' directory of the virtual machine.
+
