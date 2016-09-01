@@ -1,0 +1,2 @@
+Testing CS2002 Practical 1
+- Looking for directory 'nodir': - Cannot find it, exiting.

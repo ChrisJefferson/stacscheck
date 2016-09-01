@@ -187,7 +187,7 @@ def find_code_directory():
 
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
-        print("- Warning: in a directory called '" + CONFIG['srcdir'] + ", with subdirectories also with the same name.")
+        print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
         print("- Guessing the practical source is in the current directory.")
         print("- If that's wrong, go into the correct directory.")
         return None
