@@ -297,8 +297,6 @@ def run_program(program, stdin, extra_env):
     env_copy = os.environ.copy()
 
     verbose_print("Running " + " ".join(program))
-    if not os.access(program[0], os.X_OK):
-        warn_print(program[0] + " is not executable")
 
     if extra_env is not None:
         for key in extra_env:
@@ -306,7 +304,7 @@ def run_program(program, stdin, extra_env):
 
     try:
         proc = subprocess.Popen(program, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, close_fds=True, shell=True,
+                                stderr=subprocess.PIPE, close_fds=True, shell=False,
                                 cwd=SUBMISSIONBASE, env=env_copy)
 
         retdict = dict()
@@ -339,6 +337,8 @@ def run_program(program, stdin, extra_env):
         warn_print(program[0] + " is broken / not executable")
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
+def run_bash_script(script, stdin, extra_env):
+    return run_program(["bash", script], stdin, extra_env)
 
 # Find files in 'directory' matching 'regex'
 def files_in_dir_matching_regex(directory, regex):
@@ -364,7 +364,7 @@ def run_tests_recursive(testdir):
     for buildsh in buildscripts:
         name = nice_name(buildsh)
         sys.stdout.write("* BUILD TEST - " + name + " : ")
-        buildshret = run_program([buildsh], None, extra_env)
+        buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
         buildshret["type"] = "Build"
         register_returnval_test(buildshret)
@@ -380,7 +380,7 @@ def run_tests_recursive(testdir):
     for test in testscripts:
         name = nice_name(test)
         sys.stdout.write("* TEST - " + name + " : ")
-        result = run_program([test], None, extra_env)
+        result = run_bash_script(test, None, extra_env)
         result["name"] = name
         result["type"] = "Test"
         register_returnval_test(result)
@@ -391,7 +391,7 @@ def run_tests_recursive(testdir):
     for info in infoscripts:
         name = nice_name(info)
         sys.stdout.write("* INFO - " + name + " : ")
-        result = run_program([info], None, extra_env)
+        result = run_bash_script(info, None, extra_env)
         result["name"] = name
         result["type"] = "Info"
         result["alwaysoutput"] = True
@@ -415,7 +415,7 @@ def run_tests_recursive(testdir):
                 infile = None
             name = nice_name(progsh) + "-" + os.path.basename(out)
             sys.stdout.write("* COMPARISON TEST - " + name + " : ")
-            result = run_program([progsh], infile, extra_env)
+            result = run_bash_script(progsh, infile, extra_env)
             result["name"] = name
             register_diff_test(result, out)
             print("")

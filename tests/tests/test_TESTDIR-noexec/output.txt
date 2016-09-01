@@ -1,0 +1,31 @@
+* TEST - test1 : fail
+--- output ---
+I am a file
+
+
+* INFO - info1 : fail
+--- output ---
+I am a file
+
+failing
+
+
+* INFO - info2 : pass
+--- output ---
+I am a file
+
+passing
+
+
+* COMPARISON TEST - prog1-empty.out : fail
+--- no output expected ---
+--- submission ---
+I am a file
+---
+
+* BUILD TEST - build-subdir/build1 : fail
+--- output ---
+I am a file in a sub-directory
+
+1 out of 5 tests passed
+Building failing, skipping tests
