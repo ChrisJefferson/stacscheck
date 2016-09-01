@@ -50,6 +50,7 @@ JINJAPAGE = """
 <!DOCTYPE html>
 <style type="text/css">
         table.diff {font-family:Courier; border:medium;}
+        td.code {font-family:Courier; border:medium;}
         .diff_header {background-color:#e0e0e0}
         td.diff_header {text-align:right}
         .diff_next {background-color:#c0c0c0}
@@ -73,7 +74,7 @@ JINJAPAGE = """
         <td> {{ test.returnval }} </td>
     </tr>
     <tr>
-    <td colspan="5">
+    <td colspan="5" class="code">
         {% if test.htmldiff %}
         {{ test.htmldiff | safe }}
         {% else %}
@@ -92,7 +93,10 @@ JINJAPAGE = """
     </tr>
     {% endfor %}
     </table>
-
+    <p>{{ Finalmessage }}</p>
+    {% if AnyBuildTestFailed %}
+    <p>Building is failing, skipping tests</p>
+    {% endif %}
 </body>
 </html>
 """
@@ -164,6 +168,11 @@ def find_code_directory():
     in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
     recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
     sys.stdout.write("- Looking for directory '" + CONFIG['srcdir'] + "': ")
+
+    if not in_srcdir and len(recursive_srcdir) == 0:
+        print("- Cannot find it, exiting.")
+        sys.exit(1)
+
     if in_srcdir and len(recursive_srcdir) == 0:
         print("Already in it!")
         return None
@@ -478,9 +487,10 @@ def run():
         print("ERROR: No tests found in '" + args[0] + "'")
         sys.exit(1)
 
-    print(str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed")
+    finalmessage = str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed"
+    print(finalmessage)
     if anyBuildTestFailed:
-        print("Building failing, skipping tests")
+        print("Building is failing, skipping tests")
 
     if options.htmlout is not None:
         env = jinja2.Environment(autoescape=True)
@@ -488,7 +498,10 @@ def run():
         with open(options.htmlout, "w") as html:
             html.write(template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
                                        SubmissionID=options.subid,
-                                       Tests=testStore))
+                                       Tests=testStore,
+                                       Finalmessage=finalmessage,
+                                       AnyBuildTestFailed=anyBuildTestFailed
+                                       ))
 
 if __name__ == "__main__":
     run()
