@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 # MIT License
 
@@ -120,6 +120,7 @@ def warn_print(arg):
     print("This may be caused by an incorrect practical specification, or")
     print("the practical may have been copied incorrectly.")
 
+
 # Store the results of all tests
 testStore = []
 
@@ -137,11 +138,16 @@ def try_parse_config_file(basedir):
 
     try:
         config.read(filename)
+    except IOError as e:
+        print("I/O error reading practical.config: " + e.strerror)
+        sys.exit(1)
     except:
         warn_print("practical.config is malformed")
+        sys.exit(1)
 
     if config.sections() != ['info']:
-        warn_print("practical.config should only have an [info] section")
+        warn_print("practical.config is malformed, or not readable")
+        sys.exit(1)
 
     valid_options = ['course', 'practical', 'srcdir']
     for option in config.options('info'):
@@ -342,8 +348,8 @@ def run_program(program, stdin, extra_env):
         retdict["returnval"] = proc.returncode
         verbose_print("Tested " + str(program) + ", recieved output: " + str(retdict))
         return retdict
-    except OSError:
-        warn_print(program[0] + " is broken / not executable")
+    except OSError as e:
+        warn_print(program[0] + " is broken: " + e.strerror)
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
 def run_bash_script(script, stdin, extra_env):
@@ -356,8 +362,8 @@ def files_in_dir_matching_regex(directory, regex):
                 if re.match(regex, f) and not f.startswith('.')]
         files = [os.path.join(directory, f) for f in names
                 if os.path.isfile(os.path.join(directory, f))]
-    except OSError:
-        warn_print("Do not have permission to read files in '" + directory + "'")
+    except OSError as e:
+        warn_print("Error reading '" + directory + "': " + e.strerror)
         return []
     verbose_print("Found " + str(files) + " matching " + str(regex) + " in " + str(directory))
     return files
@@ -435,8 +441,8 @@ def run_tests_recursive(testdir):
 
         for d in subdirs:
             run_tests_recursive(d)
-    except OSError:
-        warn_print("Do not have permission to read files in '" + testdir + "'")
+    except OSError as e:
+        warn_print(str(e))
 
 
 ##################################################################
@@ -492,16 +498,22 @@ def run():
     if anyBuildTestFailed:
         print("Building is failing, skipping tests")
 
-    if options.htmlout is not None:
-        env = jinja2.Environment(autoescape=True)
-        template = env.from_string(JINJAPAGE)
-        with open(options.htmlout, "w") as html:
-            html.write(template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
-                                       SubmissionID=options.subid,
-                                       Tests=testStore,
-                                       Finalmessage=finalmessage,
-                                       AnyBuildTestFailed=anyBuildTestFailed
-                                       ))
+    try:
+        if options.htmlout is not None:
+            env = jinja2.Environment(autoescape=True)
+            template = env.from_string(JINJAPAGE)
+            with open(options.htmlout, "w") as html:
+                html.write(template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
+                                        SubmissionID=options.subid,
+                                        Tests=testStore,
+                                        Finalmessage=finalmessage,
+                                        AnyBuildTestFailed=anyBuildTestFailed
+                                        ))
+    except EnvironmentError as e:
+        print("Error outputting HTML: " + str(e))
 
 if __name__ == "__main__":
-    run()
+    try:
+        run()
+    except EnvironmentError as e:
+        print("A fatal error has occurred: " + str(e))
