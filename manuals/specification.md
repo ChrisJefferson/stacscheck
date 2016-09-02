@@ -1,44 +1,59 @@
-Stacscheck v0.4.2
+Stacscheck v1.0.0
 ================
 
-Stacscheck should be run from the directory containing the submission (scripts assume this directory is the current working directory).
+A stacscheck specification is a directory.
 
+It can optionally contain a configuration file called practical.config
 
-A _practical_ is a directory, which can contain a configuration file called practical.config
-
-practical.config should contain:
+practical.config must begin with the single line:
 
 [info]
+
+It then must contain the following three lines:
+
 practical = <practical name>
 course = <course name>
-
-It can optionally contain:
-
 srcdir = <name of directory>
 
-Which specifies the name of the directory the practical's source is contained in.
+Where srcdir specifies the name of the directory the practical's source is contained in.
 
 
 Running tests
 -------------
 
-The practical is recursively searched by the following algorithm:
+Each test is stored as a shell script, ending in 'sh'. There are 4 types of tests.
+They can be identified by the beginning of their name.
 
+* Scripts starting 'build' are *build scripts*. If the script fails, then the output
+  of the script is printed, and no more tests in this directory are run.
 
-stacscheck(practdir)
+* Scripts starting 'test' are *standard tests*. If the script fails, then the output
+  of the script is printed.
 
-* Execute each file matching the regex 'build*.sh'. If any of the files fail, return immediately.
-* Execute each file matching the regex 'test*.sh'. The test SUCCEEDS if its return value is 0.
-* Execute each file matching the regex 'info*.sh'. These are run the same as 'test*.sh' tests, but their output is always shown.
-* For each file P matching the regex 'prog*.sh', for each file Fout matching the regex '*.out':
-  * Create the name Fin by replacing the '.out' extension of Fout with '.in'.
-  * If Fin exists, run P with Fin as stdin, else run P with no stdin.
-  * Diff the output of P with Fout, using the diffwhite algorithm described below. The test SUCCEEDS if there are no differences in the diff.
-* For each directory D in practdir, run stacscheck(D)
+* Scripts starting 'info' are *info scripts*. The output of the script is always printed.
+  This is intended for code such as code checking tools.
+
+* Scripts starting 'prog' are *program scripts*. The output of this script is automatically
+  diffed against a known good output.
+
+  The exact algorithm is:
+  * For each filename F ending '.out'
+    * construct the filename Fin by replacing the '.out' with '.in'
+    * Run the program script, with Fin as input to the program (if it exists),
+      and diff the output against F
+
+  The diffing algorithm ignores whitespace at the end of lines, and blank lines.
+
+Then, recursively look in each subdirectory, and run this process again.
 
 Files are always considered in alphabetical order of filename.
 
+Environment variables
+---------------------
+
+
 The following environment variable will be defined when any external program is run.
 
-* TESTDIR : The full directory name of the test script being run was contained. This can be used to read other files.
+* TESTDIR : The full directory name of the test script being run was contained.
+            This can be used to read other files.
 

@@ -20,4 +20,4 @@ Understanding tests
 
 If you want to understand what is being tested, go into the practical directory, and look in the files there.
 
-A (compressed) explanation of how practicals are laid out is in the [specification](specification.html)
+An explanation of how practicals are laid out is in the [specification](specification.html)
