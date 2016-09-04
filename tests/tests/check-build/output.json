@@ -1,0 +1,1 @@
+{"practical": "", "course": "", "subid": "<unknown>", "tests": [{"name": "build1", "stdout": "Build 1\n", "returnval": 0, "pass": true, "type": "Build", "stderr": ""}, {"name": "build2", "stdout": "Build 2\n", "returnval": 1, "pass": false, "type": "Build", "stderr": ""}]}

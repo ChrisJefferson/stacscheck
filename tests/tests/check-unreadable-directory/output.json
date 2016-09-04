@@ -1,0 +1,1 @@
+{"practical": "", "course": "", "subid": "<unknown>", "tests": [{"name": "build1", "stdout": "", "returnval": 126, "pass": false, "type": "Build", "stderr": "bash: /Users/caj/reps/stacscheck/tests/tests/check-unreadable-directory/testdir/build1.sh: Permission denied\n"}]}

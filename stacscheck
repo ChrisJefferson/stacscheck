@@ -32,9 +32,10 @@ import subprocess
 import re
 import sys
 import time
+import json
 from threading import Thread
 import difflib
-from optparse import OptionParser
+from optparse import OptionParser, SUPPRESS_HELP
 import ConfigParser
 
 # Try importing jinja2, but don't complain if it isn't there
@@ -454,9 +455,13 @@ def run():
                       help="Give identifier for submission")
     parser.add_option("--html", dest="htmlout",
                       help="Produce HTML overview", metavar="FILE")
+    # This isn't documented, because the output format isn't (yet) stable.
+    # You can use this, but don't complain if the format changes in future.
+    parser.add_option("--json", dest="jsonout",
+                      help=SUPPRESS_HELP, metavar="FILE")
     parser.add_option("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
-                      help="Output more information during test")
+                      help="Output more information during testing")
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
@@ -511,6 +516,17 @@ def run():
                                         ))
     except EnvironmentError as e:
         print("Error outputting HTML: " + str(e))
+
+    try:
+        if options.jsonout is not None:
+            with open(options.jsonout, "w") as jsonfile:
+                jsonfile.write(json.dumps({ "practical" : CONFIG['practical'],
+                                            "course" : CONFIG['course'],
+                                            "subid" : options.subid,
+                                            "tests" : testStore}))
+    except EnvironmentError as e:
+        print("Error outputting json: " + str(e))
+
 
 if __name__ == "__main__":
     try:

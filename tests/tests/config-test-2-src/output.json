@@ -1,0 +1,1 @@
+{"practical": "Practical 1", "course": "CS2002", "subid": "<unknown>", "tests": [{"userlines": ["adir\n"], "name": "prog-default.out", "stdout": "adir\n", "comparelines": ["adir\n"], "returnval": 0, "pass": true, "stderr": ""}]}

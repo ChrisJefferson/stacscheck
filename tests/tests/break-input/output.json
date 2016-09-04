@@ -1,0 +1,1 @@
+{"practical": "", "course": "", "subid": "<unknown>", "tests": [{"userlines": [], "name": "progread-empty.out", "stdout": "\n", "comparelines": [], "returnval": 0, "pass": true, "stderr": ""}, {"userlines": ["1 2\n"], "name": "progread-long.out", "stdout": "1 2\n", "comparelines": ["1 2\n"], "returnval": 0, "pass": true, "stderr": ""}]}

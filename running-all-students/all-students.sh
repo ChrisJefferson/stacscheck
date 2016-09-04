@@ -4,7 +4,7 @@ if [[ $# -eq 0 ]]; then
     echo "This is a quick script to test many students in one go, with stacscheck"
     echo "It is designed to be super-simple! please feel free to edit it."
     echo "Usage: all-students.sh <location of tests> <directory of student submissions> <output dir>"
-    echo "Inside <output dir> two subdirectories will be created, one called 'txt' and one called 'html'."
+    echo "Inside <output dir> three subdirectories will be created, 'txt', 'html' and 'json'."
     exit 0
 fi;
 
@@ -16,6 +16,7 @@ get_abs_filename() {
 
 mkdir -p "$3/txt"
 mkdir -p "$3/html"
+mkdir -p "$3/json"
 
 practical=$(get_abs_filename "$1")
 submissions=$(get_abs_filename "$2")
@@ -28,6 +29,10 @@ for dir in "${submissions}/"*/; do
         ulimit -t 600 # Put a limit on runtime
         studentid=$(basename "${dir}")
         cd "${dir}"
-        stacscheck ${practical} --id="${studentid}" --html="${outdir}/html/${studentid}.html" > "${outdir}/txt/${studentid}"
+        stacscheck ${practical} \
+                   --id="${studentid}" \
+                   --html="${outdir}/html/${studentid}.html" \
+                   --json="${outdir}/json/${studentid}.json" \
+                     > "${outdir}/txt/${studentid}"
     )
 done
