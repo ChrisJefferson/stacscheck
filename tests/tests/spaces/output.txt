@@ -1,3 +1,5 @@
+Testing CS1234 Practical 1
+- Looking for directory 'spaces': Already in it!
 * COMPARISON TEST - progcat-empty.out : pass
 
 * COMPARISON TEST - progcat-empty2.out : pass

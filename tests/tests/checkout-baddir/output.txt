@@ -1,3 +1,5 @@
+Testing CS1234 Practical 1
+- Looking for directory 'checkout-baddir': Already in it!
 
 - ERROR - There is a problem in the practical specification.
 The problem is: Error reading '/Users/caj/reps/stacscheck/tests/tests/checkout-baddir/testdir/abc': Permission denied.

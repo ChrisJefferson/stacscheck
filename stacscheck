@@ -135,7 +135,8 @@ def try_parse_config_file(basedir):
     config = ConfigParser.ConfigParser()
     filename = os.path.join(basedir, "practical.config")
     if not os.path.isfile(filename):
-        return
+        print("No file called 'practical.config' in '" + basedir + "'\nI don't think this directory contains a practical")
+        sys.exit(1)
 
     try:
         config.read(filename)

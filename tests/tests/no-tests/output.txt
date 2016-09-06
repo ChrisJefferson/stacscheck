@@ -1,1 +1,3 @@
+Testing CS1234 Practical 1
+- Looking for directory 'no-tests': Already in it!
 ERROR: No tests found in 'testdir'

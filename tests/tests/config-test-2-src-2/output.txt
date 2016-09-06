@@ -1,4 +1,4 @@
-Testing CS2002 Practical 1
+Testing CS1234 Practical 1
 - Looking for directory 'config-test-2-src-2': 
 - Warning: in a directory called 'config-test-2-src-2', with subdirectories also with the same name.
 - Guessing the practical source is in the current directory.
