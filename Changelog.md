@@ -1,3 +1,27 @@
+
+1.0.2 -> 2.0.0
+==============
+* BREAKING : practical.config now required
+* Make JSON output neater
+
+1.0.1 -> 1.0.2
+==============
+* Add JSON output
+
+1.0.0 -> 1.0.1
+==============
+
+* Catch more file-based exceptions
+
+0.3.0 -> 1.0.0
+==============
+
+* Try to catch more errors from unreadable files
+* Don't require executable flag on test scripts
+* Improve HTML output
+* Handle unable to find source directory
+
+
 0.2.0 -> 0.3.0
 ==============
 
