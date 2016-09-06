@@ -1,1 +1,63 @@
-{"practical": "Practical 1", "course": "CS1234", "subid": "<unknown>", "tests": [{"userlines": [], "name": "progcat-empty.out", "stdout": "", "comparelines": [], "returnval": 0, "pass": true, "stderr": ""}, {"userlines": [], "name": "progcat-empty2.out", "stdout": "", "comparelines": [], "returnval": 0, "pass": true, "stderr": ""}, {"userlines": ["x\n", "y\n", "z\n"], "name": "progcat-space-end-of-line.out", "stdout": "x\ny\nz\n\n", "comparelines": ["x\n", "y\n", "z\n"], "returnval": 0, "pass": true, "stderr": ""}, {"userlines": ["   x\n"], "name": "progcat-space-start-of-line.out", "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">&nbsp;&nbsp;&nbsp;x</span></td></tr>\n        </tbody>\n    </table>", "stdout": "   x\n\n", "comparelines": ["x\n"], "returnval": 0, "pass": false, "textdiff": ["--- expected ---\n", "x\n", "--- submission ---\n", "   x\n", "---\n"], "stderr": ""}]}
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [],
+      "name": "progcat-empty.out",
+      "stdout": "",
+      "comparelines": [],
+      "returnval": 0,
+      "pass": true,
+      "stderr": ""
+    },
+    {
+      "userlines": [],
+      "name": "progcat-empty2.out",
+      "stdout": "",
+      "comparelines": [],
+      "returnval": 0,
+      "pass": true,
+      "stderr": ""
+    },
+    {
+      "userlines": [
+        "x\n",
+        "y\n",
+        "z\n"
+      ],
+      "name": "progcat-space-end-of-line.out",
+      "stdout": "x\ny\nz\n\n",
+      "comparelines": [
+        "x\n",
+        "y\n",
+        "z\n"
+      ],
+      "returnval": 0,
+      "pass": true,
+      "stderr": ""
+    },
+    {
+      "userlines": [
+        "   x\n"
+      ],
+      "name": "progcat-space-start-of-line.out",
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">&nbsp;&nbsp;&nbsp;x</span></td></tr>\n        </tbody>\n    </table>",
+      "stdout": "   x\n\n",
+      "comparelines": [
+        "x\n"
+      ],
+      "returnval": 0,
+      "pass": false,
+      "textdiff": [
+        "--- expected ---\n",
+        "x\n",
+        "--- submission ---\n",
+        "   x\n",
+        "---\n"
+      ],
+      "stderr": ""
+    }
+  ]
+}

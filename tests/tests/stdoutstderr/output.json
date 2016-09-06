@@ -1,1 +1,63 @@
-{"practical": "Practical 1", "course": "CS1234", "subid": "<unknown>", "tests": [{"name": "test1", "stdout": "Build 1\n", "returnval": 0, "pass": true, "type": "Test", "stderr": ""}, {"name": "test2", "stdout": "Build 2\n", "returnval": 1, "pass": false, "type": "Test", "stderr": ""}, {"name": "test3", "stdout": "Build 3\n", "returnval": 0, "pass": true, "type": "Test", "stderr": ""}, {"name": "test4", "stdout": "", "returnval": 1, "pass": false, "type": "Test", "stderr": "Build 4\n"}, {"name": "test5", "stdout": "", "returnval": 1, "pass": false, "type": "Test", "stderr": "Build 5-stderr\n"}, {"name": "test6", "stdout": "Build 6-stdout\n", "returnval": 1, "pass": false, "type": "Test", "stderr": "Build 6-stderr\n"}, {"name": "test7", "stdout": "Build 7-stdout\n", "returnval": 0, "pass": true, "type": "Test", "stderr": "Build 7-stderr\n"}]}
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "test1",
+      "stdout": "Build 1\n",
+      "returnval": 0,
+      "pass": true,
+      "type": "Test",
+      "stderr": ""
+    },
+    {
+      "name": "test2",
+      "stdout": "Build 2\n",
+      "returnval": 1,
+      "pass": false,
+      "type": "Test",
+      "stderr": ""
+    },
+    {
+      "name": "test3",
+      "stdout": "Build 3\n",
+      "returnval": 0,
+      "pass": true,
+      "type": "Test",
+      "stderr": ""
+    },
+    {
+      "name": "test4",
+      "stdout": "",
+      "returnval": 1,
+      "pass": false,
+      "type": "Test",
+      "stderr": "Build 4\n"
+    },
+    {
+      "name": "test5",
+      "stdout": "",
+      "returnval": 1,
+      "pass": false,
+      "type": "Test",
+      "stderr": "Build 5-stderr\n"
+    },
+    {
+      "name": "test6",
+      "stdout": "Build 6-stdout\n",
+      "returnval": 1,
+      "pass": false,
+      "type": "Test",
+      "stderr": "Build 6-stderr\n"
+    },
+    {
+      "name": "test7",
+      "stdout": "Build 7-stdout\n",
+      "returnval": 0,
+      "pass": true,
+      "type": "Test",
+      "stderr": "Build 7-stderr\n"
+    }
+  ]
+}

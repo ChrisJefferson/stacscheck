@@ -1,1 +1,20 @@
-{"practical": "Practical 1", "course": "CS1234", "subid": "<unknown>", "tests": [{"userlines": ["basedir\n"], "name": "prog-default.out", "stdout": "basedir\n", "comparelines": ["basedir\n"], "returnval": 0, "pass": true, "stderr": ""}]}
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [
+        "basedir\n"
+      ],
+      "name": "prog-default.out",
+      "stdout": "basedir\n",
+      "comparelines": [
+        "basedir\n"
+      ],
+      "returnval": 0,
+      "pass": true,
+      "stderr": ""
+    }
+  ]
+}

@@ -1,1 +1,20 @@
-{"practical": "Practical 1", "course": "CS1234", "subid": "<unknown>", "tests": [{"userlines": ["adir\n"], "name": "prog-default.out", "stdout": "adir\n", "comparelines": ["adir\n"], "returnval": 0, "pass": true, "stderr": ""}]}
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [
+        "adir\n"
+      ],
+      "name": "prog-default.out",
+      "stdout": "adir\n",
+      "comparelines": [
+        "adir\n"
+      ],
+      "returnval": 0,
+      "pass": true,
+      "stderr": ""
+    }
+  ]
+}

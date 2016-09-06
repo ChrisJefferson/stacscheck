@@ -524,7 +524,8 @@ def run():
                 jsonfile.write(json.dumps({ "practical" : CONFIG['practical'],
                                             "course" : CONFIG['course'],
                                             "subid" : options.subid,
-                                            "tests" : testStore}))
+                                            "tests" : testStore},
+                                            indent = 2, separators=(',', ': ')))
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
 
