@@ -243,7 +243,6 @@ def strip_string(string):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
-    verbose_print(test)
     with open(comparefile, 'r') as stream:
         comparelines = stream.read()
     comparelines = strip_string(comparelines)
@@ -313,8 +312,6 @@ def read_stream(outdict, name, stream):
 def run_program(program, stdin, extra_env):
     env_copy = os.environ.copy()
 
-    verbose_print("Running " + " ".join(program))
-
     if extra_env is not None:
         for key in extra_env:
             env_copy[key] = extra_env[key]
@@ -348,7 +345,7 @@ def run_program(program, stdin, extra_env):
         proc.wait()
 
         retdict["returnval"] = proc.returncode
-        verbose_print("Tested " + str(program) + ", recieved output: " + str(retdict))
+
         return retdict
     except OSError as e:
         warn_print(program[0] + " is broken: " + e.strerror)
@@ -367,14 +364,38 @@ def files_in_dir_matching_regex(directory, regex):
     except OSError as e:
         warn_print("Error reading '" + directory + "': " + e.strerror)
         return []
-    verbose_print("Found " + str(files) + " matching " + str(regex) + " in " + str(directory))
+
     return files
+
+def print_file_contents(
+        file_loc,
+        ignore_prefixes=["#!"], #Do not modify the list in the method, otherwise troubles may occur
+        out_line_prefix="\t",
+        ignore_empty_lines=True
+):
+    try:
+        for line in open(file_loc, "r"):
+
+            if ignore_empty_lines and line == "":
+                continue
+
+            for ignore_prefix in ignore_prefixes:
+                if line.startswith(ignore_prefix):
+                    continue
+
+            print (out_line_prefix + line)
+    except IOError as e:
+        warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
+
+def verbose_print_file_contents(file_loc):
+    global VERBOSE
+
+    if VERBOSE:
+        print_file_contents(file_loc=file_loc)
 
 # Accept a directory name relative to
 def run_tests_recursive(testdir):
-    verbose_print("Checking in " + testdir)
     # First check for a build*.sh
-
     extra_env = {"TESTDIR" : testdir}
 
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
@@ -383,6 +404,7 @@ def run_tests_recursive(testdir):
         sys.stdout.write("* BUILD TEST - " + name + " : ")
         buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
+        buildshret["path"] = buildsh
         buildshret["type"] = "Build"
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
@@ -399,6 +421,7 @@ def run_tests_recursive(testdir):
         sys.stdout.write("* TEST - " + name + " : ")
         result = run_bash_script(test, None, extra_env)
         result["name"] = name
+        result["path"] = test
         result["type"] = "Test"
         register_returnval_test(result)
         print("")
@@ -410,11 +433,11 @@ def run_tests_recursive(testdir):
         sys.stdout.write("* INFO - " + name + " : ")
         result = run_bash_script(info, None, extra_env)
         result["name"] = name
+        result["path"] = info
         result["type"] = "Info"
         result["alwaysoutput"] = True
         register_returnval_test(result)
         print("")
-
 
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
 
@@ -434,6 +457,7 @@ def run_tests_recursive(testdir):
             sys.stdout.write("* COMPARISON TEST - " + name + " : ")
             result = run_bash_script(progsh, infile, extra_env)
             result["name"] = name
+            result["input"] = infile
             register_diff_test(result, out)
             print("")
 
@@ -465,7 +489,7 @@ def run():
                       help="Output more information during testing")
 
     (options, args) = parser.parse_args()
-    
+
     if len(args) != 1:
         print("stacscheck " + VERSION)
         sys.exit("You must give a directory of tests to run!")
@@ -506,8 +530,15 @@ def run():
 
     finalmessage = str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed"
     print(finalmessage)
+
     if anyBuildTestFailed:
         print("Building is failing, skipping tests")
+
+    for t in testStore:
+        if not t["pass"] and "path" in t and "type" in t:
+            verbose_print("Fail: TYPE=" + t["type"] + "\tPATH=" + t["path"] + "\tINPUT=" + t["input"] if "input" in t else None)
+            verbose_print_file_contents(file_loc=t["path"])
+
 
     try:
         if options.htmlout is not None:
