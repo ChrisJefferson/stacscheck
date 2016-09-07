@@ -9,11 +9,13 @@
       ],
       "name": "progread-long.out",
       "stdout": "1 2\n",
+      "pass": true,
       "comparelines": [
         "1 2\n"
       ],
       "returnval": 0,
-      "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/skip-hidden/testdir/progread.sh",
+      "input": "/Users/caj/reps/stacscheck/tests/tests/skip-hidden/testdir/long.in",
       "stderr": ""
     }
   ]

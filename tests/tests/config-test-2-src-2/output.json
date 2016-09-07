@@ -9,11 +9,13 @@
       ],
       "name": "prog-default.out",
       "stdout": "basedir\n",
+      "pass": true,
       "comparelines": [
         "basedir\n"
       ],
       "returnval": 0,
-      "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-2-src-2/testdir/prog.sh",
+      "input": null,
       "stderr": ""
     }
   ]

@@ -1,0 +1,7 @@
+Testing CS1234 Practical 1
+- Looking for directory 'srcdir': found in current directory
+* BUILD TEST - build : pass
+
+* TEST - test : pass
+
+2 out of 2 tests passed

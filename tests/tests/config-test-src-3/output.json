@@ -8,6 +8,7 @@
       "stdout": "",
       "returnval": 0,
       "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-src-3/testdir/build.sh",
       "type": "Build",
       "stderr": ""
     },
@@ -16,6 +17,7 @@
       "stdout": "meow\n\n",
       "returnval": 0,
       "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-src-3/testdir/test.sh",
       "type": "Test",
       "stderr": ""
     }

@@ -1,0 +1,5 @@
+
+- ERROR - There is a problem in the practical specification.
+The problem is: practical.config is malformed, or not readable.
+This may be caused by an incorrect practical specification, or
+the practical may have been copied incorrectly.

@@ -1,6 +1,11 @@
 Testing CS1234 Practical 1
 - Looking for directory 'badoutput': Already in it!
 * COMPARISON TEST - progcat-test1.out : fail
+--- ran script ---
+cat
+--- with input ---
+/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test1.in
+x
 --- expected output ---
 z
 --- submission output ---
@@ -8,6 +13,11 @@ x
 ---
 
 * COMPARISON TEST - progcat-test2.out : fail
+--- ran script ---
+cat
+--- with input ---
+/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test2.in
+y
 --- expected output ---
 z
 --- submission output ---

@@ -121,6 +121,24 @@ def warn_print(arg):
     print("This may be caused by an incorrect practical specification, or")
     print("the practical may have been copied incorrectly.")
 
+def print_file_contents(
+        file_loc,
+        ignore_prefixes=["#!"], #Do not modify the list in the method, otherwise troubles may occur
+        ignore_empty_lines=True
+):
+    try:
+        for line in open(file_loc, "r"):
+
+            if ignore_empty_lines and line.strip() == "":
+                continue
+
+            if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
+                continue
+
+            print (line.rstrip())
+    except IOError as e:
+        warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
+
 
 # Store the results of all tests
 testStore = []
@@ -209,16 +227,29 @@ def find_code_directory():
     return recursive_srcdir[0]
 
 
+def maybe_print_test_input(test):
+    if VERBOSE and not test["pass"]:
+        print("--- ran script ---")
+        print_file_contents(file_loc=test["path"])
+        if "input" in test and test["input"] is not None:
+            print("--- with input ---")
+            print(test["input"])
+            print_file_contents(file_loc=test["input"], ignore_prefixes=[], ignore_empty_lines=False)
+    
 def print_test_or_info_output(test):
+    maybe_print_test_input(test)
     if test.get("stderr", False) and test.get("stdout", False):
-        print("--- output ---")
+        print("--- submission output ---")
         print(test.get("stdout", "").rstrip())
-        print("--- error output ---")
+        print("--- submission stderr output ---")
         print(test.get("stderr", "").rstrip())
         print("")
-    else:
-        print("--- output ---")
+    elif test.get("stderr", False) or test.get("stdout", False):
+        print("--- submission output ---")
         print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())
+        print("")
+    else:
+        print("--- no output from submission---")
         print("")
 
 # Record that a test was run, printing as approriate
@@ -254,21 +285,22 @@ def register_diff_test(test, comparefile):
         test["pass"] = True
     else:
         print("fail")
+        test["pass"] = False
+        maybe_print_test_input(test)
         textdiff = []
         if len(comparelines) > 0:
-            textdiff.extend(["--- expected ---\n"] + comparelines)
+            textdiff.extend(["--- expected output ---\n"] + comparelines)
         else:
             textdiff.extend(["--- no output expected ---\n"])
 
         if len(userlines) > 0:
-            textdiff.extend(["--- submission ---\n"] + userlines + ["---\n"])
+            textdiff.extend(["--- submission output ---\n"] + userlines + ["---\n"])
         else:
             textdiff.extend(["--- no output from submission ---\n"])
         test["textdiff"] = textdiff
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
         test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
         sys.stdout.write("".join(test["textdiff"]))
-        test["pass"] = False
     testStore.append(test)
 
 
@@ -366,32 +398,6 @@ def files_in_dir_matching_regex(directory, regex):
         return []
 
     return files
-
-def print_file_contents(
-        file_loc,
-        ignore_prefixes=["#!"], #Do not modify the list in the method, otherwise troubles may occur
-        out_line_prefix="\t",
-        ignore_empty_lines=True
-):
-    try:
-        for line in open(file_loc, "r"):
-
-            if ignore_empty_lines and line == "":
-                continue
-
-            for ignore_prefix in ignore_prefixes:
-                if line.startswith(ignore_prefix):
-                    continue
-
-            print (out_line_prefix + line)
-    except IOError as e:
-        warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
-
-def verbose_print_file_contents(file_loc):
-    global VERBOSE
-
-    if VERBOSE:
-        print_file_contents(file_loc=file_loc)
 
 # Accept a directory name relative to
 def run_tests_recursive(testdir):
@@ -534,11 +540,6 @@ def run():
 
     if anyBuildTestFailed:
         print("Building is failing, skipping tests")
-
-    for t in testStore:
-        if not t["pass"] and "path" in t and "type" in t:
-            verbose_print("Fail: TYPE=" + t["type"] + "\tPATH=" + t["path"] + "\tINPUT=" + t["input"] if "input" in t else None)
-            verbose_print_file_contents(file_loc=t["path"])
 
 
     try:

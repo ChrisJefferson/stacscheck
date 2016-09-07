@@ -8,6 +8,7 @@
       "stdout": "Build 1\n",
       "returnval": 0,
       "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test1.sh",
       "type": "Test",
       "stderr": ""
     },
@@ -16,6 +17,7 @@
       "stdout": "Build 2\n",
       "returnval": 1,
       "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test2.sh",
       "type": "Test",
       "stderr": ""
     },
@@ -24,6 +26,7 @@
       "stdout": "Build 3\n",
       "returnval": 0,
       "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test3.sh",
       "type": "Test",
       "stderr": ""
     },
@@ -32,6 +35,7 @@
       "stdout": "",
       "returnval": 1,
       "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test4.sh",
       "type": "Test",
       "stderr": "Build 4\n"
     },
@@ -40,6 +44,7 @@
       "stdout": "",
       "returnval": 1,
       "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test5.sh",
       "type": "Test",
       "stderr": "Build 5-stderr\n"
     },
@@ -48,6 +53,7 @@
       "stdout": "Build 6-stdout\n",
       "returnval": 1,
       "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test6.sh",
       "type": "Test",
       "stderr": "Build 6-stderr\n"
     },
@@ -56,8 +62,18 @@
       "stdout": "Build 7-stdout\n",
       "returnval": 0,
       "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test7.sh",
       "type": "Test",
       "stderr": "Build 7-stderr\n"
+    },
+    {
+      "name": "test8",
+      "stdout": "",
+      "returnval": 1,
+      "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/stdoutstderr/testdir/test8.sh",
+      "type": "Test",
+      "stderr": ""
     }
   ]
 }
