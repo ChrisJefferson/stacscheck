@@ -1,4 +1,4 @@
-Quickstart / Manual
+How to write tests
 ===================
 
 Please read 'specification' for a guide to how practicals should be laid out, and 'manual-for-users' to see how to use the tool.
@@ -8,9 +8,9 @@ Quick Overview:
 * Make a directory which contains the practical. You can nest directories how you like.
 * Go into the directory of the student's submission / model answer and run:
 
-    <stacscheckdirectory>/stacscheck (directory of tests)
+    `<stacscheckdirectory>/stacscheck (directory of tests)`
 
-If you add '-v', you can see some (not nicely formatted) output showing how the tester is going as it runs.
+If you add `-v`, you can see some (not nicely formatted) output showing how the tester is going as it runs.
 
 
 Examples build.sh

@@ -1,1 +1,2 @@
+stacscheck 2.0.1
 'testdir' is not a directory

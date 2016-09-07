@@ -1,1 +1,2 @@
+stacscheck 2.0.1
 There is no directory called 'testdir'

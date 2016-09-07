@@ -1,59 +1,64 @@
-Stacscheck v1.0.0
-================
+Stacscheck v2.0.1
+=================
 
-A stacscheck specification is a directory.
+Be sure to read the [quickstart-guide](quickstart-guide.html), for a brief overview,
+before reading this document!
 
-It can optionally contain a configuration file called practical.config
+A set of tests for `stacscheck` is always stored in a directory containing a configuration file called `practical.config`
 
-practical.config must begin with the single line:
+`practical.config` must begin with the single line:
 
-[info]
+`[info]`
 
 It then must contain the following three lines:
 
+```
 practical = <practical name>
 course = <course name>
 srcdir = <name of directory>
+```
 
-Where srcdir specifies the name of the directory the practical's source is contained in.
+Where` srcdir` specifies the name of the directory the student's source should be contained in.
 
 
 Running tests
 -------------
 
-Each test is stored as a shell script, ending in 'sh'. There are 4 types of tests.
-They can be identified by the beginning of their name.
+Each test is stored as a list of commands which should be run. These files always end with `sh`.
+They will be run from the directory where `stacscheck` was started from.
 
-* Scripts starting 'build' are *build scripts*. If the script fails, then the output
+There are 4 types of tests. They can be identified by the beginning of their name.
+
+* Scripts starting `build` are *build scripts*. If a build script fails, then the output
   of the script is printed, and no more tests in this directory are run.
 
-* Scripts starting 'test' are *standard tests*. If the script fails, then the output
+* Scripts starting `test` are *standard tests*. If a test script fails, then the output
   of the script is printed.
 
-* Scripts starting 'info' are *info scripts*. The output of the script is always printed.
-  This is intended for code such as code checking tools.
+* Scripts starting `info` are *info scripts*. The output of an info script is always printed.
+  This is intended for running style checking tools.
 
-* Scripts starting 'prog' are *program scripts*. The output of this script is automatically
-  diffed against a known good output.
+* Scripts starting `prog` are *program scripts*. The output of a program script is automatically
+  checked to see if it is the same as a known good input.
 
-  The exact algorithm is:
-  * For each filename F ending '.out'
-    * construct the filename Fin by replacing the '.out' with '.in'
-    * Run the program script, with Fin as input to the program (if it exists),
-      and diff the output against F
+  In a directory containing a program script, we do the following:
 
-  The diffing algorithm ignores whitespace at the end of lines, and blank lines.
+  * For each file whose name ends in `.out`
+    * Is there a file with the same name ending `.in`?
+    * If so, then run the program with the input in the `.in` file, and check the output is the same as the `.out` file.
+    * If not, then run the program with no input, and check the output is the same as the `.out` file.
 
-Then, recursively look in each subdirectory, and run this process again.
+
+For the curious, the comparison of outputs ignores whitespace at the end of lines, and blank lines.
+
+Finally, do this same look (looking for tests) for each subdirectory of the current directory.
 
 Files are always considered in alphabetical order of filename.
+
 
 Environment variables
 ---------------------
 
-
-The following environment variable will be defined when any external program is run.
-
-* TESTDIR : The full directory name of the test script being run was contained.
-            This can be used to read other files.
+Sometimes you might want to be able to access the directory the test specification is in, in one of the testing scripts.
+Rather than hard-wiring it, the variable `$TESTDIR` will be set to the directory of the currently executing `.sh` file.
 

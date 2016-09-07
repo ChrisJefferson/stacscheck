@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 
 # MIT License
 
@@ -465,20 +465,25 @@ def run():
                       help="Output more information during testing")
 
     (options, args) = parser.parse_args()
+    
     if len(args) != 1:
-        sys.exit("Must give exactly one test to run")
+        print("stacscheck " + VERSION)
+        sys.exit("You must give a directory of tests to run!")
 
 
     if options.htmlout is not None and not jinja:
+        print("stacscheck " + VERSION)
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
     VERBOSE = options.verbose
 
     if not os.path.exists(args[0]):
+        print("stacscheck " + VERSION)
         print("There is no directory called '" + args[0] + "'")
         sys.exit(1)
 
     if not os.path.isdir(args[0]):
+        print("stacscheck " + VERSION)
         print("'" + args[0] + "' is not a directory")
         sys.exit(1)
 

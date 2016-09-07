@@ -1,0 +1,50 @@
+<h1>Stacscheck v2.0.1</h1>
+<p>Be sure to read the <a href="quickstart-guide.html">quickstart-guide</a>, for a brief overview,
+before reading this document!</p>
+<p>A set of tests for <code>stacscheck</code> is always stored in a directory containing a configuration file called <code>practical.config</code></p>
+<p><code>practical.config</code> must begin with the single line:</p>
+<p><code>[info]</code></p>
+<p>It then must contain the following three lines:</p>
+<pre><code>practical = &lt;practical name&gt;
+course = &lt;course name&gt;
+srcdir = &lt;name of directory&gt;
+</code></pre>
+<p>Where<code>srcdir</code> specifies the name of the directory the student's source should be contained in.</p>
+<h2>Running tests</h2>
+<p>Each test is stored as a list of commands which should be run. These files always end with <code>sh</code>.
+They will be run from the directory where <code>stacscheck</code> was started from.</p>
+<p>There are 4 types of tests. They can be identified by the beginning of their name.</p>
+<ul>
+<li>
+<p>Scripts starting <code>build</code> are <em>build scripts</em>. If a build script fails, then the output
+of the script is printed, and no more tests in this directory are run.</p>
+</li>
+<li>
+<p>Scripts starting <code>test</code> are <em>standard tests</em>. If a test script fails, then the output
+of the script is printed.</p>
+</li>
+<li>
+<p>Scripts starting <code>info</code> are <em>info scripts</em>. The output of an info script is always printed.
+This is intended for running style checking tools.</p>
+</li>
+<li>
+<p>Scripts starting <code>prog</code> are <em>program scripts</em>. The output of a program script is automatically
+checked to see if it is the same as a known good input.</p>
+<p>In a directory containing a program script, we do the following:</p>
+<ul>
+<li>For each file whose name ends in <code>.out</code>
+<ul>
+<li>Is there a file with the same name ending <code>.in</code>?</li>
+<li>If so, then run the program with the input in the <code>.in</code> file, and check the output is the same as the <code>.out</code> file.</li>
+<li>If not, then run the program with no input, and check the output is the same as the <code>.out</code> file.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>For the curious, the comparison of outputs ignores whitespace at the end of lines, and blank lines.</p>
+<p>Finally, do this same look (looking for tests) for each subdirectory of the current directory.</p>
+<p>Files are always considered in alphabetical order of filename.</p>
+<h2>Environment variables</h2>
+<p>Sometimes you might want to be able to access the directory the test specification is in, in one of the testing scripts.
+Rather than hard-wiring it, the variable <code>$TESTDIR</code> will be set to the directory of the currently executing <code>.sh</code> file.</p>

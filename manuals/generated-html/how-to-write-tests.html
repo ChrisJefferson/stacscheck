@@ -1,0 +1,33 @@
+<h1>How to write tests</h1>
+<p>Please read 'specification' for a guide to how practicals should be laid out, and 'manual-for-users' to see how to use the tool.</p>
+<p>Quick Overview:</p>
+<ul>
+<li>
+<p>Make a directory which contains the practical. You can nest directories how you like.</p>
+</li>
+<li>
+<p>Go into the directory of the student's submission / model answer and run:</p>
+<p><code>&lt;stacscheckdirectory&gt;/stacscheck (directory of tests)</code></p>
+</li>
+</ul>
+<p>If you add <code>-v</code>, you can see some (not nicely formatted) output showing how the tester is going as it runs.</p>
+<h2>Examples build.sh</h2>
+<p>Here are some example build scripts:</p>
+<p>** Basic Java Build **</p>
+<pre><code>javac *.java
+</code></pre>
+<pre><code>javac BaseClass.java
+</code></pre>
+<p>** Basic C build **</p>
+<pre><code>make target1
+</code></pre>
+<h2>Example tests.sh</h2>
+<p>Test a program runs cleanly with no arguments:</p>
+<pre><code>./program
+</code></pre>
+<p>Test a program produces the output contained in file out.txt, when run with arguments 1 2 3.</p>
+<p>There are many ways to do this in bash. Here is one way, which makes use of SCRATCH_DIR and TEST_DIR.</p>
+<pre><code>./program 1 2 3 &gt; &quot;${SCRATCH_DIR}/output&quot;
+diff -w &quot;${SCRATCH_DIR}/output&quot; &quot;${TEST_DIR}/out.txt&quot;
+</code></pre>
+<p>It is very common to want to run a program, feeding in a particular input, and checking a particular output is given, there is a special shorter format for this, see the 'prog*.sh' discussion above.</p>
