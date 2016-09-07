@@ -458,6 +458,7 @@ def run_tests_recursive(testdir):
             result = run_bash_script(progsh, infile, extra_env)
             result["name"] = name
             result["input"] = infile
+            result["path"] = progsh
             register_diff_test(result, out)
             print("")
 
