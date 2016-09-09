@@ -4,5 +4,4 @@ Testing CS1234 Practical 1
 - Guessing the practical source is in the current directory.
 - If that's wrong, go into the correct directory.
 * COMPARISON TEST - prog-default.out : pass
-
 1 out of 1 tests passed

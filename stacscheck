@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 
 # MIT License
 
@@ -242,10 +242,12 @@ def print_test_or_info_output(test):
         print(test.get("stdout", "").rstrip())
         print("--- submission stderr output ---")
         print(test.get("stderr", "").rstrip())
+        print("---")
         print("")
     elif test.get("stderr", False) or test.get("stdout", False):
         print("--- submission output ---")
         print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())
+        print("---")
         print("")
     else:
         print("--- no output from submission---")
@@ -299,7 +301,7 @@ def register_diff_test(test, comparefile):
         test["textdiff"] = textdiff
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
         test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
-        sys.stdout.write("".join(test["textdiff"]))
+        print("".join(test["textdiff"]))
     testStore.append(test)
 
 
@@ -417,7 +419,6 @@ def run_tests_recursive(testdir):
             global anyBuildTestFailed
             anyBuildTestFailed = True
             return
-        print("")
 
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
@@ -429,7 +430,6 @@ def run_tests_recursive(testdir):
         result["path"] = test
         result["type"] = "Test"
         register_returnval_test(result)
-        print("")
 
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
 
@@ -442,7 +442,6 @@ def run_tests_recursive(testdir):
         result["type"] = "Info"
         result["alwaysoutput"] = True
         register_returnval_test(result)
-        print("")
 
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
 
@@ -465,7 +464,6 @@ def run_tests_recursive(testdir):
             result["input"] = infile
             result["path"] = progsh
             register_diff_test(result, out)
-            print("")
 
     try:
         subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))

@@ -6,7 +6,7 @@ cat "$TESTDIR/info.txt"
 exit 1
 --- submission output ---
 I am a file
-
+---
 
 * INFO - info1 : fail
 --- ran script ---
@@ -17,14 +17,14 @@ exit 1
 I am a file
 
 failing
-
+---
 
 * INFO - info2 : pass
 --- submission output ---
 I am a file
 
 passing
-
+---
 
 * COMPARISON TEST - prog1-empty.out : fail
 --- ran script ---
@@ -41,6 +41,7 @@ cat "$TESTDIR/info.txt"
 exit 1
 --- submission output ---
 I am a file in a sub-directory
+---
 
 Exiting early due to failed /Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/build-subdir/build1.sh
 
