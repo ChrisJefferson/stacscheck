@@ -4,7 +4,6 @@ Testing CS1234 Practical 1
 --- ran script ---
 cat
 --- with input ---
-/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test1.in
 x
 --- expected output ---
 z
@@ -16,7 +15,6 @@ x
 --- ran script ---
 cat
 --- with input ---
-/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test2.in
 y
 --- expected output ---
 z

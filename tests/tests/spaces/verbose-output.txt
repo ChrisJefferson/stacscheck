@@ -10,7 +10,6 @@ Testing CS1234 Practical 1
 --- ran script ---
 cat
 --- with input ---
-/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/space-start-of-line.in
    x
 
 --- expected output ---
