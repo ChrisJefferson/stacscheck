@@ -8,7 +8,7 @@ server before submitting!
 If you want to install it yourself, on your own machine, read on. Note that `stacscheck` is not supported on windows.
 
 You can always get the latest version of `stacscheck` from 
-[https://studres.cs.st-andrews.ac.uk/Library/StacsCheck/](https://studres.cs.st-andrews.ac.uk/Library/StacsCheck/).
+[https://studres.cs.st-andrews.ac.uk/Library/stacscheck/](https://studres.cs.st-andrews.ac.uk/Library/stacscheck/).
 You only need the script `stacscheck` from this location.
 
 After you download it, you need to (as with any program you download on linux or mac) run the tester with python, or

@@ -15,7 +15,7 @@ You must give a directory of tests to run!
 ```
 
 If the machine doesn't have it, you can download it from 
-[https://studres.cs.st-andrews.ac.uk/Library/StacsCheck/](https://studres.cs.st-andrews.ac.uk/Library/StacsCheck/).
+[https://studres.cs.st-andrews.ac.uk/Library/stacscheck/](https://studres.cs.st-andrews.ac.uk/Library/stacscheck/).
 You only need the `stacscheck` script. See [installing stacscheck](installing-stacscheck.html) for more guidance
 on installing `stacscheck` on your own machine.
 
