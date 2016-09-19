@@ -34,7 +34,7 @@ for dir in "${submissions}/"*/; do
                    --id="${studentid}" \
                    --html="${outdir}/html/${studentid}.html" \
                    --json="${outdir}/json/${studentid}.json" \
-                     > "${outdir}/txt/${studentid}"
+                     > "${outdir}/txt/${studentid}.txt"
     ) &
     counter=$((counter+1))
     if (( counter > 3 )); then
