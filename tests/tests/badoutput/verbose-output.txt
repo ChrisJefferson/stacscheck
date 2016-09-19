@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for directory 'badoutput': Already in it!
+- Looking for submission in a directory called 'badoutput': Already in it!
 * COMPARISON TEST - progcat-test1.out : fail
 --- ran script ---
 cat

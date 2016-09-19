@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for directory 'test_TESTDIR': Already in it!
+- Looking for submission in a directory called 'test_TESTDIR': Already in it!
 * TEST - test1 : fail
 --- ran script ---
 cat "$TESTDIR/info.txt"

@@ -1,2 +1,2 @@
 Testing CS1234 Practical 1
-- Looking for directory 'nodir': - Cannot find it, exiting.
+- Looking for submission in a directory called 'nodir': - Cannot find it, exiting.

@@ -1,2 +1,2 @@
-stacscheck 2.0.1
+stacscheck 2.0.2
 There is no directory called 'testdir'

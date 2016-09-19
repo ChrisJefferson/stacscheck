@@ -1,4 +1,4 @@
-How to run for a full list of students.
+How to run for a full list of students. First a quick overview, then a line-by-line example
 
 Step 1 - Decide where you are running. On a lab machine,
 on a VM (see optional section below),
@@ -21,31 +21,40 @@ Step 4 - run:
 Example
 =======
 
+# We should only have to these first steps once
 # First we'll get, and setup, the VM
 # You should be able to cut+paste all these lines
 hg clone https://sysc-public.hg.cs.st-andrews.ac.uk/vagrant-f24
 cd vagrant-f24
 vagrant up
 
-# Now we will put the files into it (change directory names as approraite
+# Now copy stacscheck into this directory from staffres
 
-mkdir submissions
-scp -r staffres.cs.st-andrews.ac.uk:/staffres/CS1002/Practicals/Practical1-Tests submissions
-cp -r staffres.cs.st-andrews.ac.uk:/staffres/0-General/stacscheck stacscheckcpy
+scp -r staffres.cs.st-andrews.ac.uk:/staffres/0-General/stacscheck stacscheckcpy
+
+# Now things we have to do for each practical!
+
+# Grab the files
+scp -r staffres.cs.st-andrews.ac.uk:/staffres/CS1002/Practicals/Practical1-Tests Practical1-Tests
 
 
-Assume we have downloaded CS1002_Assignment1.zip from MMS
-mv ~/Downloads/CS1002_Assignment.zip submissions
-
-- Now enter the VM
+# Downloaded CS1002_Assignment1.zip from MMS, copy it into vagrant directory
+# Now enter the VM
 
 vagrant ssh
 
-- Now go and run the tests
+# Now go and run the tests
 
-cd /vagrant/submissions
+cp /vagrant/CS1002_Assignment.zip .
+
+# Uncompress the file
 dtrx -rn CS1002_Assignment.zip
+
+# Run the tests
 /vagrant/stacscheckcpy/running-all-students/all-students.sh Practical1-Tests CS1002_Assignment outputdir
+
+# Generate overview
+/vagrant/stacscheckcpy/running-all-students/student-overview Practical1-Tests outputdir/*.json > outputdir/overview.html
 
 
 

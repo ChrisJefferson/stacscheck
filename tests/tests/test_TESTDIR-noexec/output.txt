@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for directory 'test_TESTDIR-noexec': Already in it!
+- Looking for submission in a directory called 'test_TESTDIR-noexec': Already in it!
 * TEST - test1 : fail
 --- submission output ---
 I am a file

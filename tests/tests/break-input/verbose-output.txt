@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for directory 'break-input': Already in it!
+- Looking for submission in a directory called 'break-input': Already in it!
 * COMPARISON TEST - progread-empty.out : pass
 * COMPARISON TEST - progread-long.out : pass
 2 out of 2 tests passed

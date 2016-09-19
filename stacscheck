@@ -116,10 +116,10 @@ def verbose_print(arg):
 
 # Check function for problems in practical
 def warn_print(arg):
-    print("\n- ERROR - There is a problem in the practical specification.")
+    print("\n- ERROR - There is a problem in the test directory.")
     print("The problem is: " + str(arg) + ".")
-    print("This may be caused by an incorrect practical specification, or")
-    print("the practical may have been copied incorrectly.")
+    print("This may be caused by a broken test directory, or")
+    print("the test directory may have been copied incorrectly.")
 
 def print_file_contents(
         file_loc,
@@ -153,7 +153,8 @@ def try_parse_config_file(basedir):
     config = ConfigParser.ConfigParser()
     filename = os.path.join(basedir, "practical.config")
     if not os.path.isfile(filename):
-        print("No file called 'practical.config' in '" + basedir + "'\nI don't think this directory contains a practical")
+        print("'" + basedir + "' is not a valid test directory")
+        print("(no file called 'practical.config')")
         sys.exit(1)
 
     try:
@@ -193,7 +194,7 @@ def find_code_directory():
     current_dir = os.path.realpath(os.getcwd())
     in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
     recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
-    sys.stdout.write("- Looking for directory '" + CONFIG['srcdir'] + "': ")
+    sys.stdout.write("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         print("- Cannot find it, exiting.")
@@ -214,7 +215,7 @@ def find_code_directory():
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
         print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
-        print("- Guessing the practical source is in the current directory.")
+        print("- Guessing your submission is in the current directory.")
         print("- If that's wrong, go into the correct directory.")
         return None
 

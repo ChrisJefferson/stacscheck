@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for directory 'stdoutstderr': Already in it!
+- Looking for submission in a directory called 'stdoutstderr': Already in it!
 * TEST - test1 : pass
 * TEST - test2 : fail
 --- submission output ---
