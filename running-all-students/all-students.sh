@@ -42,3 +42,4 @@ for dir in "${submissions}/"*/; do
         wait
     fi;
 done
+wait
