@@ -279,7 +279,7 @@ def register_diff_test(test, comparefile):
     with open(comparefile, 'r') as stream:
         comparelines = stream.read()
     comparelines = strip_string(comparelines)
-    userlines = strip_string(test["stdout"])
+    userlines = strip_string(test["stdout"] + test["stderr"])
     test["comparelines"] = comparelines
     test["userlines"] = userlines
     if comparelines == userlines:
