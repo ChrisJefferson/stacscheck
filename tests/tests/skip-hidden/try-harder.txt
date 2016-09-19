@@ -1,0 +1,4 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'skip-hidden': Already in it!
+* COMPARISON TEST - progread-long.out : pass
+1 out of 1 tests passed

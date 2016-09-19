@@ -1,0 +1,22 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [
+        "adir\n"
+      ],
+      "name": "prog-default.out",
+      "stdout": "adir\n",
+      "pass": true,
+      "comparelines": [
+        "adir\n"
+      ],
+      "returnval": 0,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-2-src/testdir/prog.sh",
+      "input": null,
+      "stderr": ""
+    }
+  ]
+}

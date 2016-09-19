@@ -105,6 +105,9 @@ JINJAPAGE = """
 # Store the base test directory
 TESTBASE = None
 
+# Try harder to run badly formed submissions
+TRYHARDER = False
+
 # Store the submission directory
 SUBMISSIONBASE = None
 
@@ -154,7 +157,7 @@ def try_parse_config_file(basedir):
     filename = os.path.join(basedir, "practical.config")
     if not os.path.isfile(filename):
         print("'" + basedir + "' is not a valid test directory")
-        print("(no file called 'practical.config')")
+        print("(the test directory does not contain a file called 'practical.config')")
         sys.exit(1)
 
     try:
@@ -197,8 +200,13 @@ def find_code_directory():
     sys.stdout.write("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
 
     if not in_srcdir and len(recursive_srcdir) == 0:
-        print("- Cannot find it, exiting.")
-        sys.exit(1)
+        print("Cannot find it....")
+        print("Please put your submission is in a directory called '" + CONFIG['srcdir'] + "'")
+        if not TRYHARDER:
+            raise EnvironmentError("No submission found")
+        else:
+            print("Going to try hard, and guess the current directory. I'm probably wrong.")
+            return None
 
     if in_srcdir and len(recursive_srcdir) == 0:
         print("Already in it!")
@@ -479,7 +487,7 @@ def run_tests_recursive(testdir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE
+    global VERBOSE, TESTBASE, SUBMISSIONBASE, TRYHARDER
     parser = OptionParser(usage="%prog [options] testdirectory", version="%prog "+VERSION)
     parser.add_option("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
@@ -489,6 +497,8 @@ def run():
     # You can use this, but don't complain if the format changes in future.
     parser.add_option("--json", dest="jsonout",
                       help=SUPPRESS_HELP, metavar="FILE")
+    parser.add_option("--tryharder", dest="tryharder", default=False, 
+                      action="store_true", help=SUPPRESS_HELP)
     parser.add_option("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
                       help="Output more information during testing")
@@ -505,15 +515,18 @@ def run():
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
     VERBOSE = options.verbose
+    TRYHARDER = options.tryharder
 
     if not os.path.exists(args[0]):
         print("stacscheck " + VERSION)
         print("There is no directory called '" + args[0] + "'")
+        print("Check you have the test directory name correct!")
         sys.exit(1)
 
     if not os.path.isdir(args[0]):
         print("stacscheck " + VERSION)
         print("'" + args[0] + "' is not a directory")
+        print("Check you have the test directory name correct!")
         sys.exit(1)
 
 
@@ -524,14 +537,15 @@ def run():
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
         print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])
 
-    SUBMISSIONBASE = find_code_directory()
+    try:
+        SUBMISSIONBASE = find_code_directory()
+        run_tests_recursive(TESTBASE)
 
-    run_tests_recursive(TESTBASE)
-
-    if len(testStore) == 0:
-        # Use args[0] as it is shorter
-        print("ERROR: No tests found in '" + args[0] + "'")
-        sys.exit(1)
+        if len(testStore) == 0:
+            # Use args[0] as it is shorter
+            print("ERROR: No tests found in '" + args[0] + "'")
+    except EnvironmentError as e:
+        print("Error during testing: " + str(e))
 
     finalmessage = str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed"
     print(finalmessage)

@@ -31,3 +31,4 @@ The problem is: [Errno 13] Permission denied: '/Users/caj/reps/stacscheck/tests/
 This may be caused by a broken test directory, or
 the test directory may have been copied incorrectly.
 ERROR: No tests found in 'testdir'
+0 out of 0 tests passed

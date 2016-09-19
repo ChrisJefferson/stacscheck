@@ -1,2 +1,2 @@
 '/Users/caj/reps/stacscheck/tests/tests/no-config/testdir' is not a valid test directory
-(no file called 'practical.config')
+(the test directory does not contain a file called 'practical.config')

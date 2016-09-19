@@ -1,0 +1,16 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "build",
+      "stdout": "",
+      "returnval": 0,
+      "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test/testdir/build.sh",
+      "type": "Build",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'config-test-2-src-2': 
+- Warning: in a directory called 'config-test-2-src-2', with subdirectories also with the same name.
+- Guessing your submission is in the current directory.
+- If that's wrong, go into the correct directory.
+* COMPARISON TEST - prog-default.out : pass
+1 out of 1 tests passed

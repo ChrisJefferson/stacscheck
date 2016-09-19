@@ -1,0 +1,5 @@
+
+- ERROR - There is a problem in the test directory.
+The problem is: practical.config is malformed, or not readable.
+This may be caused by a broken test directory, or
+the test directory may have been copied incorrectly.

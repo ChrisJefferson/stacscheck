@@ -1,0 +1,65 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "test1",
+      "stdout": "I am a file\n\n",
+      "returnval": 1,
+      "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/test1.sh",
+      "type": "Test",
+      "stderr": ""
+    },
+    {
+      "name": "info1",
+      "stdout": "I am a file\n\nfailing\n",
+      "alwaysoutput": true,
+      "returnval": 1,
+      "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/info1.sh",
+      "type": "Info",
+      "stderr": ""
+    },
+    {
+      "name": "info2",
+      "stdout": "I am a file\n\npassing\n",
+      "alwaysoutput": true,
+      "returnval": 0,
+      "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/info2.sh",
+      "type": "Info",
+      "stderr": ""
+    },
+    {
+      "userlines": [
+        "I am a file\n"
+      ],
+      "name": "prog1-empty.out",
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">I&nbsp;am&nbsp;a&nbsp;file</span></td></tr>\n        </tbody>\n    </table>",
+      "stdout": "I am a file\n\n",
+      "pass": false,
+      "comparelines": [],
+      "returnval": 1,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/prog1.sh",
+      "input": null,
+      "textdiff": [
+        "--- no output expected ---\n",
+        "--- submission output ---\n",
+        "I am a file\n",
+        "---\n"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "build-subdir/build1",
+      "stdout": "I am a file in a sub-directory\n\n",
+      "returnval": 1,
+      "pass": false,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/build-subdir/build1.sh",
+      "type": "Build",
+      "stderr": ""
+    }
+  ]
+}
