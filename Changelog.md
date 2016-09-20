@@ -1,4 +1,20 @@
 
+2.0.2 -> 2.1.0
+==============
+
+* Add '--tryharder' in all-students.sh
+* Add 'clean-files.sh' scripts
+* Add '.txt' to text output for running-all-students
+* Always output a HTML and JSON file, even if student submission is badly broken
+* Add stderr to end of stdout for diff tests, rather than swallowing it
+* Greatly improved error messages
+
+2.0.0 -> 2.0.2
+==============
+
+* First main release
+* Minor output tweaks
+
 1.0.2 -> 2.0.0
 ==============
 * BREAKING : practical.config now required
