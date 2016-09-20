@@ -1,3 +1,3 @@
-stacscheck 2.0.2
+stacscheck 2.1.0
 There is no directory called 'testdir'
 Check you have the test directory name correct!
