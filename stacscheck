@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "2.1.0"
+VERSION = "2.2.0"
 
 # MIT License
 
@@ -47,7 +47,7 @@ else:
     jinja = True
 
 # The HTML output
-JINJAPAGE = """
+JINJAPAGE = u"""
 <!DOCTYPE html>
 <style type="text/css">
         table.diff {font-family:Courier; border:medium;}
@@ -138,7 +138,7 @@ def print_file_contents(
             if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
                 continue
 
-            print (line.rstrip())
+            print (unicode(line, "utf8", errors="replace").rstrip().encode("utf8", errors="replace"))
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
@@ -248,14 +248,14 @@ def print_test_or_info_output(test):
     maybe_print_test_input(test)
     if test.get("stderr", False) and test.get("stdout", False):
         print("--- submission output ---")
-        print(test.get("stdout", "").rstrip())
+        print(test.get("stdout", "").rstrip().encode("utf8", errors="replace"))
         print("--- submission stderr output ---")
-        print(test.get("stderr", "").rstrip())
+        print(test.get("stderr", "").rstrip().encode("utf8", errors="replace"))
         print("---")
         print("")
     elif test.get("stderr", False) or test.get("stdout", False):
         print("--- submission output ---")
-        print(test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip())
+        print((test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip()).encode("utf8", errors="replace"))
         print("---")
         print("")
     else:
@@ -285,7 +285,7 @@ def strip_string(string):
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
     with open(comparefile, 'r') as stream:
-        comparelines = stream.read()
+        comparelines = unicode(stream.read(),"utf8", errors="replace")
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
     test["comparelines"] = comparelines
@@ -299,18 +299,23 @@ def register_diff_test(test, comparefile):
         maybe_print_test_input(test)
         textdiff = []
         if len(comparelines) > 0:
-            textdiff.extend(["--- expected output ---\n"] + comparelines)
+            textdiff.extend([u"--- expected output ---\n"] + comparelines)
         else:
-            textdiff.extend(["--- no output expected ---\n"])
+            textdiff.extend([u"--- no output expected ---\n"])
 
         if len(userlines) > 0:
-            textdiff.extend(["--- submission output ---\n"] + userlines + ["---\n"])
+            textdiff.extend([u"--- submission output ---\n"] + userlines + [u"---\n"])
         else:
-            textdiff.extend(["--- no output from submission ---\n"])
+            textdiff.extend([u"--- no output from submission ---\n"])
         test["textdiff"] = textdiff
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
-        test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, "Submission", "Reference")
-        print("".join(test["textdiff"]))
+        test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, u"Submission", u"Reference")
+        assert isinstance(test["htmldiff"], unicode)
+        for l in test["textdiff"]:
+            assert isinstance(l, unicode)
+        textout = u"".join(test["textdiff"])
+        assert isinstance(textout, unicode)
+        print(textout.encode("utf8"))
     testStore.append(test)
 
 
@@ -385,6 +390,8 @@ def run_program(program, stdin, extra_env):
         thread_err.join()
         thread_out.join()
         proc.wait()
+        retdict["stderr"] = unicode(retdict["stderr"], "utf8", errors = "replace")
+        retdict["stdout"] = unicode(retdict["stdout"], "utf8", errors = "replace")
 
         retdict["returnval"] = proc.returncode
 
@@ -559,23 +566,25 @@ def run():
             env = jinja2.Environment(autoescape=True)
             template = env.from_string(JINJAPAGE)
             with open(options.htmlout, "w") as html:
-                html.write(template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
+                htmloutput = template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
                                         SubmissionID=options.subid,
                                         Tests=testStore,
                                         Finalmessage=finalmessage,
                                         AnyBuildTestFailed=anyBuildTestFailed
-                                        ))
+                                        )
+                html.write(htmloutput.encode("utf8", errors="replace"))
     except EnvironmentError as e:
         print("Error outputting HTML: " + str(e))
 
     try:
         if options.jsonout is not None:
             with open(options.jsonout, "w") as jsonfile:
-                jsonfile.write(json.dumps({ "practical" : CONFIG['practical'],
+                jsonoutput = json.dumps({ "practical" : CONFIG['practical'],
                                             "course" : CONFIG['course'],
                                             "subid" : options.subid,
                                             "tests" : testStore},
-                                            indent = 2, separators=(',', ': ')))
+                                            indent = 2, separators=(',', ': '), ensure_ascii=True)
+                jsonfile.write(jsonoutput.encode("utf8", errors="replace"))
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
 
