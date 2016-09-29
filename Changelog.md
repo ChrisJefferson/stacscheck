@@ -1,3 +1,9 @@
+2.2.0 -> 2.2.1
+==============
+
+* Add anchors to HTML output
+* Fix 'submission' and 'reference' being wrong way around in HTML output
+
 2.1.0 -> 2.2.0
 ==============
 

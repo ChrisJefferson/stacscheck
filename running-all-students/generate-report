@@ -1,0 +1,166 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+    echo "This is a quick script to test many students in one go, with stacscheck"
+    echo "It is designed to be super-simple! please feel free to edit it."
+    echo "Mandatory options:"
+    echo "  -t <location of tests>"
+    echo " then at least one of:"
+    echo "  -d <directory containing many student submissions>"
+    echo "  -z <zip file downloaded from MMS>"
+    echo "  <student1dir> <student2dir> (all unlabelled options assumed to be single students)"
+    echo "Optional arguments"
+    echo "  -o <output dir> (default output)"
+    echo "  -j <num of jobs to run in parallel> (default 1)"
+    echo ""
+    echo "Inside <output dir> three subdirectories will be created, 'txt', 'html' and 'json'."
+    echo "and an overview.html"
+    echo "If an output dir is re-used, then we will over-write those students"
+    exit 0
+fi;
+
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [[ -x "${SCRIPTDIR}/stacscheck" ]]; then
+    STACSCHECK="${SCRIPTDIR}/stacscheck"
+    echo "Using "$($STACSCHECK 2>/dev/null | head -n 1)" from generate-report directory"
+else
+    STACSCHECK="stacscheck"
+    echo "Using "$($STACSCHECK 2>/dev/null | head -n 1)" from PATH"
+fi
+
+# Number of jobs to run in parallel
+PARALLELJOBS=1
+
+# Output directory
+OUTDIR="output"
+
+# List of students to run in isolation
+SINGLESTUDENTDIRS=()
+
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    shift
+    case $key in
+        -t)
+            if [[ -z $1 ]]; then
+               echo "Must give directory to -t";  exit 1
+            fi;
+            TESTDIR="$1"
+            shift # past argument
+            ;;
+        -o)
+            if [[ -z $1 ]]; then
+                echo "Must give directory to -o"; exit 1
+            fi;
+            OUTDIR="$1"
+            shift # past argument
+            ;;
+        -j)
+            if [[ -z $1 ]]; then
+                echo "Must give option to -j"; exit 1
+            fi;
+            PARALLELJOBS="$1"
+            shift # past argument
+            ;;
+        -d)
+            if [[ -z $1 ]]; then
+                echo "Must give directory to -d"; exit 1
+            fi;
+            if [[ ! -d $1 ]]; then
+                echo "Argument to -d must be a directory"; exit 1
+            fi;
+            SUBMISSIONDIR="$1"
+            shift
+            ;;
+        -z)
+            if [[ -z $1 ]]; then
+                echo "Must give filename to -z"; exit 1
+            fi;
+            if [[ ! -f $1 ]]; then
+                echo "Argument to -z must be a file"; exit 1
+            fi;
+            if [[ ${1: -4 } != ".zip" ]]; then
+                echo "Argument \"$1\" to -z must be a .zip"; exit 1
+            fi;
+            SUBMISSIONDIR="${1%.zip}"
+            if [[ -e $SUBMISSIONDIR ]]; then
+                echo "Argument to -z already extracted. Remove it, or use -d"
+                exit 1
+            fi;
+            echo "-- Extracting $1"
+            dtrx -rn "$1"
+            ${SCRIPTDIR}/clean-files.sh "$SUBMISSIONDIR"
+            shift
+            ;;
+        *)
+            SINGLESTUDENTDIRS+="$key"
+            ;;
+    esac
+done
+
+# From http://stackoverflow.com/questions/3915040/bash-fish-command-to-print-absolute-path-to-a-file/21188136#21188136
+get_abs_filename() {
+  # $1 : relative filename
+  echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+}
+
+if [[ -z $OUTDIR ]]; then
+    echo "No output directory"; exit 1
+fi;
+
+if [[ -z $TESTDIR ]]; then
+    echo "No tests directory"; exit 1
+fi;
+
+echo outputdir = \"$OUTDIR\", testdir = \"$TESTDIR\"
+
+mkdir -p "$OUTDIR/txt"
+mkdir -p "$OUTDIR/html"
+mkdir -p "$OUTDIR/json"
+
+practical=$(get_abs_filename "$TESTDIR")
+outdir=$(get_abs_filename "$OUTDIR")
+
+counter=0
+
+
+run_single_student() {
+    (
+        echo $1
+        ulimit -t 600 # Put a limit on runtime
+        studentid=$(basename "$1")
+        cd "$1"
+        ${STACSCHECK} ${practical} \
+                   --id="${studentid}" \
+                   --html="${outdir}/html/${studentid}.html" \
+                   --json="${outdir}/json/${studentid}.json" \
+                   --tryharder \
+                   > "${outdir}/txt/${studentid}.txt"
+
+    ) &
+    counter=$((counter + 1))
+    if ((counter >= PARALLELJOBS )); then
+        counter=0
+        wait
+    fi;
+}
+
+if [[ -n $SUBMISSIONDIR ]]; then
+    submissions=$(get_abs_filename "$SUBMISSIONDIR")
+    for dir in "${submissions}/"*/; do
+        run_single_student "$dir"
+    done
+fi
+
+for dir in "${SINGLESTUDENTDIRS[@]}"; do
+    fulldir=$(get_abs_filename "$dir")
+    run_single_student "$fulldir"
+done
+
+wait
+
+echo "-- Generating overview"
+"${SCRIPTDIR}/student_overview" "${outdir}/json"/* > "${outdir}/overview.html"

@@ -31,35 +31,35 @@ import pprint
 JINJAPAGE = """
 <!DOCTYPE html>
 <style type="text/css">
-</style>
+    </style>
 <html lang="en">
 <head>
     <title>{{Practical}}</title>
 </head>
 <body>
-    <table style="width:100%">
+    <table>
     <tr><th></th>
     {% for name in testnames %}
-    <th> {{ name }} </th>
+    <th> {{ name.replace("/","/ ").replace("_","_ ") }} </th>
     {% endfor %}
     </tr>
 
     {% for student in students %}
     <tr>
-    <td> {{ student.subid }} </td>
-    {% for name in testnames %}
-    {% if name in student.dicttests %}
-        {% if student.dicttests[name].pass %}
-        <td bgcolor = "#BFB">Y</td>
-        {% else %}
-        <td bgcolor = "#FBB">N</td>
-        {% endif %}
-    {% else %}
+    <td style="width:10px"> <a href="html/{{student.subid}}.html">{{ student.subid }}</a> </td>
+    {%- for name in testnames -%}
+    {%- if name in student.dicttests -%}
+        {%- if student.dicttests[name].pass -%}
+        <td bgcolor = "#BFB"><a href="html/{{student.subid}}.html#{{name}}">Y</a></td>
+        {%- else -%}
+        <td bgcolor = "#FBB"><a href="html/{{student.subid}}.html#{{name}}">N</a></td>
+        {%- endif -%}
+    {%- else -%}
         <td> </td>
-    {% endif %}
-    {% endfor %}
+    {%- endif -%}
+    {%- endfor -%}
     </tr>
-    {% endfor %}
+    {%- endfor -%}
     </table>
 </body>
 </html>
@@ -79,7 +79,26 @@ for f in sys.argv[1:]:
         print("Couldn't read JSON file: " + str(e))
         sys.exit(1)
 
-allTestNames = sorted(set([ test["name"] for student in jsons for test in student["tests"] ]))
+allTestNames = set([ test["name"] for student in jsons for test in student["tests"] ])
+
+def nameComp(file1, file2):
+    s1 = file1.split("/")
+    s2 = file2.split("/")
+    if s1 == s2:
+        return 0
+    for i in range(min(len(s1),len(s2))):
+        if s1[i] <> s2[i]:
+            if len(s1) == i+1 and len(s2) > i+1:
+                return -1
+            if len(s1) > i+1 and len(s2) == i+1:
+                return 1
+            if s1 < s2:
+                return -1
+            if s2 > s1:
+                return 1
+    return 0
+
+allTestNames = sorted(list(allTestNames), cmp = nameComp)
 
 for student in jsons:
     student["dicttests"] = dict()

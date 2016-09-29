@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "2.2.0"
+VERSION = "2.2.1"
 
 # MIT License
 
@@ -58,6 +58,9 @@ JINJAPAGE = u"""
         .diff_add {background-color:#aaffaa}
         .diff_chg {background-color:#ffff77}
         .diff_sub {background-color:#ffaaaa}
+:target {
+   background: yellow;
+}
 </style>
 <html lang="en">
 <head>
@@ -70,7 +73,7 @@ JINJAPAGE = u"""
     {% if test.pass %} "#BFB" {% else %} "#FBB" {% endif %} >
     <td>{% if test.pass %} Pass {% else %} Fail {% endif %}</td>
 
-        <td> {{ test.name }} </td>
+        <td id="{{ test.name }}"> {{ test.name }} </td>
         <td> {{ test.pass }} </td>
         <td> {{ test.returnval }} </td>
     </tr>
@@ -309,7 +312,7 @@ def register_diff_test(test, comparefile):
             textdiff.extend([u"--- no output from submission ---\n"])
         test["textdiff"] = textdiff
         # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
-        test["htmldiff"] = difflib.HtmlDiff().make_table(comparelines, userlines, u"Submission", u"Reference")
+        test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
         assert isinstance(test["htmldiff"], unicode)
         for l in test["textdiff"]:
             assert isinstance(l, unicode)
