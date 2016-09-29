@@ -24,10 +24,10 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -x "${SCRIPTDIR}/stacscheck" ]]; then
     STACSCHECK="${SCRIPTDIR}/stacscheck"
-    echo "Using "$($STACSCHECK 2>/dev/null | head -n 1)" from generate-report directory"
+    echo "Using $($STACSCHECK 2>/dev/null | head -n 1) from generate-report directory"
 else
     STACSCHECK="stacscheck"
-    echo "Using "$($STACSCHECK 2>/dev/null | head -n 1)" from PATH"
+    echo "Using $($STACSCHECK 2>/dev/null | head -n 1) from PATH"
 fi
 
 # Number of jobs to run in parallel
@@ -92,11 +92,11 @@ do
             fi;
             echo "-- Extracting $1"
             dtrx -rn "$1"
-            ${SCRIPTDIR}/clean-files.sh "$SUBMISSIONDIR"
+            "${SCRIPTDIR}/clean-files.sh" "$SUBMISSIONDIR"
             shift
             ;;
         *)
-            SINGLESTUDENTDIRS+="$key"
+            SINGLESTUDENTDIRS+=("$key")
             ;;
     esac
 done
@@ -115,7 +115,7 @@ if [[ -z $TESTDIR ]]; then
     echo "No tests directory"; exit 1
 fi;
 
-echo outputdir = \"$OUTDIR\", testdir = \"$TESTDIR\"
+echo "outputdir = \"$OUTDIR\", testdir = \"$TESTDIR\""
 
 mkdir -p "$OUTDIR/txt"
 mkdir -p "$OUTDIR/html"
@@ -129,11 +129,11 @@ counter=0
 
 run_single_student() {
     (
-        echo $1
+        echo "$1"
         ulimit -t 600 # Put a limit on runtime
         studentid=$(basename "$1")
-        cd "$1"
-        ${STACSCHECK} ${practical} \
+        cd "$1" && \
+        "${STACSCHECK}" "${practical}" \
                    --id="${studentid}" \
                    --html="${outdir}/html/${studentid}.html" \
                    --json="${outdir}/json/${studentid}.json" \

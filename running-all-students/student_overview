@@ -42,11 +42,12 @@ JINJAPAGE = """
     {% for name in testnames %}
     <th> {{ name.replace("/","/ ").replace("_","_ ") }} </th>
     {% endfor %}
+    <th>total (/{{ testnames | length}})</th>
     </tr>
 
     {% for student in students %}
     <tr>
-    <td style="width:10px"> <a href="html/{{student.subid}}.html">{{ student.subid }}</a> </td>
+    <td style="width:10px"> <a href="txt/{{student.subid}}.txt">{{ student.subid }}</a> </td>
     {%- for name in testnames -%}
     {%- if name in student.dicttests -%}
         {%- if student.dicttests[name].pass -%}
@@ -58,9 +59,16 @@ JINJAPAGE = """
         <td> </td>
     {%- endif -%}
     {%- endfor -%}
+    <td>{{student.passes}}</td>
     </tr>
     {%- endfor -%}
-    </table>
+    <tr>
+    <td> total: {{ students | length }}</td>
+    {%- for name in testnames -%}
+       <td> {{ passcount[name] }} </td> 
+    {%- endfor -%}
+    <td>
+</table>
 </body>
 </html>
 """
@@ -100,12 +108,22 @@ def nameComp(file1, file2):
 
 allTestNames = sorted(list(allTestNames), cmp = nameComp)
 
+passcount = dict()
+
+for t in allTestNames:
+    passcount[t] = 0
+
 for student in jsons:
     student["dicttests"] = dict()
+    student["passes"] = 0
     for test in student["tests"]:
         student["dicttests"][test["name"]] = test
+        if test["pass"]:
+            student["passes"] += 1
+            passcount[test["name"]] += 1
+
 
 env = jinja2.Environment(autoescape=True)
 template = env.from_string(JINJAPAGE)
 
-print(template.render(testnames=allTestNames, students=jsons))
+print(template.render(testnames=allTestNames, passcount=passcount, students=jsons))
