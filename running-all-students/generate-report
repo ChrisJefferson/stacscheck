@@ -91,7 +91,10 @@ do
                 exit 1
             fi;
             echo "-- Extracting $1"
-            dtrx -rn "$1"
+            if ! dtrx -rn "$1"; then
+                echo "dtrx -rn \"$1\" failed -- please extract zip manually. Sorry"
+                exit 1
+            fi;
             "${SCRIPTDIR}/clean-files.sh" "$SUBMISSIONDIR"
             shift
             ;;
