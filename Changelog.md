@@ -1,3 +1,8 @@
+2.2.1 -> 2.2.2
+==============
+
+* Improve formatting of html output (include all messages)
+
 2.2.0 -> 2.2.1
 ==============
 

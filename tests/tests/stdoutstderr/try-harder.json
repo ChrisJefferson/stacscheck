@@ -75,5 +75,9 @@
       "type": "Test",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'stdoutstderr': ",
+    "Already in it!\n"
   ]
 }

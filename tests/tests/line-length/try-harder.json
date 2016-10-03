@@ -21,5 +21,9 @@
       "type": "Test",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'line-length': ",
+    "Already in it!\n"
   ]
 }

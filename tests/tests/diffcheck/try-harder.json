@@ -55,5 +55,9 @@
       "input": null,
       "stderr": "line 2\n"
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'diffcheck': ",
+    "Already in it!\n"
   ]
 }

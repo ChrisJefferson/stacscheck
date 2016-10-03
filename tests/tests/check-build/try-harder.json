@@ -21,5 +21,9 @@
       "type": "Build",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'check-build': ",
+    "Already in it!\n"
   ]
 }

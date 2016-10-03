@@ -9,19 +9,24 @@
         .diff_add {background-color:#aaffaa}
         .diff_chg {background-color:#ffff77}
         .diff_sub {background-color:#ffaaaa}
+:target {
+   background: yellow;
+}
 </style>
 <html lang="en">
 <head>
     <title>CS1234 Practical 1 - &lt;unknown&gt; </title>
 </head>
 <body>
+<p><tt>- Looking for submission in a directory called &#39;diffcheck&#39;: <br/>Already in it!
+<br/></tt></p>
     <table style="width:100%">
     
     <tr id="test1" bgcolor=
      "#BFB"  >
     <td> Pass </td>
 
-        <td> catter/progcat-blanks.out </td>
+        <td id="catter/progcat-blanks.out"> catter/progcat-blanks.out </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -42,7 +47,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> catter/progcat-blanks2.out </td>
+        <td id="catter/progcat-blanks2.out"> catter/progcat-blanks2.out </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -79,7 +84,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> catter/progcat-empty.out </td>
+        <td id="catter/progcat-empty.out"> catter/progcat-empty.out </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -100,7 +105,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> stderrstdout/progcat-test.out </td>
+        <td id="stderrstdout/progcat-test.out"> stderrstdout/progcat-test.out </td>
         <td> True </td>
         <td> 0 </td>
     </tr>

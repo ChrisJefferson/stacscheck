@@ -2,5 +2,10 @@
   "practical": "Practical 1",
   "course": "CS1234",
   "subid": "<unknown>",
-  "tests": []
+  "tests": [],
+  "infotext": [
+    "- Looking for submission in a directory called 'nodir': ",
+    "Cannot find it....\n",
+    "Please put your submission is in a directory called 'nodir'\n"
+  ]
 }

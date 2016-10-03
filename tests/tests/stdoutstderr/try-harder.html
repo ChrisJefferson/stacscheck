@@ -9,19 +9,24 @@
         .diff_add {background-color:#aaffaa}
         .diff_chg {background-color:#ffff77}
         .diff_sub {background-color:#ffaaaa}
+:target {
+   background: yellow;
+}
 </style>
 <html lang="en">
 <head>
     <title>CS1234 Practical 1 - &lt;unknown&gt; </title>
 </head>
 <body>
+<p><tt>- Looking for submission in a directory called &#39;stdoutstderr&#39;: <br/>Already in it!
+<br/></tt></p>
     <table style="width:100%">
     
     <tr id="test1" bgcolor=
      "#BFB"  >
     <td> Pass </td>
 
-        <td> test1 </td>
+        <td id="test1"> test1 </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -44,7 +49,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> test2 </td>
+        <td id="test2"> test2 </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -67,7 +72,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> test3 </td>
+        <td id="test3"> test3 </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -90,7 +95,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> test4 </td>
+        <td id="test4"> test4 </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -113,7 +118,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> test5 </td>
+        <td id="test5"> test5 </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -136,7 +141,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> test6 </td>
+        <td id="test6"> test6 </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -161,7 +166,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> test7 </td>
+        <td id="test7"> test7 </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -186,7 +191,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> test8 </td>
+        <td id="test8"> test8 </td>
         <td> False </td>
         <td> 1 </td>
     </tr>

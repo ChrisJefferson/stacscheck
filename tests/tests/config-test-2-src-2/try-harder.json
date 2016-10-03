@@ -18,5 +18,11 @@
       "input": null,
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'config-test-2-src-2': ",
+    "\n- Warning: in a directory called 'config-test-2-src-2', with subdirectories also with the same name.\n",
+    "- Guessing your submission is in the current directory.\n",
+    "- If that's wrong, go into the correct directory.\n"
   ]
 }

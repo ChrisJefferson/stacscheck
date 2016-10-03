@@ -29,5 +29,9 @@
       "input": "/Users/caj/reps/stacscheck/tests/tests/break-input/testdir/long.in",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'break-input': ",
+    "Already in it!\n"
   ]
 }

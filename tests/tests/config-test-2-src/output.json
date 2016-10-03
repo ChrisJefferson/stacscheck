@@ -18,5 +18,13 @@
       "input": null,
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'source': ",
+    "- Warning, there are multiple subdirectories called 'source'.\n",
+    " - found /Users/caj/reps/stacscheck/tests/tests/config-test-2-src/a/source\n",
+    " - found /Users/caj/reps/stacscheck/tests/tests/config-test-2-src/q/source\n",
+    " - I'm going to guess '/Users/caj/reps/stacscheck/tests/tests/config-test-2-src/a/source'.\n",
+    " - If that's wrong, go into the correct directory.\n"
   ]
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "2.2.1"
+VERSION = "2.2.2"
 
 # MIT License
 
@@ -67,6 +67,7 @@ JINJAPAGE = u"""
     <title>{{Practical}} - {{ SubmissionID }} </title>
 </head>
 <body>
+<p><tt>{% for line in InfoText %}{{line}}<br/>{% endfor %}</tt></p>
     <table style="width:100%">
     {% for test in Tests %}
     <tr id="test{{ loop.index }}" bgcolor=
@@ -114,6 +115,16 @@ TRYHARDER = False
 # Store the submission directory
 SUBMISSIONBASE = None
 
+INFO_PRINTED = []
+
+def info_print_nonewline(string):
+    global INFO_PRINTED
+    sys.stdout.write(string)
+    INFO_PRINTED.append(string)
+
+def info_print(string):
+    info_print_nonewline(string + "\n")
+
 # Simple function to print out more verbose information if -v is passed
 VERBOSE = True
 def verbose_print(arg):
@@ -122,10 +133,10 @@ def verbose_print(arg):
 
 # Check function for problems in practical
 def warn_print(arg):
-    print("\n- ERROR - There is a problem in the test directory.")
-    print("The problem is: " + str(arg) + ".")
-    print("This may be caused by a broken test directory, or")
-    print("the test directory may have been copied incorrectly.")
+    info_print("\n- ERROR - There is a problem in the test directory.")
+    info_print("The problem is: " + str(arg) + ".")
+    info_print("This may be caused by a broken test directory, or")
+    info_print("the test directory may have been copied incorrectly.")
 
 def print_file_contents(
         file_loc,
@@ -200,42 +211,42 @@ def find_code_directory():
     current_dir = os.path.realpath(os.getcwd())
     in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
     recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
-    sys.stdout.write("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
+    info_print_nonewline("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
 
     if not in_srcdir and len(recursive_srcdir) == 0:
-        print("Cannot find it....")
-        print("Please put your submission is in a directory called '" + CONFIG['srcdir'] + "'")
+        info_print("Cannot find it....")
+        info_print("Please put your submission is in a directory called '" + CONFIG['srcdir'] + "'")
         if not TRYHARDER:
             raise EnvironmentError("No submission found")
         else:
-            print("Going to try hard, and guess the current directory. I'm probably wrong.")
+            info_print("Going to try hard, and guess the current directory. I'm probably wrong.")
             return None
 
     if in_srcdir and len(recursive_srcdir) == 0:
-        print("Already in it!")
+        info_print("Already in it!")
         return None
 
     if len(recursive_srcdir) == 1 and not in_srcdir:
         reldir = os.path.relpath(recursive_srcdir[0], current_dir)
         if reldir == CONFIG['srcdir']:
-            print("found in current directory")
+            info_print("found in current directory")
         else:
-            print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
+            info_print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
         return recursive_srcdir[0]
 
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
-        print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
-        print("- Guessing your submission is in the current directory.")
-        print("- If that's wrong, go into the correct directory.")
+        info_print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
+        info_print("- Guessing your submission is in the current directory.")
+        info_print("- If that's wrong, go into the correct directory.")
         return None
 
     # There is multiple recursive_srcdir, and we are not in directory of the right name
-    print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
+    info_print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
     for d in recursive_srcdir:
-        print(" - found " + d)
-    print(" - I'm going to guess '" + recursive_srcdir[0] +"'.")
-    print(" - If that's wrong, go into the correct directory.")
+        info_print(" - found " + d)
+    info_print(" - I'm going to guess '" + recursive_srcdir[0] +"'.")
+    info_print(" - If that's wrong, go into the correct directory.")
     return recursive_srcdir[0]
 
 
@@ -573,7 +584,8 @@ def run():
                                         SubmissionID=options.subid,
                                         Tests=testStore,
                                         Finalmessage=finalmessage,
-                                        AnyBuildTestFailed=anyBuildTestFailed
+                                        AnyBuildTestFailed=anyBuildTestFailed,
+                                        InfoText=INFO_PRINTED
                                         )
                 html.write(htmloutput.encode("utf8", errors="replace"))
     except EnvironmentError as e:
@@ -585,7 +597,8 @@ def run():
                 jsonoutput = json.dumps({ "practical" : CONFIG['practical'],
                                             "course" : CONFIG['course'],
                                             "subid" : options.subid,
-                                            "tests" : testStore},
+                                            "tests" : testStore,
+                                            "infotext" : INFO_PRINTED},
                                             indent = 2, separators=(',', ': '), ensure_ascii=True)
                 jsonfile.write(jsonoutput.encode("utf8", errors="replace"))
     except EnvironmentError as e:

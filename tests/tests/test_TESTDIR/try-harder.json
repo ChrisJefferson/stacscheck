@@ -37,7 +37,7 @@
         "I am a file\n"
       ],
       "name": "prog1-empty.out",
-      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">I&nbsp;am&nbsp;a&nbsp;file</span></td></tr>\n        </tbody>\n    </table>",
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">I&nbsp;am&nbsp;a&nbsp;file</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n        </tbody>\n    </table>",
       "stdout": "I am a file\n\n",
       "pass": false,
       "comparelines": [],
@@ -61,5 +61,9 @@
       "type": "Build",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'test_TESTDIR': ",
+    "Already in it!\n"
   ]
 }

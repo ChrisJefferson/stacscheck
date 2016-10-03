@@ -9,19 +9,24 @@
         .diff_add {background-color:#aaffaa}
         .diff_chg {background-color:#ffff77}
         .diff_sub {background-color:#ffaaaa}
+:target {
+   background: yellow;
+}
 </style>
 <html lang="en">
 <head>
     <title>CS1234 Practical 1 - &lt;unknown&gt; </title>
 </head>
 <body>
+<p><tt>- Looking for submission in a directory called &#39;badutf8output2&#39;: <br/>Already in it!
+<br/></tt></p>
     <table style="width:100%">
     
     <tr id="test1" bgcolor=
      "#BFB"  >
     <td> Pass </td>
 
-        <td> build-pass </td>
+        <td id="build-pass"> build-pass </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -58,7 +63,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> testcat-fail-two </td>
+        <td id="testcat-fail-two"> testcat-fail-two </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -111,7 +116,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> testcat-fail </td>
+        <td id="testcat-fail"> testcat-fail </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -148,7 +153,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> testcat-pass </td>
+        <td id="testcat-pass"> testcat-pass </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -185,7 +190,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> infocat-fail-two </td>
+        <td id="infocat-fail-two"> infocat-fail-two </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -238,7 +243,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> infocat-fail </td>
+        <td id="infocat-fail"> infocat-fail </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -275,7 +280,7 @@
      "#BFB"  >
     <td> Pass </td>
 
-        <td> infocat-pass </td>
+        <td id="infocat-pass"> infocat-pass </td>
         <td> True </td>
         <td> 0 </td>
     </tr>
@@ -312,7 +317,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> subdir/build-fail </td>
+        <td id="subdir/build-fail"> subdir/build-fail </td>
         <td> False </td>
         <td> 1 </td>
     </tr>
@@ -349,7 +354,7 @@
      "#FBB"  >
     <td> Fail </td>
 
-        <td> subdir2/build-fail-two </td>
+        <td id="subdir2/build-fail-two"> subdir2/build-fail-two </td>
         <td> False </td>
         <td> 1 </td>
     </tr>

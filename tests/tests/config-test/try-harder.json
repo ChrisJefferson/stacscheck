@@ -12,5 +12,9 @@
       "type": "Build",
       "stderr": ""
     }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'config-test': ",
+    "Already in it!\n"
   ]
 }
