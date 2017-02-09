@@ -1,0 +1,63 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [],
+      "name": "catter/progcat-blanks.out",
+      "stdout": "",
+      "pass": true,
+      "comparelines": [],
+      "returnval": 0,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/blanks.in",
+      "stderr": ""
+    },
+    {
+      "userlines": [],
+      "name": "catter/progcat-blanks2.out",
+      "stdout": "\n\n\n   \n\n\n \n\n",
+      "pass": true,
+      "comparelines": [],
+      "returnval": 0,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/blanks2.in",
+      "stderr": ""
+    },
+    {
+      "userlines": [],
+      "name": "catter/progcat-empty.out",
+      "stdout": "",
+      "pass": true,
+      "comparelines": [],
+      "returnval": 0,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/empty.in",
+      "stderr": ""
+    },
+    {
+      "userlines": [
+        "line 1\n",
+        "line 3\n",
+        "line 2\n"
+      ],
+      "name": "stderrstdout/progcat-test.out",
+      "stdout": "line 1\nline 3\n",
+      "pass": true,
+      "comparelines": [
+        "line 1\n",
+        "line 3\n",
+        "line 2\n"
+      ],
+      "returnval": 0,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/stderrstdout/progcat.sh",
+      "input": null,
+      "stderr": "line 2\n"
+    }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'diffcheck': ",
+    "Already in it!\n"
+  ]
+}

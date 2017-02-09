@@ -302,6 +302,10 @@ def register_diff_test(test, comparefile):
         comparelines = unicode(stream.read(),"utf8", errors="replace")
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
+
+    # If the output is massive, bring it slightly more under control.
+    if len(userlines) > len(comparelines) + 25:
+        userlines = userlines[:len(comparelines) + 25] + [u"... output truncated"]
     test["comparelines"] = comparelines
     test["userlines"] = userlines
     if comparelines == userlines:
@@ -342,9 +346,9 @@ def nice_name(name):
 
 
 # Read from a stream, recording result in a record
-# Caps the total amount read to ~10MB
+# Caps the total amount read to ~1MB
 def read_stream(outdict, name, stream):
-    stream_limit = 10000000
+    stream_limit = 1024*1024
     outstr = ''
     while True:
         try:
