@@ -1,0 +1,20 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "build",
+      "stdout": "correct\n",
+      "returnval": 0,
+      "pass": true,
+      "path": "/Users/caj/reps/stacscheck/tests/tests/macosx_dir/testdir/build.sh",
+      "type": "Build",
+      "stderr": ""
+    }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'subdir': ",
+    "found in current directory\n"
+  ]
+}
