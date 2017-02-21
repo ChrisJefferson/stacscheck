@@ -68,6 +68,14 @@ JINJAPAGE = """
        <td> {{ passcount[name] }} </td> 
     {%- endfor -%}
     <td>
+    </tr>
+    <tr>
+    <td>  </td>
+    {%- for name in testnames -%}
+       <td> {{ (passcount[name] / ( students | length ) * 100) | int }} </td> 
+    {%- endfor -%}
+    <td>
+    </tr>
 </table>
 </body>
 </html>
