@@ -10,8 +10,8 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/blanks.in",
+      "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "DIR/tests/diffcheck/testdir/catter/blanks.in",
       "stderr": ""
     },
     {
@@ -21,8 +21,8 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/blanks2.in",
+      "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "DIR/tests/diffcheck/testdir/catter/blanks2.in",
       "stderr": ""
     },
     {
@@ -32,8 +32,8 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/catter/empty.in",
+      "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
+      "input": "DIR/tests/diffcheck/testdir/catter/empty.in",
       "stderr": ""
     },
     {
@@ -51,7 +51,7 @@
         "line 2\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck/testdir/stderrstdout/progcat.sh",
+      "path": "DIR/tests/diffcheck/testdir/stderrstdout/progcat.sh",
       "input": null,
       "stderr": "line 2\n"
     }

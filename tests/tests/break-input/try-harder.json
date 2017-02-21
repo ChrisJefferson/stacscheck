@@ -10,8 +10,8 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/break-input/testdir/progread.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/break-input/testdir/empty.in",
+      "path": "DIR/tests/break-input/testdir/progread.sh",
+      "input": "DIR/tests/break-input/testdir/empty.in",
       "stderr": ""
     },
     {
@@ -25,8 +25,8 @@
         "1 2\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/break-input/testdir/progread.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/break-input/testdir/long.in",
+      "path": "DIR/tests/break-input/testdir/progread.sh",
+      "input": "DIR/tests/break-input/testdir/long.in",
       "stderr": ""
     }
   ],

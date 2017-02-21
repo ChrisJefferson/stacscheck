@@ -1,0 +1,12 @@
+dist: trusty
+language: c
+
+matrix:
+    include:
+        - os: linux
+
+        - os: osx
+
+script:
+    - pip install jinja2
+    - ( cd tests; ./run_tests.sh )

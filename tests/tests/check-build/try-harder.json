@@ -8,7 +8,7 @@
       "stdout": "Build 1\n",
       "returnval": 0,
       "pass": true,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/check-build/testdir/build1.sh",
+      "path": "DIR/tests/check-build/testdir/build1.sh",
       "type": "Build",
       "stderr": ""
     },
@@ -17,7 +17,7 @@
       "stdout": "Build 2\n",
       "returnval": 1,
       "pass": false,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/check-build/testdir/build2.sh",
+      "path": "DIR/tests/check-build/testdir/build2.sh",
       "type": "Build",
       "stderr": ""
     }

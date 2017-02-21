@@ -14,8 +14,8 @@
         "1 2\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/skip-hidden/testdir/progread.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/skip-hidden/testdir/long.in",
+      "path": "DIR/tests/skip-hidden/testdir/progread.sh",
+      "input": "DIR/tests/skip-hidden/testdir/long.in",
       "stderr": ""
     }
   ],

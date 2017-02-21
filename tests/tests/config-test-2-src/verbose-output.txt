@@ -1,8 +1,8 @@
 Testing CS1234 Practical 1
 - Looking for submission in a directory called 'source': - Warning, there are multiple subdirectories called 'source'.
- - found /Users/caj/reps/stacscheck/tests/tests/config-test-2-src/a/source
- - found /Users/caj/reps/stacscheck/tests/tests/config-test-2-src/q/source
- - I'm going to guess '/Users/caj/reps/stacscheck/tests/tests/config-test-2-src/a/source'.
+ - found DIR/tests/config-test-2-src/a/source
+ - found DIR/tests/config-test-2-src/q/source
+ - I'm going to guess 'DIR/tests/config-test-2-src/a/source'.
  - If that's wrong, go into the correct directory.
 * COMPARISON TEST - prog-default.out : pass
 1 out of 1 tests passed

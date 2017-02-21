@@ -104,6 +104,7 @@ JINJAPAGE = u"""
     {% endif %}
 </body>
 </html>
+
 """
 
 # Store the base test directory
@@ -605,6 +606,7 @@ def run():
                                             "infotext" : INFO_PRINTED},
                                             indent = 2, separators=(',', ': '), ensure_ascii=True)
                 jsonfile.write(jsonoutput.encode("utf8", errors="replace"))
+                jsonfile.write("\n")
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
 

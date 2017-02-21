@@ -61,7 +61,7 @@ exit 1
  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~��������������������������������������������������������������������������������������������������������������������������������
 ---
 
-Exiting early due to failed /Users/caj/reps/stacscheck/tests/tests/badutf8output2/testdir/subdir/build-fail.sh
+Exiting early due to failed DIR/tests/badutf8output2/testdir/subdir/build-fail.sh
 
 * BUILD TEST - subdir2/build-fail-two : fail
 --- ran script ---
@@ -76,7 +76,7 @@ exit 1
  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~��������������������������������������������������������������������������������������������������������������������������������
 ---
 
-Exiting early due to failed /Users/caj/reps/stacscheck/tests/tests/badutf8output2/testdir/subdir2/build-fail-two.sh
+Exiting early due to failed DIR/tests/badutf8output2/testdir/subdir2/build-fail-two.sh
 
 3 out of 9 tests passed
 Building is failing, skipping tests

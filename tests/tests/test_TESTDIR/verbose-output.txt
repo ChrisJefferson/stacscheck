@@ -43,7 +43,7 @@ exit 1
 I am a file in a sub-directory
 ---
 
-Exiting early due to failed /Users/caj/reps/stacscheck/tests/tests/test_TESTDIR/testdir/build-subdir/build1.sh
+Exiting early due to failed DIR/tests/test_TESTDIR/testdir/build-subdir/build1.sh
 
 1 out of 5 tests passed
 Building is failing, skipping tests

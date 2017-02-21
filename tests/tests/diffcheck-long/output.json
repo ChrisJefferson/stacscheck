@@ -45,8 +45,8 @@
         "c\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck-long/testdir/catter/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck-long/testdir/catter/short.in",
+      "path": "DIR/tests/diffcheck-long/testdir/catter/progcat.sh",
+      "input": "DIR/tests/diffcheck-long/testdir/catter/short.in",
       "textdiff": [
         "--- expected output ---\n",
         "a\n",
@@ -128,8 +128,8 @@
         "c\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck-long/testdir/catter2/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/diffcheck-long/testdir/catter2/short.in",
+      "path": "DIR/tests/diffcheck-long/testdir/catter2/progcat.sh",
+      "input": "DIR/tests/diffcheck-long/testdir/catter2/short.in",
       "textdiff": [
         "--- expected output ---\n",
         "a\n",
@@ -213,7 +213,7 @@
         "for i in $(seq 10000000); do echo \"Line \"$i; done\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/diffcheck-long/testdir/stderrstdout/progcat.sh",
+      "path": "DIR/tests/diffcheck-long/testdir/stderrstdout/progcat.sh",
       "input": null,
       "textdiff": [
         "--- expected output ---\n",

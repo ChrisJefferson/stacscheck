@@ -15,8 +15,8 @@
         "z\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test1.in",
+      "path": "DIR/tests/badoutput/testdir/progcat.sh",
+      "input": "DIR/tests/badoutput/testdir/test1.in",
       "textdiff": [
         "--- expected output ---\n",
         "z\n",
@@ -38,8 +38,8 @@
         "z\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/badoutput/testdir/test2.in",
+      "path": "DIR/tests/badoutput/testdir/progcat.sh",
+      "input": "DIR/tests/badoutput/testdir/test2.in",
       "textdiff": [
         "--- expected output ---\n",
         "z\n",

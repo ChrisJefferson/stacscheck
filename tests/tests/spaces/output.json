@@ -10,7 +10,7 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/progcat.sh",
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
       "input": null,
       "stderr": ""
     },
@@ -21,8 +21,8 @@
       "pass": true,
       "comparelines": [],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/empty2.in",
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "input": "DIR/tests/spaces/testdir/empty2.in",
       "stderr": ""
     },
     {
@@ -40,8 +40,8 @@
         "z\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/space-end-of-line.in",
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "input": "DIR/tests/spaces/testdir/space-end-of-line.in",
       "stderr": ""
     },
     {
@@ -56,8 +56,8 @@
         "x\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/progcat.sh",
-      "input": "/Users/caj/reps/stacscheck/tests/tests/spaces/testdir/space-start-of-line.in",
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "input": "DIR/tests/spaces/testdir/space-start-of-line.in",
       "textdiff": [
         "--- expected output ---\n",
         "x\n",

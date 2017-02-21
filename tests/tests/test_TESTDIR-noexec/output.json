@@ -8,7 +8,7 @@
       "stdout": "I am a file\n\n",
       "returnval": 1,
       "pass": false,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/test1.sh",
+      "path": "DIR/tests/test_TESTDIR-noexec/testdir/test1.sh",
       "type": "Test",
       "stderr": ""
     },
@@ -18,7 +18,7 @@
       "alwaysoutput": true,
       "returnval": 1,
       "pass": false,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/info1.sh",
+      "path": "DIR/tests/test_TESTDIR-noexec/testdir/info1.sh",
       "type": "Info",
       "stderr": ""
     },
@@ -28,7 +28,7 @@
       "alwaysoutput": true,
       "returnval": 0,
       "pass": true,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/info2.sh",
+      "path": "DIR/tests/test_TESTDIR-noexec/testdir/info2.sh",
       "type": "Info",
       "stderr": ""
     },
@@ -42,7 +42,7 @@
       "pass": false,
       "comparelines": [],
       "returnval": 1,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/prog1.sh",
+      "path": "DIR/tests/test_TESTDIR-noexec/testdir/prog1.sh",
       "input": null,
       "textdiff": [
         "--- no output expected ---\n",
@@ -57,7 +57,7 @@
       "stdout": "I am a file in a sub-directory\n\n",
       "returnval": 1,
       "pass": false,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/test_TESTDIR-noexec/testdir/build-subdir/build1.sh",
+      "path": "DIR/tests/test_TESTDIR-noexec/testdir/build-subdir/build1.sh",
       "type": "Build",
       "stderr": ""
     }

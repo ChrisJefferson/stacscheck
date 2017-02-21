@@ -14,7 +14,7 @@
         "basedir\n"
       ],
       "returnval": 0,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-2-src-2/testdir/prog.sh",
+      "path": "DIR/tests/config-test-2-src-2/testdir/prog.sh",
       "input": null,
       "stderr": ""
     }

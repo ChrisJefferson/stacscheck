@@ -8,7 +8,7 @@
       "stdout": "correct\n",
       "returnval": 0,
       "pass": true,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/macosx_dir/testdir/build.sh",
+      "path": "DIR/tests/macosx_dir/testdir/build.sh",
       "type": "Build",
       "stderr": ""
     }

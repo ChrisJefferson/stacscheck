@@ -8,7 +8,7 @@
       "stdout": "",
       "returnval": 0,
       "pass": true,
-      "path": "/Users/caj/reps/stacscheck/tests/tests/config-test-no-src/testdir/build.sh",
+      "path": "DIR/tests/config-test-no-src/testdir/build.sh",
       "type": "Build",
       "stderr": ""
     }

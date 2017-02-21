@@ -9,7 +9,7 @@ exit 1
 Build 2
 ---
 
-Exiting early due to failed /Users/caj/reps/stacscheck/tests/tests/check-build/testdir/build2.sh
+Exiting early due to failed DIR/tests/check-build/testdir/build2.sh
 
 1 out of 2 tests passed
 Building is failing, skipping tests
