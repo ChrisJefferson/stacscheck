@@ -1,3 +1,11 @@
+2.2.2 -> 2.2.3
+==============
+
+* Handle very long inputs better
+* Reduce time sleeping between lines
+* Always ignore __MACOSX directory
+* Improve output for whole class
+
 2.2.1 -> 2.2.2
 ==============
 
