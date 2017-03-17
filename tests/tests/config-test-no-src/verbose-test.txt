@@ -1,0 +1,5 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'nodir': Cannot find it....
+Please put your submission is in a directory called 'nodir'
+Error during testing: No submission found
+0 out of 0 tests passed

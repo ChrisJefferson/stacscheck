@@ -1,0 +1,37 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "userlines": [],
+      "name": "progread-empty.out",
+      "stdout": "\n",
+      "pass": true,
+      "comparelines": [],
+      "returnval": 0,
+      "path": "DIR/tests/break-input/testdir/progread.sh",
+      "input": "DIR/tests/break-input/testdir/empty.in",
+      "stderr": ""
+    },
+    {
+      "userlines": [
+        "1 2\n"
+      ],
+      "name": "progread-long.out",
+      "stdout": "1 2\n",
+      "pass": true,
+      "comparelines": [
+        "1 2\n"
+      ],
+      "returnval": 0,
+      "path": "DIR/tests/break-input/testdir/progread.sh",
+      "input": "DIR/tests/break-input/testdir/long.in",
+      "stderr": ""
+    }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'break-input': ",
+    "Already in it!\n"
+  ]
+}

@@ -1,0 +1,50 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'stdoutstderr': Already in it!
+* TEST - test1 : pass
+* TEST - test2 : fail
+--- ran script ---
+echo Build 2
+exit 1
+--- submission output ---
+Build 2
+---
+
+* TEST - test3 : pass
+* TEST - test4 : fail
+--- ran script ---
+# Write to stderr
+echo Build 4 1>&2
+exit 1
+--- submission output ---
+Build 4
+---
+
+* TEST - test5 : fail
+--- ran script ---
+# Write to stderr
+echo Build 5-stderr 1>&2
+exit 1
+--- submission output ---
+Build 5-stderr
+---
+
+* TEST - test6 : fail
+--- ran script ---
+# Write to stderr
+echo Build 6-stderr 1>&2
+# Write to stdout
+echo Build 6-stdout
+exit 1
+--- submission output ---
+Build 6-stdout
+--- submission stderr output ---
+Build 6-stderr
+---
+
+* TEST - test7 : pass
+* TEST - test8 : fail
+--- ran script ---
+exit 1
+--- no output from submission---
+
+3 out of 8 tests passed

@@ -1,0 +1,29 @@
+{
+  "practical": "Practical 1",
+  "course": "CS1234",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "build1",
+      "stdout": "Build 1\n",
+      "returnval": 0,
+      "pass": true,
+      "path": "DIR/tests/check-build/testdir/build1.sh",
+      "type": "Build",
+      "stderr": ""
+    },
+    {
+      "name": "build2",
+      "stdout": "Build 2\n",
+      "returnval": 1,
+      "pass": false,
+      "path": "DIR/tests/check-build/testdir/build2.sh",
+      "type": "Build",
+      "stderr": ""
+    }
+  ],
+  "infotext": [
+    "- Looking for submission in a directory called 'check-build': ",
+    "Already in it!\n"
+  ]
+}

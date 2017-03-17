@@ -30,4 +30,15 @@ for i in $(ls -d tests/*/); do
     if [ -e /tmp/try-harder.txt ]; then
         diff $i/try-harder.txt <(filtfile /tmp/try-harder.txt)
     fi;
+
+     ( cd $i && ./go.sh "$CHECKPROG" --verbose --html /tmp/verbose-test.html --json /tmp/verbose-test.json || true) > /tmp/verbose-test.txt
+    if [ -e /tmp/verbose-test.html ]; then
+        diff $i/verbose-test.html <(filtfile /tmp/verbose-test.html)
+    fi;
+    if [ -e /tmp/try-harder.json ]; then
+        diff $i/verbose-test.json <(filtfile /tmp/verbose-test.json)
+    fi;
+    if [ -e /tmp/try-harder.txt ]; then
+        diff $i/verbose-test.txt <(filtfile /tmp/verbose-test.txt)
+    fi;
 done

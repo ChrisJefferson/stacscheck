@@ -19,4 +19,9 @@ for i in $(ls -d tests/*/); do
     sed ${FILT} /tmp/try-harder.html > $i/try-harder.html
     sed ${FILT} /tmp/try-harder.json > $i/try-harder.json
     sed ${FILT} /tmp/try-harder.txt  > $i/try-harder.txt
+
+    ( cd $i && ./go.sh "$CHECKPROG" --verbose --html /tmp/verbose-test.html --json /tmp/verbose-test.json | sed ${FILT}) > /tmp/verbose-test.txt
+    sed ${FILT} /tmp/verbose-test.html > $i/verbose-test.html
+    sed ${FILT} /tmp/verbose-test.json > $i/verbose-test.json
+    sed ${FILT} /tmp/verbose-test.txt  > $i/verbose-test.txt
 done

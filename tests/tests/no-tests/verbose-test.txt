@@ -1,0 +1,4 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'no-tests': Already in it!
+ERROR: No tests found in 'testdir'
+0 out of 0 tests passed
