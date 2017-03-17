@@ -8,14 +8,12 @@ I am a file
 * INFO - info1 : fail
 --- submission output ---
 I am a file
-
 failing
 ---
 
 * INFO - info2 : pass
 --- submission output ---
 I am a file
-
 passing
 ---
 

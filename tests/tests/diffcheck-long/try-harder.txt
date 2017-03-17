@@ -34,7 +34,8 @@ Line 22
 Line 23
 Line 24
 Line 25
-... output truncated---
+... (output truncated)
+---
 
 * COMPARISON TEST - catter2/progcat-short.out : fail
 --- expected output ---
@@ -70,7 +71,8 @@ Line 22
 Line 23
 Line 24
 Line 25
-... output truncated---
+... (output truncated)
+---
 
 * COMPARISON TEST - stderrstdout/progcat-test.out : fail
 --- expected output ---
@@ -108,6 +110,7 @@ Line 24
 Line 25
 Line 26
 Line 27
-... output truncated---
+... (output truncated)
+---
 
 0 out of 3 tests passed

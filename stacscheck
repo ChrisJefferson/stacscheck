@@ -33,10 +33,12 @@ import re
 import sys
 import time
 import json
+import copy
 from threading import Thread
 import difflib
 from optparse import OptionParser, SUPPRESS_HELP
 import ConfigParser
+
 
 # Try importing jinja2, but don't complain if it isn't there
 try:
@@ -157,6 +159,40 @@ def print_file_contents(
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
+# Takes a single string with newlines, and returns a list of lines
+# We strip all whitespace, then add a "\n" on the end
+# This is to deal with differences in invisible whitespaces
+def strip_string(string):
+    return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != '']
+
+
+# Take a possibly huge output from a program, and reduce it's size so it fits
+# reasonably on screen.
+# userlines: The output of the user's program
+# comparelines: Expected output (or an empty list if there is no expected output)
+def reduce_huge_output(userlines, comparelines):
+    if VERBOSE:
+        return userlines
+
+    # Don't break the original
+    userlines = copy.deepcopy(userlines)
+    # If the number of lines is massive, bring it slightly more under control.
+    if len(userlines) > len(comparelines) + 25:
+        userlines = userlines[:len(comparelines) + 25] + [u"... (output truncated)\n"]
+    
+    # Now check if any line is stupidly long
+    for i in range(len(userlines)):
+        if i < len(comparelines):
+            comparelen = len(comparelines[i])
+        else:
+            comparelen = 0
+        
+        keeplen = max(comparelen + 25, 256)
+        if len(userlines[i]) > keeplen:
+            userlines[i] = userlines[i][:keeplen] + u" ... (line truncated)\n"
+    
+    return userlines
+
 
 # Store the results of all tests
 testStore = []
@@ -258,24 +294,30 @@ def maybe_print_test_input(test):
         if "input" in test and test["input"] is not None:
             print("--- with input ---")
             print_file_contents(file_loc=test["input"], ignore_prefixes=[], ignore_empty_lines=False)
-    
+
 def print_test_or_info_output(test):
     maybe_print_test_input(test)
+
+    stdout = strip_string(test.get("stdout", "")) #.rstrip().encode("utf8", errors="replace"))
+    stderr = strip_string(test.get("stderr", "")) #.rstrip().encode("utf8", errors="replace"))
+
+    # Always print all student's output if this is an 'info', or --verbose is enabled
+    if not(VERBOSE or test.get("alwaysoutput", False)):
+        stdout = reduce_huge_output(stdout, [])
+        stderr = reduce_huge_output(stderr, [])
+
     if test.get("stderr", False) and test.get("stdout", False):
-        print("--- submission output ---")
-        print(test.get("stdout", "").rstrip().encode("utf8", errors="replace"))
-        print("--- submission stderr output ---")
-        print(test.get("stderr", "").rstrip().encode("utf8", errors="replace"))
-        print("---")
-        print("")
+        sys.stdout.write("--- submission output ---\n")
+        sys.stdout.write(u"".join(stdout).encode("utf8", errors="replace"))
+        sys.stdout.write("--- submission stderr output ---\n")
+        sys.stdout.write(u"".join(stderr).encode("utf8", errors="replace"))
+        sys.stdout.write("---\n\n")
     elif test.get("stderr", False) or test.get("stdout", False):
-        print("--- submission output ---")
-        print((test.get("stdout", "").rstrip() + test.get("stderr", "").rstrip()).encode("utf8", errors="replace"))
-        print("---")
-        print("")
+        sys.stdout.write("--- submission output ---\n")
+        sys.stdout.write(u"".join(stdout).encode("utf8", errors="replace") + u"".join(stderr).encode("utf8", errors="replace"))
+        sys.stdout.write("---\n\n")
     else:
-        print("--- no output from submission---")
-        print("")
+        sys.stdout.write("--- no output from submission---\n\n")
 
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
@@ -291,11 +333,6 @@ def register_returnval_test(test):
 
     testStore.append(test)
 
-# Takes a single string with newlines, and returns a list of lines
-# We strip all whitespace, then add a "\n" on the end
-# This is to deal with differences in invisible whitespaces
-def strip_string(string):
-    return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != '']
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
@@ -304,9 +341,8 @@ def register_diff_test(test, comparefile):
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
 
-    # If the output is massive, bring it slightly more under control.
-    if len(userlines) > len(comparelines) + 25:
-        userlines = userlines[:len(comparelines) + 25] + [u"... output truncated"]
+    userlines = reduce_huge_output(userlines, comparelines)
+
     test["comparelines"] = comparelines
     test["userlines"] = userlines
     if comparelines == userlines:

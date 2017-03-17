@@ -15,14 +15,12 @@ echo 'failing'
 exit 1
 --- submission output ---
 I am a file
-
 failing
 ---
 
 * INFO - info2 : pass
 --- submission output ---
 I am a file
-
 passing
 ---
 
