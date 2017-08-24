@@ -8,15 +8,15 @@ If you want a machine to run tests on, use 'falcon02'.
 
 Step 2 - Download all students from MMS.
 
-Step 3 - extract the student zip. I would recommend using the program 'dtrx', and writing:
+Step 3 - Run './generate-report <directory of tests> -z <zip downloaded from MMS> -j4'
 
-dtrx -rn FileFromMMS.zip
+(The -j4 runs 4 students in parallel)
 
-As this will deal with students who submitted tar or gzip files.
+This will create a directory of output in a directory called 'output'.
 
-Step 4 - run:
+Look at the overview created in index.html. If you want to re-run single students, do:
 
-./all-students.sh <directory of tests> <directory containing students> <output dir>
+'./generate-report <directory of tests> <student1dir> <student2dir> ...'
 
 Example
 =======
