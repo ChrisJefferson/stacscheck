@@ -32,7 +32,8 @@ for i in $(ls -d tests/*/); do
         diff $i/try-harder.txt <(filtfile /tmp/try-harder.txt)
     fi;
 
-     ( cd $i && ./go.sh "$CHECKPROG" --verbose --html /tmp/verbose-test.html --json /tmp/verbose-test.json || true) > /tmp/verbose-test.txt
+    rm -f /tmp/verbose-test.html /tmp/verbose-test.json /tmp/verbose-test.txt
+    ( cd $i && ./go.sh "$CHECKPROG" --verbose --html /tmp/verbose-test.html --json /tmp/verbose-test.json || true) > /tmp/verbose-test.txt
     if [ -e /tmp/verbose-test.html ]; then
         diff $i/verbose-test.html <(filtfile /tmp/verbose-test.html)
     fi;
