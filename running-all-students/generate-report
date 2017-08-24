@@ -12,6 +12,7 @@ if [[ $# -eq 0 ]]; then
     echo "Optional arguments"
     echo "  -o <output dir> (default output)"
     echo "  -j <num of jobs to run in parallel> (default 1)"
+    echo "  -c (Use cgroups. Assumes ./create_cgroup_dir.sh has already been run)"
     echo ""
     echo "Inside <output dir> three subdirectories will be created, 'txt', 'html' and 'json'."
     echo "and an overview.html"
@@ -39,11 +40,17 @@ OUTDIR="output"
 # List of students to run in isolation
 SINGLESTUDENTDIRS=()
 
+# Use cgroups
+USECGROUPS="false"
+
 while [[ $# -gt 0 ]]
 do
     key="$1"
     shift
     case $key in
+        -c)
+            USECGROUPS="true"
+            ;;
         -t)
             if [[ -z $1 ]]; then
                echo "Must give directory to -t";  exit 1
@@ -135,20 +142,37 @@ run_single_student() {
         echo "$1"
         ulimit -t 600 # Put a limit on runtime
         studentid=$(basename "$1")
+
+        if [ "$USECGROUPS" = true ]; then
+            "${SCRIPTDIR}/internal/setup_cgroup.sh" ${studentid}
+            CGEXEC="cgexec -g memory,cpuacct:/stacscheck-${USER}/${studentid}"
+        else
+            CGEXEC=""
+        fi;
+
         cd "$1" && \
-        "${STACSCHECK}" "${practical}" \
+        ${CGEXEC} "${STACSCHECK}" "${practical}" \
                    --id="${studentid}" \
                    --html="${outdir}/html/${studentid}.html" \
                    --json="${outdir}/json/${studentid}.json" \
                    --tryharder \
                    > "${outdir}/txt/${studentid}.txt"
-
     ) &
-    counter=$((counter + 1))
-    if ((counter >= PARALLELJOBS )); then
-        counter=0
-        wait
+
+    if [ "$USECGROUPS" = true ]; then
+        ( sleep 5; studentid=$(basename "$1"); "${SCRIPTDIR}/internal/cleanup_cgroup.sh" 600 ${studentid}) &
     fi;
+
+    if [ "$USECGROUPS" = true ]; then
+        JOBCOUNT=$(( PARALLELJOBS * 2 ))
+    else
+        JOBCOUNT=PARALLELJOBS
+    fi;
+
+    while (( $(jobs -p | wc -l) >= $JOBCOUNT ))
+    do
+	sleep 1
+    done
 }
 
 if [[ -n $SUBMISSIONDIR ]]; then
@@ -166,4 +190,4 @@ done
 wait
 
 echo "-- Generating overview"
-"${SCRIPTDIR}/student_overview" "${outdir}/json"/* > "${outdir}/overview.html"
+"${SCRIPTDIR}/internal/student_overview" "${outdir}/json"/* > "${outdir}/overview.html"

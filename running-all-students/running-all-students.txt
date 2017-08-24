@@ -18,6 +18,18 @@ Look at the overview created in index.html. If you want to re-run single student
 
 './generate-report -t <directory of tests> <student1dir> <student2dir> ...'
 
+
+cgroups
+=======
+
+'cgroups' provides a way of running student's code in isolation. This is particularly
+useful if a student's code can break, by running my processes or eating all the memory.
+
+This only works on linux machines, where the user can run programs as root (sorry!)
+
+First run 'create_cgroup_dir.sh', which will ask for your password. Then use
+'generate-report' as normal, passing the '-c' option.
+
 Example
 =======
 
