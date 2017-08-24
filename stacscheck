@@ -3,6 +3,13 @@
 
 VERSION = "2.2.4"
 
+import sys
+
+if sys.version_info[0] > 2:
+    print("stacscheck is only compatible with Python 2")
+    print("Try running: python2 stacscheck.py ...")
+    sys.exit(1)
+
 # MIT License
 
 # Copyright (c) 2016 University of St Andrews
@@ -30,7 +37,7 @@ VERSION = "2.2.4"
 import os
 import subprocess
 import re
-import sys
+
 import time
 import json
 import copy
