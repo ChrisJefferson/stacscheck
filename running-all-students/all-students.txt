@@ -8,7 +8,7 @@ If you want a machine to run tests on, use 'falcon02'.
 
 Step 2 - Download all students from MMS.
 
-Step 3 - Run './generate-report <directory of tests> -z <zip downloaded from MMS> -j4'
+Step 3 - Run './generate-report -t <directory of tests> -z <zip downloaded from MMS> -j4'
 
 (The -j4 runs 4 students in parallel)
 
@@ -16,7 +16,7 @@ This will create a directory of output in a directory called 'output'.
 
 Look at the overview created in index.html. If you want to re-run single students, do:
 
-'./generate-report <directory of tests> <student1dir> <student2dir> ...'
+'./generate-report -t <directory of tests> <student1dir> <student2dir> ...'
 
 Example
 =======
