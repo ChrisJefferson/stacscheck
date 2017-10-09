@@ -207,7 +207,7 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
-CONFIG = {'course' : '', 'practical' : ''}
+CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
@@ -231,7 +231,7 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed, or not readable")
         sys.exit(1)
 
-    valid_options = ['course', 'practical', 'srcdir']
+    valid_options = ['course', 'practical', 'srcdir', 'timeout']
     for option in config.options('info'):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
@@ -430,6 +430,8 @@ def run_program(program, stdin, extra_env):
                                 stderr=subprocess.PIPE, close_fds=True, shell=False,
                                 cwd=SUBMISSIONBASE, env=env_copy)
 
+        starttime = time.time()
+
         retdict = dict()
 
         thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr))
@@ -449,11 +451,23 @@ def run_program(program, stdin, extra_env):
         # Either we have filled stdin, or we are putting nothing in it
         proc.stdin.close()
 
+        while (proc.poll() is None) and (time.time() - starttime < float(CONFIG['timeout'])):
+            time.sleep(0.1)
+
+        timeouthit = False
+        if (proc.poll() is None):
+            sys.stdout.write("!! " + CONFIG['timeout'] + " second timeout reached\n")
+            timeouthit = True
+            proc.kill()
+
         thread_err.join()
         thread_out.join()
         proc.wait()
         retdict["stderr"] = unicode(retdict["stderr"], "utf8", errors = "replace")
+        if timeouthit:
+            retdict["stderr"] += "\n... Terminating due to timeout\n"
         retdict["stdout"] = unicode(retdict["stdout"], "utf8", errors = "replace")
+
 
         retdict["returnval"] = proc.returncode
 

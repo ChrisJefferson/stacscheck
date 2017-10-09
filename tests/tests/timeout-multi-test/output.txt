@@ -1,0 +1,18 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'timeout-multi-test': Already in it!
+* TEST - test1 : !! 3 second timeout reached
+fail
+--- submission output ---
+... Terminating due to timeout
+---
+
+* TEST - test2 : pass
+* TEST - test3 : !! 3 second timeout reached
+fail
+--- submission output ---
+... Terminating due to timeout
+---
+
+* TEST - test4 : pass
+* TEST - test5 : pass
+3 out of 5 tests passed
