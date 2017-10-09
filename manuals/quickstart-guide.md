@@ -16,7 +16,7 @@ You must give a directory of tests to run!
 
 If the machine doesn't have it, you can download it from 
 [https://studres.cs.st-andrews.ac.uk/Library/stacscheck/](https://studres.cs.st-andrews.ac.uk/Library/stacscheck/).
-You only need the `stacscheck` script. See [installing stacscheck](installing-stacscheck.html) for more guidance
+You only need the `stacscheck` script. See [installing stacscheck](installing-stacscheck.md) for more guidance
 on installing `stacscheck` on your own machine.
 
 `stacscheck` is not currently supported on Windows, only Linux and Macs.
