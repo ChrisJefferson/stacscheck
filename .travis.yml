@@ -7,6 +7,7 @@ matrix:
 
         - os: osx
 
+
 script:
-    - pip install jinja2
+    - pip install --user jinja2
     - ( cd tests; ./run_tests.sh )
