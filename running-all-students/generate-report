@@ -105,6 +105,10 @@ do
             "${SCRIPTDIR}/clean-files.sh" "$SUBMISSIONDIR"
             shift
             ;;
+        -*)
+            echo "Cannot parse argument '"$key"'."
+            exit 1
+            ;;
         *)
             SINGLESTUDENTDIRS+=("$key")
             ;;
