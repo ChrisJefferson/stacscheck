@@ -6,7 +6,7 @@
     {
       "name": "test1",
       "stdout": "",
-      "returnval": -9,
+      "returnval": -15,
       "pass": false,
       "path": "DIR/tests/timeout-multi-test/testdir/test1.sh",
       "type": "Test",
@@ -24,7 +24,7 @@
     {
       "name": "test3",
       "stdout": "",
-      "returnval": -9,
+      "returnval": -15,
       "pass": false,
       "path": "DIR/tests/timeout-multi-test/testdir/test3.sh",
       "type": "Test",
