@@ -245,7 +245,7 @@ def find_all_directories_with_name(name, rootdir):
         for dirname in subfolders:
             if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)):
                 dirlist.append(os.path.join(root, dirname))
-    return dirlist
+    return sorted(dirlist)
 
 # Find the directory the code is stored in, using 'srcdir' from CONFIG.
 # If 'srcdir' is not defined, assume current directory, else search for a directory called
