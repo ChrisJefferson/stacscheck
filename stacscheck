@@ -574,7 +574,7 @@ def run_tests_recursive(testdir):
 # Main program
 def run():
     global VERBOSE, TESTBASE, SUBMISSIONBASE, TRYHARDER
-    parser = OptionParser(usage="%prog [options] testdirectory", version="%prog "+VERSION)
+    parser = OptionParser(usage="%prog [options] testdirectory", version=VERSION)
     parser.add_option("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
     parser.add_option("--html", dest="htmlout",
