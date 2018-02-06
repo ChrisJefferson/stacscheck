@@ -1,13 +1,17 @@
 dist: trusty
-language: c
 
 matrix:
-    include:
-        - os: linux
-
-        - os: osx
+  include:
+    - language: python
+      python: "2.7"
+      os: linux
+      install:
+        - pip2 install jinja2
+    - language: generic
+      os: osx
+      install:
+        - pip2 install jinja2
 
 
 script:
-    - pip install --user jinja2
     - ( cd tests; ./run_tests.sh )
