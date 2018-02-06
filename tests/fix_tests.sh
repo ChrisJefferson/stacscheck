@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir tests/checkout-baddir/testdir/abc
+chmod -rwx tests/checkout-baddir/testdir/abc
+
 CURRENTDIR=$(pwd)
 echo Current dir is $CURRENTDIR
 CHECKPROG=$(pwd)/../stacscheck
