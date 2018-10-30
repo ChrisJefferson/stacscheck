@@ -18,6 +18,7 @@ function filtfile {
     sed ${FILT} $1 | sed ${FILT2}
 }
 
+python --version
 for i in $(ls -d tests/*/); do
     echo Testing $i
     diff $i/output.txt  <( cd $i && ./go.sh "$CHECKPROG" | sed ${FILT} | sed ${FILT2})
