@@ -7,10 +7,12 @@ matrix:
       os: linux
       install:
         - pip2 install jinja2
+        - pip3 install jinja2
     - language: generic
       os: osx
       install:
         - pip2 install jinja2
+        - pip3 install jinja2
 
 
 script:
