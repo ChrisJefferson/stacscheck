@@ -6,10 +6,41 @@ VERSION = "2.3.0"
 import sys
 import signal
 
-if sys.version_info[0] > 2:
-    print("stacscheck is only compatible with Python 2")
-    print("Try running: python2 stacscheck.py ...")
-    sys.exit(1)
+# Python 3 compatibility hack
+try:
+    unicode('')
+
+    # Woo super-horrible utf8 python2 hack
+    # This forces us to always output utf8
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+    def toUTF8Replace(bytes):
+        if isinstance(bytes, unicode):
+            return bytes
+        return unicode(bytes, "utf8", errors="replace")
+
+    def output_str(arg):
+        sys.stdout.write(arg)
+
+    def output_line(arg):
+        output_str(arg)
+        sys.stdout.write("\n")
+except NameError:
+    unicode = str
+    def toUTF8Replace(bytes):
+        if isinstance(bytes, str):
+            return bytes
+        return str(bytes, "utf8", errors="replace")
+
+    def output_str(arg):
+        sys.stdout.write(toUTF8Replace(arg))
+
+    def output_line(arg):
+        output_str(arg)
+        sys.stdout.write("\n")
+
 
 # MIT License
 
@@ -45,7 +76,7 @@ import copy
 from threading import Thread
 import difflib
 from optparse import OptionParser, SUPPRESS_HELP
-import ConfigParser
+import configparser
 
 
 # Try importing jinja2, but don't complain if it isn't there
@@ -130,7 +161,7 @@ INFO_PRINTED = []
 
 def info_print_nonewline(string):
     global INFO_PRINTED
-    sys.stdout.write(string)
+    output_str(string)
     INFO_PRINTED.append(string)
 
 def info_print(string):
@@ -140,8 +171,10 @@ def info_print(string):
 VERBOSE = True
 def verbose_print(arg):
     if VERBOSE:
-        print(str(arg)+"\n")
+        output_line(arg)
+        output_line("")
 
+    
 # Check function for problems in practical
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
@@ -155,7 +188,8 @@ def print_file_contents(
         ignore_empty_lines=True
 ):
     try:
-        for line in open(file_loc, "r"):
+        for line in open(file_loc, "rb"):
+            line = toUTF8Replace(line)
 
             if ignore_empty_lines and line.strip() == "":
                 continue
@@ -163,7 +197,7 @@ def print_file_contents(
             if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
                 continue
 
-            print (unicode(line, "utf8", errors="replace").rstrip().encode("utf8", errors="replace"))
+            output_line(line.rstrip())
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
@@ -212,7 +246,7 @@ CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     filename = os.path.join(basedir, "practical.config")
     if not os.path.isfile(filename):
         print("'" + basedir + "' is not a valid test directory")
@@ -315,17 +349,17 @@ def print_test_or_info_output(test):
         stderr = reduce_huge_output(stderr, [])
 
     if test.get("stderr", False) and test.get("stdout", False):
-        sys.stdout.write("--- submission output ---\n")
-        sys.stdout.write(u"".join(stdout).encode("utf8", errors="replace"))
-        sys.stdout.write("--- submission stderr output ---\n")
-        sys.stdout.write(u"".join(stderr).encode("utf8", errors="replace"))
-        sys.stdout.write("---\n\n")
+        output_str("--- submission output ---\n")
+        output_str(u"".join(stdout).encode("utf8", errors="replace"))
+        output_str("--- submission stderr output ---\n")
+        output_str(u"".join(stderr).encode("utf8", errors="replace"))
+        output_str("---\n\n")
     elif test.get("stderr", False) or test.get("stdout", False):
-        sys.stdout.write("--- submission output ---\n")
-        sys.stdout.write(u"".join(stdout).encode("utf8", errors="replace") + u"".join(stderr).encode("utf8", errors="replace"))
-        sys.stdout.write("---\n\n")
+        output_str("--- submission output ---\n")
+        output_str(u"".join(stdout).encode("utf8", errors="replace") + u"".join(stderr).encode("utf8", errors="replace"))
+        output_str("---\n\n")
     else:
-        sys.stdout.write("--- no output from submission---\n\n")
+        output_str("--- no output from submission---\n\n")
 
 # Record that a test was run, printing as approriate
 def register_returnval_test(test):
@@ -344,8 +378,8 @@ def register_returnval_test(test):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
-    with open(comparefile, 'r') as stream:
-        comparelines = unicode(stream.read(),"utf8", errors="replace")
+    with open(comparefile, 'rb') as stream:
+        comparelines = toUTF8Replace(stream.read())
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
 
@@ -378,7 +412,10 @@ def register_diff_test(test, comparefile):
             assert isinstance(l, unicode)
         textout = u"".join(test["textdiff"])
         assert isinstance(textout, unicode)
-        print(textout.encode("utf8"))
+        #print("Precheck")
+        # print(textout)
+        output_line(textout)
+        #print("Postcheck")
     testStore.append(test)
 
 
@@ -394,27 +431,27 @@ def nice_name(name):
 # Caps the total amount read to ~1MB
 def read_stream(outdict, name, stream):
     stream_limit = 1024*1024
-    outstr = ''
+    outstr = bytearray()
     while True:
         try:
             chunk = stream.read(stream_limit - len(outstr))
             # End of file reached
-            if chunk == '':
-                outdict[name] = outstr
+            if chunk == b'':
+                outdict[name] = bytes(outstr)
                 return
 
             # Add chunk
-            outstr = outstr + chunk
+            outstr.extend(chunk)
 
             if len(outstr) == stream_limit:
-                outstr += "\n ... Output truncated\n"
-                outdict[name] = outstr
+                outstr += b"\n ... Output truncated\n"
+                outdict[name] = bytes(outstr)
                 # Throw away rest of stream
-                while stream.read(1024) != '':
+                while stream.read(1024) != b'':
                     pass
                 return
         except IOError:
-            outdict[name] = outstr
+            outdict[name] = bytes(outstr)
 
 
 # Run a program, given as a list [prog, arg1, arg2], with
@@ -441,7 +478,7 @@ def run_program(program, stdin, extra_env):
         thread_out.start()
 
         if stdin is not None:
-            stdinfd = open(stdin, "r")
+            stdinfd = open(stdin, "rb")
             try:
                 for line in stdinfd.readlines():
                     proc.stdin.write(line)
@@ -457,7 +494,7 @@ def run_program(program, stdin, extra_env):
 
         timeouthit = False
         if (proc.poll() is None):
-            sys.stdout.write("!! " + CONFIG['timeout'] + " second timeout reached\n")
+            output_str("!! " + CONFIG['timeout'] + " second timeout reached\n")
             timeouthit = True
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.terminate()
@@ -466,10 +503,10 @@ def run_program(program, stdin, extra_env):
         thread_err.join()
         thread_out.join()
         proc.wait()
-        retdict["stderr"] = unicode(retdict["stderr"], "utf8", errors = "replace")
+        retdict["stderr"] = toUTF8Replace(retdict["stderr"])
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
-        retdict["stdout"] = unicode(retdict["stdout"], "utf8", errors = "replace")
+        retdict["stdout"] = toUTF8Replace(retdict["stdout"])
 
 
         retdict["returnval"] = proc.returncode
@@ -503,7 +540,7 @@ def run_tests_recursive(testdir):
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
     for buildsh in buildscripts:
         name = nice_name(buildsh)
-        sys.stdout.write("* BUILD TEST - " + name + " : ")
+        output_str("* BUILD TEST - " + name + " : ")
         buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
         buildshret["path"] = buildsh
@@ -519,7 +556,7 @@ def run_tests_recursive(testdir):
 
     for test in testscripts:
         name = nice_name(test)
-        sys.stdout.write("* TEST - " + name + " : ")
+        output_str("* TEST - " + name + " : ")
         result = run_bash_script(test, None, extra_env)
         result["name"] = name
         result["path"] = test
@@ -530,7 +567,7 @@ def run_tests_recursive(testdir):
 
     for info in infoscripts:
         name = nice_name(info)
-        sys.stdout.write("* INFO - " + name + " : ")
+        output_str("* INFO - " + name + " : ")
         result = run_bash_script(info, None, extra_env)
         result["name"] = name
         result["path"] = info
@@ -553,7 +590,7 @@ def run_tests_recursive(testdir):
             if not os.path.isfile(infile):
                 infile = None
             name = nice_name(progsh) + "-" + os.path.basename(out)
-            sys.stdout.write("* COMPARISON TEST - " + name + " : ")
+            output_str("* COMPARISON TEST - " + name + " : ")
             result = run_bash_script(progsh, infile, extra_env)
             result["name"] = name
             result["input"] = infile
@@ -644,7 +681,7 @@ def run():
         if options.htmlout is not None:
             env = jinja2.Environment(autoescape=True)
             template = env.from_string(JINJAPAGE)
-            with open(options.htmlout, "w") as html:
+            with open(options.htmlout, "wb") as html:
                 htmloutput = template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
                                         SubmissionID=options.subid,
                                         Tests=testStore,
@@ -652,7 +689,7 @@ def run():
                                         AnyBuildTestFailed=anyBuildTestFailed,
                                         InfoText=INFO_PRINTED
                                         )
-                html.write(htmloutput.encode("utf8", errors="replace"))
+                html.write(toUTF8Replace(htmloutput).encode("utf8"))
     except EnvironmentError as e:
         print("Error outputting HTML: " + str(e))
 
@@ -665,7 +702,7 @@ def run():
                                             "tests" : testStore,
                                             "infotext" : INFO_PRINTED},
                                             indent = 2, separators=(',', ': '), ensure_ascii=True, sort_keys=True)
-                jsonfile.write(jsonoutput.encode("utf8", errors="replace"))
+                jsonfile.write(jsonoutput)
                 jsonfile.write("\n")
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
