@@ -1,8 +1,5 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
-  "subid": "<unknown>",
-  "tests": [],
   "infotext": [
     "- Looking for submission in a directory called 'checkout-baddir': ",
     "Already in it!\n",
@@ -30,5 +27,8 @@
     "The problem is: [Errno 13] Permission denied: 'DIR/tests/checkout-baddir/testdir/abc'.\n",
     "This may be caused by a broken test directory, or\n",
     "the test directory may have been copied incorrectly.\n"
-  ]
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": []
 }

@@ -1,20 +1,20 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'timeout-fail-test': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
   "subid": "<unknown>",
   "tests": [
     {
       "name": "build",
-      "stdout": "",
-      "returnval": -15,
       "pass": false,
       "path": "DIR/tests/timeout-fail-test/testdir/build.sh",
-      "type": "Build",
-      "stderr": "\n... Terminating due to timeout\n"
+      "returnval": -15,
+      "stderr": "\n... Terminating due to timeout\n",
+      "stdout": "",
+      "type": "Build"
     }
-  ],
-  "infotext": [
-    "- Looking for submission in a directory called 'timeout-fail-test': ",
-    "Already in it!\n"
   ]
 }

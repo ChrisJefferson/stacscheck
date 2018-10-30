@@ -1,26 +1,26 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
-  "subid": "<unknown>",
-  "tests": [
-    {
-      "userlines": [
-        "1 2\n"
-      ],
-      "name": "progread-long.out",
-      "stdout": "1 2\n",
-      "pass": true,
-      "comparelines": [
-        "1 2\n"
-      ],
-      "returnval": 0,
-      "path": "DIR/tests/skip-hidden/testdir/progread.sh",
-      "input": "DIR/tests/skip-hidden/testdir/long.in",
-      "stderr": ""
-    }
-  ],
   "infotext": [
     "- Looking for submission in a directory called 'skip-hidden': ",
     "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "comparelines": [
+        "1 2\n"
+      ],
+      "input": "DIR/tests/skip-hidden/testdir/long.in",
+      "name": "progread-long.out",
+      "pass": true,
+      "path": "DIR/tests/skip-hidden/testdir/progread.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "1 2\n",
+      "userlines": [
+        "1 2\n"
+      ]
+    }
   ]
 }

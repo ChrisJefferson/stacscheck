@@ -664,7 +664,7 @@ def run():
                                             "subid" : options.subid,
                                             "tests" : testStore,
                                             "infotext" : INFO_PRINTED},
-                                            indent = 2, separators=(',', ': '), ensure_ascii=True)
+                                            indent = 2, separators=(',', ': '), ensure_ascii=True, sort_keys=True)
                 jsonfile.write(jsonoutput.encode("utf8", errors="replace"))
                 jsonfile.write("\n")
     except EnvironmentError as e:

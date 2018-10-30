@@ -1,10 +1,10 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
-  "subid": "<unknown>",
-  "tests": [],
   "infotext": [
     "- Looking for submission in a directory called 'no-tests': ",
     "Already in it!\n"
-  ]
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": []
 }

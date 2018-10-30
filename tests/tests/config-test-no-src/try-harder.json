@@ -1,22 +1,22 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
-  "subid": "<unknown>",
-  "tests": [
-    {
-      "name": "build",
-      "stdout": "",
-      "returnval": 0,
-      "pass": true,
-      "path": "DIR/tests/config-test-no-src/testdir/build.sh",
-      "type": "Build",
-      "stderr": ""
-    }
-  ],
   "infotext": [
     "- Looking for submission in a directory called 'nodir': ",
     "Cannot find it....\n",
     "Please put your submission is in a directory called 'nodir'\n",
     "Going to try hard, and guess the current directory. I'm probably wrong.\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "name": "build",
+      "pass": true,
+      "path": "DIR/tests/config-test-no-src/testdir/build.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    }
   ]
 }

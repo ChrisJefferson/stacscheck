@@ -1,63 +1,65 @@
 {
-  "practical": "Practical 1",
   "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'spaces': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
   "subid": "<unknown>",
   "tests": [
     {
-      "userlines": [],
-      "name": "progcat-empty.out",
-      "stdout": "",
-      "pass": true,
       "comparelines": [],
-      "returnval": 0,
-      "path": "DIR/tests/spaces/testdir/progcat.sh",
       "input": null,
-      "stderr": ""
-    },
-    {
-      "userlines": [],
-      "name": "progcat-empty2.out",
-      "stdout": "",
+      "name": "progcat-empty.out",
       "pass": true,
-      "comparelines": [],
-      "returnval": 0,
       "path": "DIR/tests/spaces/testdir/progcat.sh",
-      "input": "DIR/tests/spaces/testdir/empty2.in",
-      "stderr": ""
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "userlines": []
     },
     {
-      "userlines": [
-        "x\n",
-        "y\n",
-        "z\n"
-      ],
-      "name": "progcat-space-end-of-line.out",
-      "stdout": "x\ny\nz\n\n",
+      "comparelines": [],
+      "input": "DIR/tests/spaces/testdir/empty2.in",
+      "name": "progcat-empty2.out",
       "pass": true,
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "userlines": []
+    },
+    {
       "comparelines": [
         "x\n",
         "y\n",
         "z\n"
       ],
-      "returnval": 0,
-      "path": "DIR/tests/spaces/testdir/progcat.sh",
       "input": "DIR/tests/spaces/testdir/space-end-of-line.in",
-      "stderr": ""
+      "name": "progcat-space-end-of-line.out",
+      "pass": true,
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "x\ny\nz\n\n",
+      "userlines": [
+        "x\n",
+        "y\n",
+        "z\n"
+      ]
     },
     {
-      "userlines": [
-        "   x\n"
-      ],
-      "name": "progcat-space-start-of-line.out",
-      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;&nbsp;&nbsp;x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">x</span></td></tr>\n        </tbody>\n    </table>",
-      "stdout": "   x\n\n",
-      "pass": false,
       "comparelines": [
         "x\n"
       ],
-      "returnval": 0,
-      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;&nbsp;&nbsp;x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">x</span></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/spaces/testdir/space-start-of-line.in",
+      "name": "progcat-space-start-of-line.out",
+      "pass": false,
+      "path": "DIR/tests/spaces/testdir/progcat.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "   x\n\n",
       "textdiff": [
         "--- expected output ---\n",
         "x\n",
@@ -65,11 +67,9 @@
         "   x\n",
         "---\n"
       ],
-      "stderr": ""
+      "userlines": [
+        "   x\n"
+      ]
     }
-  ],
-  "infotext": [
-    "- Looking for submission in a directory called 'spaces': ",
-    "Already in it!\n"
   ]
 }
