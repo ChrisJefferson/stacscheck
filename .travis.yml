@@ -6,8 +6,12 @@ matrix:
       python: "2.7"
       os: linux
       install:
-        - pip2 install jinja2
-        - pip3 install jinja2
+        - pip install jinja2
+    - language: python
+      python: "3.6"
+      os: linux
+      install:
+        - pip install jinja2
     - language: generic
       os: osx
       install:
