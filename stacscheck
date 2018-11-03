@@ -335,7 +335,7 @@ def find_code_directory():
 
 def lookup_practical_root(recursive_srcdir):
     guessed = recursive_srcdir[0]
-    if 'srcdir' in CONFIG:
+    if 'practicalroot' in CONFIG:
         for d in recursive_srcdir:
             if d.endswith(CONFIG['practicalroot']):
                 guessed = d
