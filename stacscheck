@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-VERSION = "2.3.0"
+VERSION = "2.3.1a"
 
 import sys
 import signal
@@ -246,7 +246,7 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
-CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
+CONFIG = {'course' : '', 'practical' : '', 'timeout': '60'}
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
@@ -270,7 +270,7 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed, or not readable")
         sys.exit(1)
 
-    valid_options = ['course', 'practical', 'srcdir', 'timeout']
+    valid_options = ['course', 'practical', 'srcdir', 'timeout', 'practicalroot']
     for option in config.options('info'):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
@@ -281,7 +281,7 @@ def find_all_directories_with_name(name, rootdir):
     dirlist = []
     for root, subfolders, _ in os.walk(rootdir):
         for dirname in subfolders:
-            if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)):
+            if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)) and not dirname.startswith("."):
                 dirlist.append(os.path.join(root, dirname))
     return sorted(dirlist)
 
@@ -328,10 +328,18 @@ def find_code_directory():
     info_print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
     for d in recursive_srcdir:
         info_print(" - found " + d)
-    info_print(" - I'm going to guess '" + recursive_srcdir[0] +"'.")
+    guessed = lookup_practical_root(recursive_srcdir)
+    info_print(" - I'm going to guess '" + guessed  + "'.")
     info_print(" - If that's wrong, go into the correct directory.")
-    return recursive_srcdir[0]
+    return guessed
 
+def lookup_practical_root(recursive_srcdir):
+    guessed = recursive_srcdir[0]
+    if 'srcdir' in CONFIG:
+        for d in recursive_srcdir:
+            if d.endswith(CONFIG['practicalroot']):
+                guessed = d
+    return guessed
 
 def maybe_print_test_input(test):
     if VERBOSE and not test["pass"]:
