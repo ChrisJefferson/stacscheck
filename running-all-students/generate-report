@@ -168,16 +168,21 @@ run_single_student() {
     fi;
 
     if [ "$USECGROUPS" = true ]; then
-        JOBCOUNT=$(( PARALLELJOBS * 2 + 1 ))
+        JOBCOUNT=$(( PARALLELJOBS * 2 ))
     else
-        JOBCOUNT=$(( PARALLELJOBS + 1 ))
+        JOBCOUNT=$(( PARALLELJOBS ))
     fi;
 
-
-    while (( $(jobs -p | wc -l) >= $JOBCOUNT ))
-    do
-	    sleep 1
-    done
+    if (( PARALLELJOBS == 1 )); then
+        wait
+    else
+        while (( $(jobs -p | wc -l) >= JOBCOUNT ))
+        do
+            sleep 1
+            # Make sure finished jobs are cleaned up
+            jobs > /dev/null
+        done
+    fi
 }
 
 if [[ -n $SUBMISSIONDIR ]]; then
