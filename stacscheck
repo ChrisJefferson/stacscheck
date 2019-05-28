@@ -7,44 +7,20 @@ import sys
 import signal
 
 # Python 3 compatibility hack
-try:
-    unicode('')
+unicode = str
+def toUTF8Replace(bytes):
+    if isinstance(bytes, str):
+        return bytes
+    return str(bytes, "utf8", errors="replace")
 
-    # Woo super-horrible utf8 python2 hack
-    # This forces us to always output utf8
-    import sys
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+def output_str(arg):
+    sys.stdout.write(toUTF8Replace(arg))
 
-    def toUTF8Replace(bytes):
-        if isinstance(bytes, unicode):
-            return bytes
-        return unicode(bytes, "utf8", errors="replace")
+def output_line(arg):
+    output_str(arg)
+    sys.stdout.write("\n")
 
-    def output_str(arg):
-        sys.stdout.write(arg)
-
-    def output_line(arg):
-        output_str(arg)
-        sys.stdout.write("\n")
-
-    import ConfigParser as configparser
-
-except NameError:
-    unicode = str
-    def toUTF8Replace(bytes):
-        if isinstance(bytes, str):
-            return bytes
-        return str(bytes, "utf8", errors="replace")
-
-    def output_str(arg):
-        sys.stdout.write(toUTF8Replace(arg))
-
-    def output_line(arg):
-        output_str(arg)
-        sys.stdout.write("\n")
-
-    import configparser
+import configparser
 
 
 # MIT License
