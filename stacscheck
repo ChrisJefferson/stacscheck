@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 VERSION = "2.3.0"
@@ -178,7 +178,7 @@ def verbose_print(arg):
         output_line(arg)
         output_line("")
 
-    
+
 # Check function for problems in practical
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
@@ -225,18 +225,18 @@ def reduce_huge_output(userlines, comparelines):
     # If the number of lines is massive, bring it slightly more under control.
     if len(userlines) > len(comparelines) + 25:
         userlines = userlines[:len(comparelines) + 25] + [u"... (output truncated)\n"]
-    
+
     # Now check if any line is stupidly long
     for i in range(len(userlines)):
         if i < len(comparelines):
             comparelen = len(comparelines[i])
         else:
             comparelen = 0
-        
+
         keeplen = max(comparelen + 25, 256)
         if len(userlines[i]) > keeplen:
             userlines[i] = userlines[i][:keeplen] + u" ... (line truncated)\n"
-    
+
     return userlines
 
 
@@ -624,7 +624,7 @@ def run():
     # You can use this, but don't complain if the format changes in future.
     parser.add_option("--json", dest="jsonout",
                       help=SUPPRESS_HELP, metavar="FILE")
-    parser.add_option("--tryharder", dest="tryharder", default=False, 
+    parser.add_option("--tryharder", dest="tryharder", default=False,
                       action="store_true", help=SUPPRESS_HELP)
     parser.add_option("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
