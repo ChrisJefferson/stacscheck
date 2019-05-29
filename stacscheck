@@ -6,7 +6,7 @@ VERSION = "2.3.0"
 import sys
 import signal
 
-# Python 3 compatibility hack
+# Functions to convert to UTF-8 and print the string
 unicode = str
 def toUTF8Replace(bytes):
     if isinstance(bytes, str):
@@ -15,9 +15,6 @@ def toUTF8Replace(bytes):
 
 def output_str(arg):
     print(toUTF8Replace(arg), end='')
-
-def output_line(arg):
-    print(toUTF8Replace(arg))
 
 import configparser
 
@@ -136,6 +133,7 @@ TRYHARDER = False
 # Store the submission directory
 SUBMISSIONBASE = None
 
+# Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
 def info_print_nonewline(string):
@@ -150,8 +148,8 @@ def info_print(string):
 VERBOSE = True
 def verbose_print(arg):
     if VERBOSE:
-        output_line(arg)
-        output_line("")
+        output_str(arg + "\n")
+        output_str("\n")
 
 
 # Check function for problems in practical
@@ -176,7 +174,7 @@ def print_file_contents(
             if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
                 continue
 
-            output_line(line.rstrip())
+            output_str(line.rstrip() + "\n")
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
@@ -393,7 +391,7 @@ def register_diff_test(test, comparefile):
         assert isinstance(textout, unicode)
         #print("Precheck")
         # print(textout)
-        output_line(textout)
+        output_str(textout + "\n")
         #print("Postcheck")
     testStore.append(test)
 
