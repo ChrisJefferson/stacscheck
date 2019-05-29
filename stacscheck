@@ -14,11 +14,10 @@ def toUTF8Replace(bytes):
     return str(bytes, "utf8", errors="replace")
 
 def output_str(arg):
-    sys.stdout.write(toUTF8Replace(arg))
+    print(toUTF8Replace(arg), end='')
 
 def output_line(arg):
-    output_str(arg)
-    sys.stdout.write("\n")
+    print(toUTF8Replace(arg))
 
 import configparser
 
@@ -330,13 +329,13 @@ def print_test_or_info_output(test):
 
     if test.get("stderr", False) and test.get("stdout", False):
         output_str("--- submission output ---\n")
-        output_str(u"".join(stdout).encode("utf8", errors="replace"))
+        output_str(u"".join(stdout))
         output_str("--- submission stderr output ---\n")
-        output_str(u"".join(stderr).encode("utf8", errors="replace"))
+        output_str(u"".join(stderr))
         output_str("---\n\n")
     elif test.get("stderr", False) or test.get("stdout", False):
         output_str("--- submission output ---\n")
-        output_str(u"".join(stdout).encode("utf8", errors="replace") + u"".join(stderr).encode("utf8", errors="replace"))
+        output_str(u"".join(stdout) + u"".join(stderr))
         output_str("---\n\n")
     else:
         output_str("--- no output from submission---\n\n")
@@ -669,7 +668,8 @@ def run():
                                         AnyBuildTestFailed=anyBuildTestFailed,
                                         InfoText=INFO_PRINTED
                                         )
-                html.write(toUTF8Replace(htmloutput).encode("utf8"))
+                # html.write(toUTF8Replace(htmloutput).encode("utf8"))
+                html.write(htmloutput.encode("utf8"))
     except EnvironmentError as e:
         print("Error outputting HTML: " + str(e))
 
