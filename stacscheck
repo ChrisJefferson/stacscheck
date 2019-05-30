@@ -53,6 +53,7 @@ import copy
 from threading import Thread
 import difflib
 from optparse import OptionParser, SUPPRESS_HELP
+import argparse
 
 
 # Try importing jinja2, but don't complain if it isn't there
@@ -588,49 +589,52 @@ def run_tests_recursive(testdir):
 # Main program
 def run():
     global VERBOSE, TESTBASE, SUBMISSIONBASE, TRYHARDER
-    parser = OptionParser(usage="%prog [options] testdirectory", version=VERSION)
-    parser.add_option("--id", dest="subid", default="<unknown>",
+    # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
+    parser = argparse.ArgumentParser(prog="PROG")
+    parser.add_argument("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
-    parser.add_option("--html", dest="htmlout",
+    parser.add_argument("--html", dest="htmlout",
                       help="Produce HTML overview", metavar="FILE")
     # This isn't documented, because the output format isn't (yet) stable.
     # You can use this, but don't complain if the format changes in future.
-    parser.add_option("--json", dest="jsonout",
+    parser.add_argument("--json", dest="jsonout",
                       help=SUPPRESS_HELP, metavar="FILE")
-    parser.add_option("--tryharder", dest="tryharder", default=False,
+    parser.add_argument("--tryharder", dest="tryharder", default=False,
                       action="store_true", help=SUPPRESS_HELP)
-    parser.add_option("-v", "--verbose",
+    parser.add_argument("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
                       help="Output more information during testing")
+    parser.add_argument("--version", action="version", version=VERSION)
+    parser.add_argument("testdir")
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    if len(args) != 1:
+    # if len(args) != 1:
+    if args.testdir is None:
         print("stacscheck " + VERSION)
         sys.exit("You must give a directory of tests to run!")
 
-
-    if options.htmlout is not None and not jinja:
+    if args.htmlout is not None and not jinja:
         print("stacscheck " + VERSION)
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
-    VERBOSE = options.verbose
-    TRYHARDER = options.tryharder
+    VERBOSE = args.verbose
+    TRYHARDER = args.tryharder
 
-    if not os.path.exists(args[0]):
+    if not os.path.exists(args.testdir):
         print("stacscheck " + VERSION)
-        print("There is no directory called '" + args[0] + "'")
+        print("There is no directory called '" + args.testdir + "'")
         print("Check you have the test directory name correct!")
         sys.exit(1)
 
-    if not os.path.isdir(args[0]):
+    if not os.path.isdir(args.testdir):
         print("stacscheck " + VERSION)
-        print("'" + args[0] + "' is not a directory")
+        print("'" + args.testdir + "' is not a directory")
         print("Check you have the test directory name correct!")
         sys.exit(1)
 
 
-    TESTBASE = os.path.realpath(args[0])
+    TESTBASE = os.path.realpath(args.testdir)
 
     try_parse_config_file(TESTBASE)
 
@@ -642,8 +646,8 @@ def run():
         run_tests_recursive(TESTBASE)
 
         if len(testStore) == 0:
-            # Use args[0] as it is shorter
-            print("ERROR: No tests found in '" + args[0] + "'")
+            # Use args.testdir as it is shorter
+            print("ERROR: No tests found in '" + args.testdir + "'")
     except EnvironmentError as e:
         print("Error during testing: " + str(e))
 
@@ -655,12 +659,12 @@ def run():
 
 
     try:
-        if options.htmlout is not None:
+        if args.htmlout is not None:
             env = jinja2.Environment(autoescape=True)
             template = env.from_string(JINJAPAGE)
-            with open(options.htmlout, "wb") as html:
+            with open(args.htmlout, "wb") as html:
                 htmloutput = template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
-                                        SubmissionID=options.subid,
+                                        SubmissionID=args.subid,
                                         Tests=testStore,
                                         Finalmessage=finalmessage,
                                         AnyBuildTestFailed=anyBuildTestFailed,
@@ -672,11 +676,11 @@ def run():
         print("Error outputting HTML: " + str(e))
 
     try:
-        if options.jsonout is not None:
-            with open(options.jsonout, "w") as jsonfile:
+        if args.jsonout is not None:
+            with open(args.jsonout, "w") as jsonfile:
                 jsonoutput = json.dumps({ "practical" : CONFIG['practical'],
                                             "course" : CONFIG['course'],
-                                            "subid" : options.subid,
+                                            "subid" : args.subid,
                                             "tests" : testStore,
                                             "infotext" : INFO_PRINTED},
                                             indent = 2, separators=(',', ': '), ensure_ascii=True, sort_keys=True)
