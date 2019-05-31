@@ -99,6 +99,9 @@ JINJAPAGE = u"""
     <tr>
     <td colspan="5" class="code">
         {% if test.htmldiff %}
+        {% for intext in test.inputlines %}
+        {{ intext }} <br>
+        {% endfor %}
         {{ test.htmldiff | safe }}
         {% else %}
         <div display="inline">
@@ -339,7 +342,7 @@ def print_test_or_info_output(test):
     else:
         output_str("--- no output from submission---\n\n")
 
-# Record that a test was run, printing as approriate
+# Record that a test was run, printing as appropriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
         print("pass")
@@ -356,22 +359,33 @@ def register_returnval_test(test):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
+    with open(test["input"], 'rb') as stream:
+        inputlines = toUTF8Replace(stream.read())
     with open(comparefile, 'rb') as stream:
         comparelines = toUTF8Replace(stream.read())
+    inputlines = strip_string(inputlines)
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
 
     userlines = reduce_huge_output(userlines, comparelines)
 
+    test["inputlines"] = inputlines
     test["comparelines"] = comparelines
     test["userlines"] = userlines
+
+    # print("\nINPUTLINES: " + str(inputlines) + "\n")
+
+    # If test passed just print pass
     if comparelines == userlines:
         print("pass")
         test["pass"] = True
+    # If test failed print expected & real output (& possibly extras)
     else:
         print("fail")
         test["pass"] = False
+        # If verbose, print input to stdout
         maybe_print_test_input(test)
+        # Create text for expected & real output
         textdiff = []
         if len(comparelines) > 0:
             textdiff.extend([u"--- expected output ---\n"] + comparelines)
@@ -382,18 +396,20 @@ def register_diff_test(test, comparefile):
             textdiff.extend([u"--- submission output ---\n"] + userlines + [u"---\n"])
         else:
             textdiff.extend([u"--- no output from submission ---\n"])
+        # Print to stdout
         test["textdiff"] = textdiff
-        # test["textdiff"] = list(difflib.unified_diff(userlines,comparelines,"Submission","Reference","",""))
+        textout = u"".join(test["textdiff"])
+        assert isinstance(textout, unicode)
+        output_str(textout + "\n")
+        # Create table for html
         test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+        # Check things are in unicode
         assert isinstance(test["htmldiff"], unicode)
         for l in test["textdiff"]:
             assert isinstance(l, unicode)
-        textout = u"".join(test["textdiff"])
-        assert isinstance(textout, unicode)
-        #print("Precheck")
-        # print(textout)
-        output_str(textout + "\n")
-        #print("Postcheck")
+        # Add input to html
+        test["inputlines"] = inputlines
+
     testStore.append(test)
 
 
