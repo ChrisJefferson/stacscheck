@@ -83,6 +83,7 @@ JINJAPAGE = u"""
 <html lang="en">
 <head>
     <title>{{Practical}} - {{ SubmissionID }} </title>
+    <p>{{ Finalmessage }}</p>
 </head>
 <body>
 <p><tt>{% for line in InfoText %}{{line}}<br/>{% endfor %}</tt></p>
@@ -119,7 +120,6 @@ JINJAPAGE = u"""
     </tr>
     {% endfor %}
     </table>
-    <p>{{ Finalmessage }}</p>
     {% if AnyBuildTestFailed %}
     <p>Building is failing, skipping tests</p>
     {% endif %}
