@@ -1,0 +1,30 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'src': ",
+    "- Warning, there are multiple subdirectories called 'src'.\n",
+    " - found DIR/tests/find-correct-subdirectory/CS1234 Practical1 Ext/src\n",
+    " - found DIR/tests/find-correct-subdirectory/CS1234 Practical1/src\n",
+    " - I'm going to guess 'DIR/tests/find-correct-subdirectory/CS1234 Practical1/src'.\n",
+    " - If that's wrong, go into the correct directory.\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "comparelines": [
+        "1234\n"
+      ],
+      "input": null,
+      "name": "test_correct_output/prog-test.out",
+      "pass": true,
+      "path": "DIR/tests/find-correct-subdirectory/testdir/test_correct_output/prog.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "1234",
+      "userlines": [
+        "1234\n"
+      ]
+    }
+  ]
+}
