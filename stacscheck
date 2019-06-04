@@ -86,38 +86,45 @@ JINJAPAGE = u"""
     <p>{{ Finalmessage }}</p>
 </head>
 <body>
-<p><tt>{% for line in InfoText %}{{line}}<br/>{% endfor %}</tt></p>
+    <h2> STACSCHECK INFO </h2>
+    <p><tt>{% for line in InfoText %}{{line}}<br/>{% endfor %}</tt></p>
     <table style="width:100%">
     {% for test in Tests %}
-    <tr id="test{{ loop.index }}" bgcolor=
-    {% if test.pass %} "#BFB" {% else %} "#FBB" {% endif %} >
-    <td>{% if test.pass %} Pass {% else %} Fail {% endif %}</td>
-
+        <tr id="test{{ loop.index }}" bgcolor=
+        {% if test.pass %} "#BFB" {% else %} "#FBB" {% endif %} >
+        <td>{% if test.pass %} Pass {% else %} Fail {% endif %}</td>
         <td id="{{ test.name }}"> {{ test.name }} </td>
         <td> {{ test.pass }} </td>
         <td> {{ test.returnval }} </td>
-    </tr>
-    <tr>
-    <td colspan="5" class="code">
-        {% if test.htmldiff %}
-        {% for intext in test.inputlines %}
-        {{ intext }} <br>
-        {% endfor %}
-        {{ test.htmldiff | safe }}
-        {% else %}
+        </tr>
+        <tr>
+        <td colspan="5" class="code">
+
+        <h3> Compiler info </h3>
         <div display="inline">
         {% for line in  test.stdout.splitlines() %}
-        {{line}}<br>
+            {{line}}<br>
         {% endfor %}
         </div>
         <div display="inline">
         {% for line in  test.stderr.splitlines() %}
-        {{line}}<br>
+            {{line}}<br>
         {% endfor %}
         </div>
+
+        <h3> Input </h3>
+        {% for intext in test.inputlines %}
+            {{ intext }}
+            <br>
+        {% endfor %}
+        {% if test.htmldiff %}
+            <h3> Output </h3>
+            {{ test.htmldiff | safe }}
+
         {% endif %}
-    </td>
-    </tr>
+        <br> <br>
+        </td>
+        </tr>
     {% endfor %}
     </table>
     {% if AnyBuildTestFailed %}
@@ -359,21 +366,15 @@ def register_returnval_test(test):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
-    with open(test["input"], 'rb') as stream:
-        inputlines = toUTF8Replace(stream.read())
     with open(comparefile, 'rb') as stream:
         comparelines = toUTF8Replace(stream.read())
-    inputlines = strip_string(inputlines)
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
 
     userlines = reduce_huge_output(userlines, comparelines)
 
-    test["inputlines"] = inputlines
     test["comparelines"] = comparelines
     test["userlines"] = userlines
-
-    # print("\nINPUTLINES: " + str(inputlines) + "\n")
 
     # If test passed just print pass
     if comparelines == userlines:
@@ -407,8 +408,6 @@ def register_diff_test(test, comparefile):
         assert isinstance(test["htmldiff"], unicode)
         for l in test["textdiff"]:
             assert isinstance(l, unicode)
-        # Add input to html
-        test["inputlines"] = inputlines
 
     testStore.append(test)
 
@@ -532,6 +531,7 @@ def run_tests_recursive(testdir):
     extra_env = {"TESTDIR" : testdir}
 
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
+
     for buildsh in buildscripts:
         name = nice_name(buildsh)
         output_str("* BUILD TEST - " + name + " : ")
@@ -539,6 +539,10 @@ def run_tests_recursive(testdir):
         buildshret["name"] = name
         buildshret["path"] = buildsh
         buildshret["type"] = "Build"
+
+        # State there is no fixed input file
+        buildshret["inputlines"] = ["No .in input file (search manually)."]
+
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
             verbose_print("Exiting early due to failed " + buildsh)
@@ -555,6 +559,10 @@ def run_tests_recursive(testdir):
         result["name"] = name
         result["path"] = test
         result["type"] = "Test"
+
+        # State there is no fixed input file
+        result["inputlines"] = ["No .in input file (search manually)."]
+
         register_returnval_test(result)
 
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
@@ -567,12 +575,17 @@ def run_tests_recursive(testdir):
         result["path"] = info
         result["type"] = "Info"
         result["alwaysoutput"] = True
+
+        # State there is no fixed input file
+        result["inputlines"] = ["No .in input file (search manually)."]
+
         register_returnval_test(result)
 
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
 
     outfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
 
+    # If there isn't exactly one .out file per .sh, warn
     if (len(outfiles) == 0) != (len(progscripts) == 0):
         if len(outfiles) == 0:
             warn_print("Found prog*.sh without *.out files in " + testdir)
@@ -589,6 +602,15 @@ def run_tests_recursive(testdir):
             result["name"] = name
             result["input"] = infile
             result["path"] = progsh
+
+            # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
+            with open(result["input"], 'rb') as stream:
+                inputlines = toUTF8Replace(stream.read())
+
+            inputlines = strip_string(inputlines)
+            result["inputlines"] = inputlines
+
+            # Add diff for html to result
             register_diff_test(result, out)
 
     try:
