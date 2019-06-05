@@ -100,27 +100,29 @@ JINJAPAGE = u"""
         <tr>
         <td colspan="5" class="code">
 
-        <h3> Compiler info </h3>
-        <div display="inline">
-        {% for line in  test.stdout.splitlines() %}
-            {{line}}<br>
-        {% endfor %}
-        </div>
-        <div display="inline">
-        {% for line in  test.stderr.splitlines() %}
-            {{line}}<br>
-        {% endfor %}
-        </div>
+        {% if test.type != "Prog" %}
+            <h3> Compiler info </h3>
+            <div display="inline">
+            {% for line in  test.stdout.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+            </div>
+            <div display="inline">
+            {% for line in  test.stderr.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+            </div>
 
-        <h3> Input </h3>
-        {% for intext in test.inputlines %}
-            {{ intext }}
-            <br>
-        {% endfor %}
-        {% if test.htmldiff %}
-            <h3> Output </h3>
-            {{ test.htmldiff | safe }}
-
+        {% else %}
+            <h3> Input </h3>
+            {% for intext in test.inputlines %}
+                {{ intext }}
+                <br>
+            {% endfor %}
+            {% if test.htmldiff %}
+                <h3> Output </h3>
+                {{ test.htmldiff | safe }}
+            {% endif %}
         {% endif %}
         <br> <br>
         </td>
@@ -602,6 +604,7 @@ def run_tests_recursive(testdir):
             result["name"] = name
             result["input"] = infile
             result["path"] = progsh
+            result["type"] = "Prog"
 
             # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
             with open(result["input"], 'rb') as stream:
