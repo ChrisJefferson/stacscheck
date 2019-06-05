@@ -101,7 +101,7 @@ JINJAPAGE = u"""
         <td colspan="5" class="code">
 
         {% if test.type != "Prog" %}
-            <h3> Compiler info </h3>
+            <h2> Compiler info </h2>
             <div display="inline">
             {% for line in  test.stdout.splitlines() %}
                 {{line}}<br>
@@ -114,15 +114,20 @@ JINJAPAGE = u"""
             </div>
 
         {% else %}
-            <h3> Input </h3>
+            <h2> Input </h2>
             {% for intext in test.inputlines %}
                 {{ intext }}
                 <br>
             {% endfor %}
-            {% if test.htmldiff %}
-                <h3> Output </h3>
-                {{ test.htmldiff | safe }}
-            {% endif %}
+            <h2> Output </h2>
+            <h3> Expected </h3>
+            {% for exp in test.comparelines %}
+                {{ exp }}
+            {% endfor %}
+            <h3> Submission </h3>
+            {% for sub in test.userlines %}
+                {{ sub }}
+            {% endfor %}
         {% endif %}
         <br> <br>
         </td>
@@ -382,6 +387,7 @@ def register_diff_test(test, comparefile):
     if comparelines == userlines:
         print("pass")
         test["pass"] = True
+
     # If test failed print expected & real output (& possibly extras)
     else:
         print("fail")
@@ -399,15 +405,18 @@ def register_diff_test(test, comparefile):
             textdiff.extend([u"--- submission output ---\n"] + userlines + [u"---\n"])
         else:
             textdiff.extend([u"--- no output from submission ---\n"])
+
         # Print to stdout
         test["textdiff"] = textdiff
         textout = u"".join(test["textdiff"])
         assert isinstance(textout, unicode)
         output_str(textout + "\n")
+
         # Create table for html
-        test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+        # test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+
         # Check things are in unicode
-        assert isinstance(test["htmldiff"], unicode)
+        # assert isinstance(test["htmldiff"], unicode)
         for l in test["textdiff"]:
             assert isinstance(l, unicode)
 
