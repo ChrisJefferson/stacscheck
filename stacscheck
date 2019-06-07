@@ -67,59 +67,88 @@ else:
 # The HTML output
 JINJAPAGE = u"""
 <!DOCTYPE html>
-<style type="text/css">
-        table.diff {font-family:Courier; border:medium;}
-        td.code {font-family:Courier; border:medium;}
-        .diff_header {background-color:#e0e0e0}
-        td.diff_header {text-align:right}
-        .diff_next {background-color:#c0c0c0}
-        .diff_add {background-color:#aaffaa}
-        .diff_chg {background-color:#ffff77}
-        .diff_sub {background-color:#ffaaaa}
-:target {
-   background: yellow;
-}
-</style>
 <html lang="en">
+<style>
+    table.diff {font-family:Courier; border: medium ; width:100%}
+    td.code {font-family:Courier; border:medium;}
+    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    td.diff_header {text-align: center;}
+    .diff_next {background-color:#ff00dd; display: none}
+    .diff_add {background-color:#24906c} /* E44C4B */
+    .diff_chg {background-color:#ffff77}
+    .diff_sub {background-color:#E44C4B}
+    :target {
+    background: yellow;
+    }
+
+    /* Make the whole thing have a dark background*/
+    body {background-color: #292929}
+    /* For test descriptions (PASS build-faro) and stacscheck info */
+    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    /* For any normal code */
+    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    /* For compared code */
+    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
+        margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    /* Collapsible testing */
+    .collapsible {max-height: 0; background: #437893}
+</style>
 <head>
     <title>{{Practical}} - {{ SubmissionID }} </title>
-    <p>{{ Finalmessage }}</p>
+    <h1 class="test_desc">{{ Finalmessage }}</h1>
+    <br>
 </head>
 <body>
-    <h2> STACSCHECK INFO </h2>
-    <p><tt>{% for line in InfoText %}{{line}}<br/>{% endfor %}</tt></p>
-    <table style="width:100%">
+    <h1 class="test_desc"> STACSCHECK INFO </h1>
+    <div class="infocode">{% for line in InfoText %}
+        {{line}}
+        <br/>
+    {% endfor %}
+    <br>
+    </div>
+    <table>
     {% for test in Tests %}
         <tr id="test{{ loop.index }}" bgcolor=
-        {% if test.pass %} "#BFB" {% else %} "#FBB" {% endif %} >
-        <td>{% if test.pass %} Pass {% else %} Fail {% endif %}</td>
-        <td id="{{ test.name }}"> {{ test.name }} </td>
-        <td> {{ test.pass }} </td>
-        <td> {{ test.returnval }} </td>
+        {% if test.pass %} "#2aa77d" {% else %} "#E44C4B" {% endif %} >
+        <td>
+        <button class="collapsebutton" onclick="docollapse('content-{{loop.index}}')">
+        :)
+        </button>
+        </td>
+        <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
+        <td class="test_desc" id="{{ test.name }}"> {{ test.name }} </td>
         </tr>
+        <div class="collapsible" id="content-{{loop.index}}">
         <tr>
         <td colspan="5" class="code">
 
         {% if test.type != "Prog" %}
             <h2> Compiler info </h2>
-            <div display="inline">
+            <div display="inline" class="infocode">
             {% for line in  test.stdout.splitlines() %}
                 {{line}}<br>
             {% endfor %}
             </div>
-            <div display="inline">
+            <div display="inline" class="infocode">
             {% for line in  test.stderr.splitlines() %}
                 {{line}}<br>
             {% endfor %}
             </div>
 
         {% else %}
-            <h2> Input </h2>
-            {% for intext in test.inputlines %}
-                {{ intext }}
-                <br>
-            {% endfor %}
+            {% if test.inputlines != None %}
+                <h2> Input </h2>
+                <div class="infocode">
+                {% for intext in test.inputlines %}
+                    {{ intext }}
+                    <br>
+                {% endfor %}
+                </div>
+            {% endif %}
             <h2> Output </h2>
+
+            {#
             <h3> Expected </h3>
             {% for exp in test.comparelines %}
                 {{ exp }}
@@ -128,18 +157,48 @@ JINJAPAGE = u"""
             {% for sub in test.userlines %}
                 {{ sub }}
             {% endfor %}
+            #}
+
+            <div class="compcode">
+            {% if test.htmldiff %}
+                {{ test.htmldiff | safe }}
+            </div>
+            {% else %}
+                <div display="inline" class="infocode">
+                {% for line in  test.stdout.splitlines() %}
+                    {{line}}<br>
+                {% endfor %}
+                </div>
+                <div display="inline" class="infocode">
+                {% for line in  test.stderr.splitlines() %}
+                    {{line}}<br>
+                {% endfor %}
+                </div>
+            {% endif %}
+
         {% endif %}
         <br> <br>
         </td>
         </tr>
+        </div>
     {% endfor %}
     </table>
     {% if AnyBuildTestFailed %}
     <p>Building is failing, skipping tests</p>
     {% endif %}
 </body>
+<script>
+    function docollapse(contentid) {
+        var content = document.getElementById(contentid);
+        console.log(content + " banana");
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    }
+</script>
 </html>
-
 """
 
 # Store the base test directory
@@ -412,13 +471,16 @@ def register_diff_test(test, comparefile):
         assert isinstance(textout, unicode)
         output_str(textout + "\n")
 
-        # Create table for html
-        # test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+
 
         # Check things are in unicode
-        # assert isinstance(test["htmldiff"], unicode)
+
         for l in test["textdiff"]:
             assert isinstance(l, unicode)
+
+    # Create table for html
+    test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+    assert isinstance(test["htmldiff"], unicode)
 
     testStore.append(test)
 
@@ -616,11 +678,14 @@ def run_tests_recursive(testdir):
             result["type"] = "Prog"
 
             # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
-            with open(result["input"], 'rb') as stream:
-                inputlines = toUTF8Replace(stream.read())
+            if (result["input"] != None):
+                with open(result["input"], 'rb') as stream:
+                    inputlines = toUTF8Replace(stream.read())
 
-            inputlines = strip_string(inputlines)
-            result["inputlines"] = inputlines
+                inputlines = strip_string(inputlines)
+                result["inputlines"] = inputlines
+            else:
+                result["inputlines"] = None
 
             # Add diff for html to result
             register_diff_test(result, out)
