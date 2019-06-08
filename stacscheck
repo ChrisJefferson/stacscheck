@@ -92,7 +92,7 @@ JINJAPAGE = u"""
         margin-left: 20px}
     h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
-    .collapsible {max-height: 0; background: #437893}
+    .collapsible {display: "block"; background: #437893}
 </style>
 <head>
     <title>{{Practical}} - {{ SubmissionID }} </title>
@@ -119,8 +119,8 @@ JINJAPAGE = u"""
         <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
         <td class="test_desc" id="{{ test.name }}"> {{ test.name }} </td>
         </tr>
-        <div class="collapsible" id="content-{{loop.index}}">
-        <tr>
+        <div class="collapsible" >
+        <tr id="content-{{loop.index}}">
         <td colspan="5" class="code">
 
         {% if test.type != "Prog" %}
@@ -191,10 +191,10 @@ JINJAPAGE = u"""
     function docollapse(contentid) {
         var content = document.getElementById(contentid);
         console.log(content + " banana");
-        if (content.style.maxHeight){
-            content.style.maxHeight = null;
+        if (content.style.display == "block"){
+            content.style.display = "none";
         } else {
-            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.display = content.style.display = "block";
         }
     }
 </script>
