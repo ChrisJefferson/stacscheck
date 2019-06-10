@@ -74,7 +74,7 @@ JINJAPAGE = u"""
     .diff_header {background-color:#3a3a3a; color: #ffffff}
     td.diff_header {text-align: center;}
     .diff_next {background-color:#ff00dd; display: none}
-    .diff_add {background-color:#24906c} /* E44C4B */
+    .diff_add {background-color:#24906c}
     .diff_chg {background-color:#ffff77}
     .diff_sub {background-color:#E44C4B}
     :target {
@@ -82,7 +82,7 @@ JINJAPAGE = u"""
     }
 
     /* Make the whole thing have a dark background*/
-    body {background-color: #292929}
+    body {background-color: #292929; width: 100%;}
     /* For test descriptions (PASS build-faro) and stacscheck info */
     .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
     /* For any normal code */
@@ -92,7 +92,22 @@ JINJAPAGE = u"""
         margin-left: 20px}
     h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
-    .collapsible {display: "block"; background: #437893}
+    .collapsible {display: none}
+
+    table { table-layout: fixed;}
+    .diff {
+        display: table;
+        table-layout: fixed;
+        word-wrap: break-word;
+        width: 900px;
+        # background-color: coral;
+    }
+    td {white-space: normal;}
+
+    #testtable {width: 100%;}
+
+    # .buttonholder {width: 2%;}
+
 </style>
 <head>
     <title>{{Practical}} - {{ SubmissionID }} </title>
@@ -107,11 +122,11 @@ JINJAPAGE = u"""
     {% endfor %}
     <br>
     </div>
-    <table>
+    <table id="testtable">
     {% for test in Tests %}
         <tr id="test{{ loop.index }}" bgcolor=
         {% if test.pass %} "#2aa77d" {% else %} "#E44C4B" {% endif %} >
-        <td>
+        <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-{{loop.index}}')">
         :)
         </button>
@@ -119,8 +134,8 @@ JINJAPAGE = u"""
         <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
         <td class="test_desc" id="{{ test.name }}"> {{ test.name }} </td>
         </tr>
-        <div class="collapsible" >
-        <tr id="content-{{loop.index}}">
+        <div class="collapsible2" >
+        <tr id="content-{{loop.index}}" class="collapsible">
         <td colspan="5" class="code">
 
         {% if test.type != "Prog" %}
