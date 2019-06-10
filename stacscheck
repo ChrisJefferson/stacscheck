@@ -69,8 +69,14 @@ JINJAPAGE = u"""
 <!DOCTYPE html>
 <html lang="en">
 <style>
-    table.diff {font-family:Courier; border: medium ; width:100%}
-    td.code {font-family:Courier; border:medium;}
+    table.diff {
+        table-layout: inherit;
+        font-family:Courier;
+        border: medium;
+        # width: 95vw;
+        word-wrap: break-word;
+    }
+    .code {font-family:Courier; border:medium; width: 2000px}
     .diff_header {background-color:#3a3a3a; color: #ffffff}
     td.diff_header {text-align: center;}
     .diff_next {background-color:#ff00dd; display: none}
@@ -92,21 +98,27 @@ JINJAPAGE = u"""
         margin-left: 20px}
     h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
-    .collapsible {display: none}
+    .collapsible {display: none;}
 
     table { table-layout: fixed;}
-    .diff {
-        display: table;
-        table-layout: fixed;
-        word-wrap: break-word;
-        width: 900px;
-        # background-color: coral;
-    }
+    # .diff {
+    #     display: table;
+    #     table-layout: inherit;
+    #     word-wrap: break-word;
+    #     background-color: coral;
+    # }
+
+    # .test-content {
+    #     # display: table-cell;
+    #     width: 100%;
+    #     colspan: 3;
+    # }
+
     td {white-space: normal;}
 
-    #testtable {width: 100%;}
+    # testtable {width: 100%;}
 
-    # .buttonholder {width: 2%;}
+    .buttonholder {width: 2%;}
 
 </style>
 <head>
@@ -134,7 +146,7 @@ JINJAPAGE = u"""
         <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
         <td class="test_desc" id="{{ test.name }}"> {{ test.name }} </td>
         </tr>
-        <div class="collapsible2" >
+        <div class="test-content" >
         <tr id="content-{{loop.index}}" class="collapsible">
         <td colspan="5" class="code">
 
@@ -145,7 +157,7 @@ JINJAPAGE = u"""
                 {{line}}<br>
             {% endfor %}
             </div>
-            <div display="inline" class="infocode">
+            <div class="infocode">
             {% for line in  test.stderr.splitlines() %}
                 {{line}}<br>
             {% endfor %}
@@ -179,12 +191,12 @@ JINJAPAGE = u"""
                 {{ test.htmldiff | safe }}
             </div>
             {% else %}
-                <div display="inline" class="infocode">
+                <div class="infocode">
                 {% for line in  test.stdout.splitlines() %}
                     {{line}}<br>
                 {% endfor %}
                 </div>
-                <div display="inline" class="infocode">
+                <div class="infocode">
                 {% for line in  test.stderr.splitlines() %}
                     {{line}}<br>
                 {% endfor %}
@@ -206,10 +218,10 @@ JINJAPAGE = u"""
     function docollapse(contentid) {
         var content = document.getElementById(contentid);
         console.log(content + " banana");
-        if (content.style.display == "block"){
+        if (content.style.display == "table-row"){
             content.style.display = "none";
         } else {
-            content.style.display = content.style.display = "block";
+            content.style.display = content.style.display = "table-row";
         }
     }
 </script>
