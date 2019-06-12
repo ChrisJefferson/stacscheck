@@ -673,6 +673,8 @@ def run_tests_recursive(testdir):
             anyBuildTestFailed = True
             return
 
+    # SPINACH if folder testdir is in == PARENTDIR, return. if it isn't but != TESTBASE, call again with parent
+
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
     for test in testscripts:
@@ -745,8 +747,8 @@ def run_tests_recursive(testdir):
                 if os.path.isdir(os.path.join(testdir, d))]
 
         for d in subdirs:
-            if (should_test_run(d)):
-                run_tests_recursive(d)
+            # if (should_test_run(d)):
+            run_tests_recursive(d)
     except OSError as e:
         warn_print(str(e))
 
