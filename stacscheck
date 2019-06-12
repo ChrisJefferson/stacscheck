@@ -328,11 +328,28 @@ CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 #### Beginning of functions
 def try_parse_config_file(basedir):
     config = configparser.ConfigParser()
-    filename = os.path.join(basedir, "practical.config")
-    if not os.path.isfile(filename):
-        print("'" + basedir + "' is not a valid test directory")
-        print("(the test directory does not contain a file called 'practical.config')")
-        sys.exit(1)
+
+    # SPINACH get it to search up until it finds it (limit 5?) and store it under a global
+    parentdir = basedir
+    for x in range(5):
+        # Try to get config file path
+        filename = os.path.join(parentdir, "practical.config")
+        # If it exists, continue
+        if os.path.isfile(filename):
+            output_str("FOUND CONFIG FILE IN " + parentdir + "\n")
+            PARENTDIR = parentdir
+            sys.exit(0)
+            break
+        # Otherwise, get parent directory and try again
+        split_path = os.path.split(parentdir)
+        parentdir = split_path[0]
+
+
+    # filename = os.path.join(basedir, "practical.config")
+    # if not os.path.isfile(filename):
+    #     print("'" + basedir + "' is not a valid test directory")
+    #     print("(the test directory does not contain a file called 'practical.config')")
+    #     sys.exit(1)
 
     try:
         config.read(filename)
@@ -625,6 +642,12 @@ def files_in_dir_matching_regex(directory, regex):
 
     return files
 
+# Determine whether test should run (if it's part of the group of tests to be run)
+def should_test_run(testdir):
+    output_str("DIRECTORY: " + str(testdir) + "\n")
+
+    return True
+
 # Accept a directory name relative to
 def run_tests_recursive(testdir):
     # First check for a build*.sh
@@ -717,12 +740,13 @@ def run_tests_recursive(testdir):
             # Add diff for html to result
             register_diff_test(result, out)
 
-    try:
+    try:    # SPINACH
         subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
                 if os.path.isdir(os.path.join(testdir, d))]
 
         for d in subdirs:
-            run_tests_recursive(d)
+            if (should_test_run(d)):
+                run_tests_recursive(d)
     except OSError as e:
         warn_print(str(e))
 
@@ -730,7 +754,7 @@ def run_tests_recursive(testdir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, TRYHARDER
+    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTDIR, TRYHARDER
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument("--id", dest="subid", default="<unknown>",
@@ -775,9 +799,10 @@ def run():
         print("Check you have the test directory name correct!")
         sys.exit(1)
 
-
+    # Get the absolute path instead of the relative path
     TESTBASE = os.path.realpath(args.testdir)
 
+    # SPINACH if config file isn't found, try looking up. store where you find it
     try_parse_config_file(TESTBASE)
 
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
