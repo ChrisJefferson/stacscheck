@@ -237,6 +237,9 @@ TRYHARDER = False
 # Store the submission directory
 SUBMISSIONBASE = None
 
+# Store parent directory containing practical.config
+PARENTBASE = None
+
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
@@ -331,26 +334,29 @@ def try_parse_config_file(basedir):
 
     # SPINACH get it to search up until it finds it (limit 5?) and store it under a global
     parentdir = basedir
-    for x in range(5):
+    for x in range(6):
         # Try to get config file path
         filename = os.path.join(parentdir, "practical.config")
         # If it exists, continue
         if os.path.isfile(filename):
             output_str("FOUND CONFIG FILE IN " + parentdir + "\n")
-            PARENTDIR = parentdir
-            sys.exit(0)
+
+            # sys.exit(0)
             break
         # Otherwise, get parent directory and try again
         split_path = os.path.split(parentdir)
         parentdir = split_path[0]
 
+    # Check that something was found, or quit
+    if not os.path.isfile(filename):
+        warn_print("no practical.config file found in directory or 5 parent directories")
+        sys.exit(1)
 
     # filename = os.path.join(basedir, "practical.config")
     # if not os.path.isfile(filename):
     #     print("'" + basedir + "' is not a valid test directory")
     #     print("(the test directory does not contain a file called 'practical.config')")
     #     sys.exit(1)
-
     try:
         config.read(filename)
     except IOError as e:
@@ -369,6 +375,8 @@ def try_parse_config_file(basedir):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
         CONFIG[option] = config.get('info', option)
+
+    return parentdir
 
 # Walk directory tree under 'rootdir', finding all directories with 'name'.
 def find_all_directories_with_name(name, rootdir):
@@ -653,6 +661,7 @@ def run_tests_recursive(testdir):
     # First check for a build*.sh
     extra_env = {"TESTDIR" : testdir}
 
+    # BUILDSCRIPTS
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
 
     for buildsh in buildscripts:
@@ -673,8 +682,23 @@ def run_tests_recursive(testdir):
             anyBuildTestFailed = True
             return
 
-    # SPINACH if folder testdir is in == PARENTDIR, return. if it isn't but != TESTBASE, call again with parent
+    # SPINACH if testdir == PARENTBASE, return. Otherwise if
+    # testdir != TESTBASE, recurse with parent (because current testdir is
+    # somewhere between directory stacscheck was called from and the directory
+    # with the config file). All this is so that parent directories will only
+    # execute build tests.
+    if os.path.samefile(str(testdir), str(PARENTBASE)):
+        return
+    elif not os.path.samefile(str(testdir), str(TESTBASE)):
+        # Get parent directory and run tests with it (should stop after build)
+        split_path = os.path.split(testdir)
+        run_tests_recursive(split_path[0])
+        return
+    else:
+        split_path = os.path.split(testdir)
+        run_tests_recursive(split_path[0])
 
+    # TESTSCRIPTS
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
     for test in testscripts:
@@ -690,6 +714,7 @@ def run_tests_recursive(testdir):
 
         register_returnval_test(result)
 
+    # INFOSCRIPTS
     infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
 
     for info in infoscripts:
@@ -706,6 +731,7 @@ def run_tests_recursive(testdir):
 
         register_returnval_test(result)
 
+    # PROGSCRIPTS
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
 
     outfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
@@ -742,7 +768,8 @@ def run_tests_recursive(testdir):
             # Add diff for html to result
             register_diff_test(result, out)
 
-    try:    # SPINACH
+    # Run tests for subdirectories
+    try:
         subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
                 if os.path.isdir(os.path.join(testdir, d))]
 
@@ -756,7 +783,7 @@ def run_tests_recursive(testdir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTDIR, TRYHARDER
+    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument("--id", dest="subid", default="<unknown>",
@@ -805,7 +832,7 @@ def run():
     TESTBASE = os.path.realpath(args.testdir)
 
     # SPINACH if config file isn't found, try looking up. store where you find it
-    try_parse_config_file(TESTBASE)
+    PARENTBASE = try_parse_config_file(TESTBASE)
 
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
         print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])
