@@ -3,7 +3,7 @@
 mkdir tests/checkout-baddir/testdir/abc
 chmod -rwx tests/checkout-baddir/testdir/abc
 
-set -o errexit 
+set -o errexit
 
 CURRENTDIR=$(pwd)
 echo Current dir is $CURRENTDIR

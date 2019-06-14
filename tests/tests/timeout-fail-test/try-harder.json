@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "build",
       "pass": false,
       "path": "DIR/tests/timeout-fail-test/testdir/build.sh",

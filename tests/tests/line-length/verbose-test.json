@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test-length",
       "pass": true,
       "path": "DIR/tests/line-length/testdir/test-length.sh",
@@ -17,6 +20,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test-no-arguments",
       "pass": true,
       "path": "DIR/tests/line-length/testdir/test-no-arguments.sh",

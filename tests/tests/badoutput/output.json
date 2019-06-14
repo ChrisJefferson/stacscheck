@@ -13,6 +13,9 @@
       ],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">z</span></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/badoutput/testdir/test1.in",
+      "inputlines": [
+        "x\n"
+      ],
       "name": "progcat-test1.out",
       "pass": false,
       "path": "DIR/tests/badoutput/testdir/progcat.sh",
@@ -26,6 +29,7 @@
         "x\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "x\n"
       ]
@@ -36,6 +40,9 @@
       ],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to1__0\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"from1_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">y</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"to1_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">z</span></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/badoutput/testdir/test2.in",
+      "inputlines": [
+        "y\n"
+      ],
       "name": "progcat-test2.out",
       "pass": false,
       "path": "DIR/tests/badoutput/testdir/progcat.sh",
@@ -49,6 +56,7 @@
         "y\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "y\n"
       ]

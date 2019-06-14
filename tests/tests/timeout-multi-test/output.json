@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test1",
       "pass": false,
       "path": "DIR/tests/timeout-multi-test/testdir/test1.sh",
@@ -17,6 +20,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test2",
       "pass": true,
       "path": "DIR/tests/timeout-multi-test/testdir/test2.sh",
@@ -26,6 +32,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test3",
       "pass": false,
       "path": "DIR/tests/timeout-multi-test/testdir/test3.sh",
@@ -35,6 +44,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test4",
       "pass": true,
       "path": "DIR/tests/timeout-multi-test/testdir/test4.sh",
@@ -44,6 +56,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test5",
       "pass": true,
       "path": "DIR/tests/timeout-multi-test/testdir/test5.sh",

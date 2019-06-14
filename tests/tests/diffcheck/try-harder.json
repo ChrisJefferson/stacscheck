@@ -9,35 +9,44 @@
   "tests": [
     {
       "comparelines": [],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/diffcheck/testdir/catter/blanks.in",
+      "inputlines": [],
       "name": "catter/progcat-blanks.out",
       "pass": true,
       "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "type": "Prog",
       "userlines": []
     },
     {
       "comparelines": [],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/diffcheck/testdir/catter/blanks2.in",
+      "inputlines": [],
       "name": "catter/progcat-blanks2.out",
       "pass": true,
       "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "\n\n\n   \n\n\n \n\n",
+      "type": "Prog",
       "userlines": []
     },
     {
       "comparelines": [],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to2__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/diffcheck/testdir/catter/empty.in",
+      "inputlines": [],
       "name": "catter/progcat-empty.out",
       "pass": true,
       "path": "DIR/tests/diffcheck/testdir/catter/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "type": "Prog",
       "userlines": []
     },
     {
@@ -46,13 +55,16 @@
         "line 3\n",
         "line 2\n"
       ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to3__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"from3_1\">1</td><td nowrap=\"nowrap\">line&nbsp;1</td><td class=\"diff_next\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"to3_1\">1</td><td nowrap=\"nowrap\">line&nbsp;1</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from3_2\">2</td><td nowrap=\"nowrap\">line&nbsp;3</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to3_2\">2</td><td nowrap=\"nowrap\">line&nbsp;3</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from3_3\">3</td><td nowrap=\"nowrap\">line&nbsp;2</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to3_3\">3</td><td nowrap=\"nowrap\">line&nbsp;2</td></tr>\n        </tbody>\n    </table>",
       "input": null,
+      "inputlines": null,
       "name": "stderrstdout/progcat-test.out",
       "pass": true,
       "path": "DIR/tests/diffcheck/testdir/stderrstdout/progcat.sh",
       "returnval": 0,
       "stderr": "line 2\n",
       "stdout": "line 1\nline 3\n",
+      "type": "Prog",
       "userlines": [
         "line 1\n",
         "line 3\n",

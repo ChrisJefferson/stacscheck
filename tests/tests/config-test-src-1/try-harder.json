@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "build",
       "pass": true,
       "path": "DIR/tests/config-test-src-1/testdir/build.sh",
@@ -17,6 +20,9 @@
       "type": "Build"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test",
       "pass": true,
       "path": "DIR/tests/config-test-src-1/testdir/test.sh",

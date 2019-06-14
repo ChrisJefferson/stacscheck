@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "build",
       "pass": true,
       "path": "DIR/tests/macosx_dir/testdir/build.sh",

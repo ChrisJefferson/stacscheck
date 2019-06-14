@@ -15,6 +15,11 @@
       ],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__0\">f</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\">a</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__0\">f</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\">a</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from0_2\">2</td><td nowrap=\"nowrap\">b</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to0_2\">2</td><td nowrap=\"nowrap\">b</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from0_3\">3</td><td nowrap=\"nowrap\">c</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to0_3\">3</td><td nowrap=\"nowrap\">c</td></tr>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_4\">4</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL&nbsp;...&nbsp;(line&nbsp;truncated)</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/diffcheck-long-line/testdir/catter/short.in",
+      "inputlines": [
+        "a\n",
+        "b\n",
+        "c\n"
+      ],
       "name": "catter/progcat-short.out",
       "pass": false,
       "path": "DIR/tests/diffcheck-long-line/testdir/catter/progcat.sh",
@@ -33,6 +38,7 @@
         "LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL ... (line truncated)\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "a\n",
         "b\n",
@@ -48,6 +54,11 @@
       ],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to1__0\"><a href=\"#difflib_chg_to1__0\">f</a></td><td class=\"diff_header\" id=\"from1_1\">1</td><td nowrap=\"nowrap\">a</td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__0\">f</a></td><td class=\"diff_header\" id=\"to1_1\">1</td><td nowrap=\"nowrap\">a</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from1_2\">2</td><td nowrap=\"nowrap\">b</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to1_2\">2</td><td nowrap=\"nowrap\">b</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from1_3\">3</td><td nowrap=\"nowrap\">c</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to1_3\">3</td><td nowrap=\"nowrap\">c</td></tr>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"from1_4\">4</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL&nbsp;...&nbsp;(line&nbsp;truncated)</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from1_5\">5</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;...&nbsp;Output&nbsp;truncated</span></td><td class=\"diff_next\"></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/diffcheck-long-line/testdir/catter2/short.in",
+      "inputlines": [
+        "a\n",
+        "b\n",
+        "c\n"
+      ],
       "name": "catter2/progcat-short.out",
       "pass": false,
       "path": "DIR/tests/diffcheck-long-line/testdir/catter2/progcat.sh",
@@ -67,6 +78,7 @@
         " ... Output truncated\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "a\n",
         "b\n",
@@ -84,6 +96,7 @@
       ],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to2__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to2__1\"><a href=\"#difflib_chg_to2__0\">f</a></td><td class=\"diff_header\" id=\"from2_1\">1</td><td nowrap=\"nowrap\">line&nbsp;1</td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__0\">f</a></td><td class=\"diff_header\" id=\"to2_1\">1</td><td nowrap=\"nowrap\">line&nbsp;1</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from2_2\">2</td><td nowrap=\"nowrap\">line&nbsp;3</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to2_2\">2</td><td nowrap=\"nowrap\">line&nbsp;3</td></tr>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to2__1\">n</a></td><td class=\"diff_header\" id=\"from2_3\">3</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL&nbsp;...&nbsp;(line&nbsp;truncated)</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__1\">n</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from2_4\">4</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;...&nbsp;Output&nbsp;truncated</span></td><td class=\"diff_next\"></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from2_5\">5</td><td nowrap=\"nowrap\">line&nbsp;2</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to2_3\">3</td><td nowrap=\"nowrap\">line&nbsp;2</td></tr>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\" id=\"to2_4\">4</td><td nowrap=\"nowrap\"><span class=\"diff_add\">for&nbsp;i&nbsp;in&nbsp;$(seq&nbsp;10000000);&nbsp;do&nbsp;echo&nbsp;\"Line&nbsp;\"$i;&nbsp;done</span></td></tr>\n        </tbody>\n    </table>",
       "input": null,
+      "inputlines": null,
       "name": "stderrstdout/progcat-test.out",
       "pass": false,
       "path": "DIR/tests/diffcheck-long-line/testdir/stderrstdout/progcat.sh",
@@ -104,6 +117,7 @@
         "line 2\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "line 1\n",
         "line 3\n",
