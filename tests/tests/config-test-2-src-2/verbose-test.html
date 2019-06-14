@@ -1,55 +1,140 @@
 
 <!DOCTYPE html>
-<style type="text/css">
-        table.diff {font-family:Courier; border:medium;}
-        td.code {font-family:Courier; border:medium;}
-        .diff_header {background-color:#e0e0e0}
-        td.diff_header {text-align:right}
-        .diff_next {background-color:#c0c0c0}
-        .diff_add {background-color:#aaffaa}
-        .diff_chg {background-color:#ffff77}
-        .diff_sub {background-color:#ffaaaa}
-:target {
-   background: yellow;
-}
-</style>
 <html lang="en">
+<style>
+    table.diff {
+        table-layout: inherit;
+        font-family:Courier;
+        border: medium;
+        # width: 95vw;
+        word-wrap: break-word;
+    }
+    .code {font-family:Courier; border:medium; width: 2000px}
+    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    td.diff_header {text-align: center;}
+    .diff_next {background-color:#ff00dd; display: none}
+    .diff_add {background-color:#24906c}
+    .diff_chg {background-color:#ffff77}
+    .diff_sub {background-color:#E44C4B}
+    :target {
+    background: yellow;
+    }
+
+    /* Make the whole thing have a dark background*/
+    body {background-color: #292929; width: 100%;}
+    /* For test descriptions (PASS build-faro) and stacscheck info */
+    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    /* For any normal code */
+    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    /* For compared code */
+    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
+        margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    /* Collapsible testing */
+    .collapsible {display: none;}
+
+    table { table-layout: fixed;}
+    # .diff {
+    #     display: table;
+    #     table-layout: inherit;
+    #     word-wrap: break-word;
+    #     background-color: coral;
+    # }
+
+    # .test-content {
+    #     # display: table-cell;
+    #     width: 100%;
+    #     colspan: 3;
+    # }
+
+    td {white-space: normal;}
+
+    # testtable {width: 100%;}
+
+    .buttonholder {width: 2%;}
+
+</style>
 <head>
     <title>CS1234 Practical 1 - &lt;unknown&gt; </title>
+    <h1 class="test_desc">1 out of 1 tests passed</h1>
+    <br>
 </head>
 <body>
-<p><tt>- Looking for submission in a directory called &#39;config-test-2-src-2&#39;: <br/>
-- Warning: in a directory called &#39;config-test-2-src-2&#39;, with subdirectories also with the same name.
-<br/>- Guessing your submission is in the current directory.
-<br/>- If that&#39;s wrong, go into the correct directory.
-<br/></tt></p>
-    <table style="width:100%">
+    <h1 class="test_desc"> STACSCHECK INFO </h1>
+    <div class="infocode">
+        - Looking for submission in a directory called &#39;config-test-2-src-2&#39;: 
+        <br/>
     
-    <tr id="test1" bgcolor=
-     "#BFB"  >
-    <td> Pass </td>
+        
+- Warning: in a directory called &#39;config-test-2-src-2&#39;, with subdirectories also with the same name.
 
-        <td id="prog-default.out"> prog-default.out </td>
-        <td> True </td>
-        <td> 0 </td>
-    </tr>
-    <tr>
-    <td colspan="5" class="code">
+        <br/>
+    
+        - Guessing your submission is in the current directory.
+
+        <br/>
+    
+        - If that&#39;s wrong, go into the correct directory.
+
+        <br/>
+    
+    <br>
+    </div>
+    <table id="testtable">
+    
+        <tr id="test1" bgcolor=
+         "#2aa77d"  >
+        <td class="buttonholder">
+        <button class="collapsebutton" onclick="docollapse('content-1')">
+        :)
+        </button>
+        </td>
+        <td class="test_desc"> PASS </td>
+        <td class="test_desc" id="prog-default.out"> prog-default.out </td>
+        </tr>
+        <div class="test-content" >
+        <tr id="content-1" class="collapsible">
+        <td colspan="5" class="code">
+
         
-        <div display="inline">
+            
+            <h2> Output </h2>
+
+            
+
+            <div class="compcode">
+            
+                
+    <table class="diff" id="difflib_chg_to0__top"
+           cellspacing="0" cellpadding="0" rules="groups" >
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Submission</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Reference</th></tr></thead>
+        <tbody>
+            <tr><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="from0_1">1</td><td nowrap="nowrap">basedir</td><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="to0_1">1</td><td nowrap="nowrap">basedir</td></tr>
+        </tbody>
+    </table>
+            </div>
+            
+
         
-        basedir<br>
-        
+        <br> <br>
+        </td>
+        </tr>
         </div>
-        <div display="inline">
-        
-        </div>
-        
-    </td>
-    </tr>
     
     </table>
-    <p>1 out of 1 tests passed</p>
     
 </body>
+<script>
+    function docollapse(contentid) {
+        var content = document.getElementById(contentid);
+        console.log(content + " banana");
+        if (content.style.display == "table-row"){
+            content.style.display = "none";
+        } else {
+            content.style.display = content.style.display = "table-row";
+        }
+    }
+</script>
 </html>

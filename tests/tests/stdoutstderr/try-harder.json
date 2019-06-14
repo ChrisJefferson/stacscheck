@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test1",
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test1.sh",
@@ -17,6 +20,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test2",
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test2.sh",
@@ -26,6 +32,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test3",
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test3.sh",
@@ -35,6 +44,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test4",
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test4.sh",
@@ -44,6 +56,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test5",
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test5.sh",
@@ -53,6 +68,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test6",
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test6.sh",
@@ -62,6 +80,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test7",
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test7.sh",
@@ -71,6 +92,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test8",
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test8.sh",

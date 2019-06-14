@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "build-pass",
       "pass": true,
       "path": "DIR/tests/badutf8output2/testdir/build-pass.sh",
@@ -17,6 +20,9 @@
       "type": "Build"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "testcat-fail-two",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/testcat-fail-two.sh",
@@ -26,6 +32,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "testcat-fail",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/testcat-fail.sh",
@@ -35,6 +44,9 @@
       "type": "Test"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "testcat-pass",
       "pass": true,
       "path": "DIR/tests/badutf8output2/testdir/testcat-pass.sh",
@@ -45,6 +57,9 @@
     },
     {
       "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "infocat-fail-two",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/infocat-fail-two.sh",
@@ -55,6 +70,9 @@
     },
     {
       "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "infocat-fail",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/infocat-fail.sh",
@@ -65,6 +83,9 @@
     },
     {
       "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "infocat-pass",
       "pass": true,
       "path": "DIR/tests/badutf8output2/testdir/infocat-pass.sh",
@@ -74,6 +95,9 @@
       "type": "Info"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "subdir/build-fail",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/subdir/build-fail.sh",
@@ -83,6 +107,9 @@
       "type": "Build"
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "subdir2/build-fail-two",
       "pass": false,
       "path": "DIR/tests/badutf8output2/testdir/subdir2/build-fail-two.sh",

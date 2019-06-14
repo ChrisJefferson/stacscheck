@@ -11,13 +11,24 @@
       "comparelines": [
         "1 2\n"
       ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\">1&nbsp;2</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\">1&nbsp;2</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/skip-hidden/testdir/long.in",
+      "inputlines": [
+        "1\n",
+        "2\n",
+        "3\n",
+        "4\n",
+        "5\n",
+        "6\n",
+        "7\n"
+      ],
       "name": "progread-long.out",
       "pass": true,
       "path": "DIR/tests/skip-hidden/testdir/progread.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "1 2\n",
+      "type": "Prog",
       "userlines": [
         "1 2\n"
       ]

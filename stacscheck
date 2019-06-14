@@ -686,16 +686,25 @@ def run_tests_recursive(testdir):
     # somewhere between directory stacscheck was called from and the directory
     # with the config file). All this is so that parent directories will only
     # execute build tests.
-    # if os.path.samefile(str(testdir), str(PARENTBASE)):
-    #     return
-    # elif not os.path.samefile(str(testdir), str(TESTBASE)):
-    #     # Get parent directory and run tests with it (should stop after build)
-    #     split_path = os.path.split(testdir)
-    #     run_tests_recursive(split_path[0])
-    #     return
-    # else:
-    #     split_path = os.path.split(testdir)
-    #     run_tests_recursive(split_path[0])
+
+    currentdir = os.path.abspath(testdir)
+    # output_str("\nABSOLUTE PATH: " + currentdir + "\n")
+    # output_str("TESTBASE: " + str(TESTBASE) + "\n")
+    # output_str("PARENTBASE: " + str(PARENTBASE) + "\n")
+
+    if not (os.path.samefile(str(TESTBASE), str(PARENTBASE))):
+    # If parent directory containing config file was reached, return.
+        if (os.path.samefile(str(testdir), str(PARENTBASE))):
+            output_str("1\n")
+            return
+        # Otherwise if it's somewhere between TESTBASE (inclusive) and PARENTBASE, recurse with
+        # parent and don't do any of the other tests (return).
+        elif ((not os.path.samefile(str(testdir), str(TESTBASE))) and (str(TESTBASE) in str(testdir))):
+            # Get parent directory and run tests with it (should stop after build)
+            output_str("2\n")
+            split_path = os.path.split(testdir)
+            run_tests_recursive(split_path[0])
+            return
 
     # TESTSCRIPTS
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')

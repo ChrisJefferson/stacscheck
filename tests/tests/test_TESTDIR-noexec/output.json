@@ -8,6 +8,9 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "test1",
       "pass": false,
       "path": "DIR/tests/test_TESTDIR-noexec/testdir/test1.sh",
@@ -18,6 +21,9 @@
     },
     {
       "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "info1",
       "pass": false,
       "path": "DIR/tests/test_TESTDIR-noexec/testdir/info1.sh",
@@ -28,6 +34,9 @@
     },
     {
       "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "info2",
       "pass": true,
       "path": "DIR/tests/test_TESTDIR-noexec/testdir/info2.sh",
@@ -40,6 +49,7 @@
       "comparelines": [],
       "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">I&nbsp;am&nbsp;a&nbsp;file</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\"></td><td nowrap=\"nowrap\"></td></tr>\n        </tbody>\n    </table>",
       "input": null,
+      "inputlines": null,
       "name": "prog1-empty.out",
       "pass": false,
       "path": "DIR/tests/test_TESTDIR-noexec/testdir/prog1.sh",
@@ -52,11 +62,15 @@
         "I am a file\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "I am a file\n"
       ]
     },
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
       "name": "build-subdir/build1",
       "pass": false,
       "path": "DIR/tests/test_TESTDIR-noexec/testdir/build-subdir/build1.sh",

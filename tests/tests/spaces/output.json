@@ -9,24 +9,30 @@
   "tests": [
     {
       "comparelines": [],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td></tr>\n        </tbody>\n    </table>",
       "input": null,
+      "inputlines": null,
       "name": "progcat-empty.out",
       "pass": true,
       "path": "DIR/tests/spaces/testdir/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "type": "Prog",
       "userlines": []
     },
     {
       "comparelines": [],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td></td><td>&nbsp;Empty File&nbsp;</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/spaces/testdir/empty2.in",
+      "inputlines": [],
       "name": "progcat-empty2.out",
       "pass": true,
       "path": "DIR/tests/spaces/testdir/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "type": "Prog",
       "userlines": []
     },
     {
@@ -35,13 +41,20 @@
         "y\n",
         "z\n"
       ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to2__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\" id=\"from2_1\">1</td><td nowrap=\"nowrap\">x</td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\" id=\"to2_1\">1</td><td nowrap=\"nowrap\">x</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from2_2\">2</td><td nowrap=\"nowrap\">y</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to2_2\">2</td><td nowrap=\"nowrap\">y</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from2_3\">3</td><td nowrap=\"nowrap\">z</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to2_3\">3</td><td nowrap=\"nowrap\">z</td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/spaces/testdir/space-end-of-line.in",
+      "inputlines": [
+        "x\n",
+        "y\n",
+        "z\n"
+      ],
       "name": "progcat-space-end-of-line.out",
       "pass": true,
       "path": "DIR/tests/spaces/testdir/progcat.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "x\ny\nz\n\n",
+      "type": "Prog",
       "userlines": [
         "x\n",
         "y\n",
@@ -52,8 +65,11 @@
       "comparelines": [
         "x\n"
       ],
-      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;&nbsp;&nbsp;x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">x</span></td></tr>\n        </tbody>\n    </table>",
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to3__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to3__0\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"from3_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&nbsp;&nbsp;&nbsp;x</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"to3_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">x</span></td></tr>\n        </tbody>\n    </table>",
       "input": "DIR/tests/spaces/testdir/space-start-of-line.in",
+      "inputlines": [
+        "   x\n"
+      ],
       "name": "progcat-space-start-of-line.out",
       "pass": false,
       "path": "DIR/tests/spaces/testdir/progcat.sh",
@@ -67,6 +83,7 @@
         "   x\n",
         "---\n"
       ],
+      "type": "Prog",
       "userlines": [
         "   x\n"
       ]
