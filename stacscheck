@@ -339,7 +339,6 @@ def try_parse_config_file(basedir):
         filename = os.path.join(parentdir, "practical.config")
         # If it exists, continue
         if os.path.isfile(filename):
-            output_str("FOUND CONFIG FILE IN " + parentdir + "\n")
 
             # sys.exit(0)
             break
@@ -687,16 +686,16 @@ def run_tests_recursive(testdir):
     # somewhere between directory stacscheck was called from and the directory
     # with the config file). All this is so that parent directories will only
     # execute build tests.
-    if os.path.samefile(str(testdir), str(PARENTBASE)):
-        return
-    elif not os.path.samefile(str(testdir), str(TESTBASE)):
-        # Get parent directory and run tests with it (should stop after build)
-        split_path = os.path.split(testdir)
-        run_tests_recursive(split_path[0])
-        return
-    else:
-        split_path = os.path.split(testdir)
-        run_tests_recursive(split_path[0])
+    # if os.path.samefile(str(testdir), str(PARENTBASE)):
+    #     return
+    # elif not os.path.samefile(str(testdir), str(TESTBASE)):
+    #     # Get parent directory and run tests with it (should stop after build)
+    #     split_path = os.path.split(testdir)
+    #     run_tests_recursive(split_path[0])
+    #     return
+    # else:
+    #     split_path = os.path.split(testdir)
+    #     run_tests_recursive(split_path[0])
 
     # TESTSCRIPTS
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
