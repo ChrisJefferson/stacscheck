@@ -1,0 +1,47 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'run-parent-just-builds': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build1",
+      "pass": true,
+      "path": "DIR/tests/run-parent-just-builds/parent3/parent2/parent1/build1.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "",
+      "pass": true,
+      "path": "DIR/tests/run-parent-just-builds/parent3/parent2/build2.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "",
+      "pass": true,
+      "path": "DIR/tests/run-parent-just-builds/parent3/build3.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    }
+  ]
+}

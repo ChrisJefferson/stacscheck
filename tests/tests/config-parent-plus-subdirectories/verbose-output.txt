@@ -1,0 +1,6 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'config-parent-plus-subdirectories': Already in it!
+* BUILD TEST - child_a/build_a : pass
+* BUILD TEST - child_b/build_b : pass
+* COMPARISON TEST - child_b/prog_b-test1.out : pass
+3 out of 3 tests passed

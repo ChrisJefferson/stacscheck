@@ -1,0 +1,55 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'config-parent-plus-subdirectories': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "child_a/build_a",
+      "pass": true,
+      "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_a/build_a.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "child_b/build_b",
+      "pass": true,
+      "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/build_b.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "comparelines": [
+        "jh > jc\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\">jh&nbsp;&gt;&nbsp;jc</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\">jh&nbsp;&gt;&nbsp;jc</td></tr>\n        </tbody>\n    </table>",
+      "input": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/test1.in",
+      "inputlines": [
+        "jh > jc\n"
+      ],
+      "name": "child_b/prog_b-test1.out",
+      "pass": true,
+      "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/prog_b.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "jh > jc\n",
+      "type": "Prog",
+      "userlines": [
+        "jh > jc\n"
+      ]
+    }
+  ]
+}
