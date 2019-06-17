@@ -1,0 +1,5 @@
+
+- ERROR - There is a problem in the test directory.
+The problem is: no practical.config file found in directory or 5 parent directories.
+This may be caused by a broken test directory, or
+the test directory may have been copied incorrectly.

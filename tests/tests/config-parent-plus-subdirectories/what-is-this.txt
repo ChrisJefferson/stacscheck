@@ -1,0 +1,1 @@
+This test is to make sure that looking up to find practical.config doesn't interfere with looking down to find more tests.

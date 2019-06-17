@@ -1,0 +1,23 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'config-in-fifth-parent': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build",
+      "pass": true,
+      "path": "DIR/tests/config-in-fifth-parent/parent5/parent4/parent3/parent2/parent1/build.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    }
+  ]
+}

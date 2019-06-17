@@ -681,27 +681,22 @@ def run_tests_recursive(testdir):
             anyBuildTestFailed = True
             return
 
-    # SPINACH if testdir == PARENTBASE, return. Otherwise if
-    # testdir != TESTBASE, recurse with parent (because current testdir is
-    # somewhere between directory stacscheck was called from and the directory
-    # with the config file). All this is so that parent directories will only
-    # execute build tests.
-
-    currentdir = os.path.abspath(testdir)
-    # output_str("\nABSOLUTE PATH: " + currentdir + "\n")
-    # output_str("TESTBASE: " + str(TESTBASE) + "\n")
-    # output_str("PARENTBASE: " + str(PARENTBASE) + "\n")
-
-    if not (os.path.samefile(str(TESTBASE), str(PARENTBASE))):
-    # If parent directory containing config file was reached, return.
+    # CUTOFF POINT FOR FILES ABOVE TESTDIR
+    # If the config file is not in TESTBASE and testdir is not a subdirectory of
+    # TESTBASE, search up to find the config file
+    if not os.path.samefile(str(TESTBASE), str(PARENTBASE)) and (str(testdir) in str(TESTBASE)):
+        # If testdir is PARENTBASE containing config file, return.
         if (os.path.samefile(str(testdir), str(PARENTBASE))):
-            output_str("1\n")
             return
-        # Otherwise if it's somewhere between TESTBASE (inclusive) and PARENTBASE, recurse with
-        # parent and don't do any of the other tests (return).
-        elif ((not os.path.samefile(str(testdir), str(TESTBASE))) and (str(TESTBASE) in str(testdir))):
+        # If testdir is TESTBASE, then search up for build tests but continue
+        # doing the normal tests (don't return)
+        elif os.path.samefile(str(testdir), str(TESTBASE)):
             # Get parent directory and run tests with it (should stop after build)
-            output_str("2\n")
+            split_path = os.path.split(testdir)
+            run_tests_recursive(split_path[0])
+        # Otherwise if testdir is between TESTBASE and PARENTBASE, recurse with
+        # parent and don't do any of the other tests (return).
+        else:
             split_path = os.path.split(testdir)
             run_tests_recursive(split_path[0])
             return

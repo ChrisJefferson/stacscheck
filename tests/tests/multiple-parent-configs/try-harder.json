@@ -1,0 +1,35 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'multiple-parent-configs': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build1",
+      "pass": true,
+      "path": "DIR/tests/multiple-parent-configs/parent3/parent2/parent1/build1.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "",
+      "pass": true,
+      "path": "DIR/tests/multiple-parent-configs/parent3/parent2/build2.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    }
+  ]
+}

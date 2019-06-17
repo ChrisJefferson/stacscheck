@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table.diff {
+        table-layout: inherit;
+        font-family:Courier;
+        border: medium;
+        # width: 95vw;
+        word-wrap: break-word;
+    }
+    .code {font-family:Courier; border:medium; width: 2000px}
+    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    td.diff_header {text-align: center;}
+    .diff_next {background-color:#ff00dd; display: none}
+    .diff_add {background-color:#24906c}
+    .diff_chg {background-color:#ffff77}
+    .diff_sub {background-color:#E44C4B}
+    :target {
+    background: yellow;
+    }
+
+    /* Make the whole thing have a dark background*/
+    body {background-color: #292929; width: 100%;}
+    /* For test descriptions (PASS build-faro) and stacscheck info */
+    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    /* For any normal code */
+    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    /* For compared code */
+    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
+        margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    /* Collapsible testing */
+    .collapsible {display: none;}
+
+    table { table-layout: fixed;}
+    # .diff {
+    #     display: table;
+    #     table-layout: inherit;
+    #     word-wrap: break-word;
+    #     background-color: coral;
+    # }
+
+    # .test-content {
+    #     # display: table-cell;
+    #     width: 100%;
+    #     colspan: 3;
+    # }
+
+    td {white-space: normal;}
+
+    # testtable {width: 100%;}
+
+    .buttonholder {width: 2%;}
+
+</style>
+<head>
+    <title>CS1234 Practical 1 - &lt;unknown&gt; </title>
+    <h1 class="test_desc">3 out of 3 tests passed</h1>
+    <br>
+</head>
+<body>
+    <h1 class="test_desc"> STACSCHECK INFO </h1>
+    <div class="infocode">
+        - Looking for submission in a directory called &#39;run-parent-just-builds&#39;: 
+        <br/>
+    
+        Already in it!
+
+        <br/>
+    
+    <br>
+    </div>
+    <table id="testtable">
+    
+        <tr id="test1" bgcolor=
+         "#2aa77d"  >
+        <td class="buttonholder">
+        <button class="collapsebutton" onclick="docollapse('content-1')">
+        :)
+        </button>
+        </td>
+        <td class="test_desc"> PASS </td>
+        <td class="test_desc" id="build1"> build1 </td>
+        </tr>
+        <div class="test-content" >
+        <tr id="content-1" class="collapsible">
+        <td colspan="5" class="code">
+
+        
+            <h2> Compiler info </h2>
+            <div display="inline" class="infocode">
+            
+            </div>
+            <div class="infocode">
+            
+            </div>
+
+        
+        <br> <br>
+        </td>
+        </tr>
+        </div>
+    
+        <tr id="test2" bgcolor=
+         "#2aa77d"  >
+        <td class="buttonholder">
+        <button class="collapsebutton" onclick="docollapse('content-2')">
+        :)
+        </button>
+        </td>
+        <td class="test_desc"> PASS </td>
+        <td class="test_desc" id="">  </td>
+        </tr>
+        <div class="test-content" >
+        <tr id="content-2" class="collapsible">
+        <td colspan="5" class="code">
+
+        
+            <h2> Compiler info </h2>
+            <div display="inline" class="infocode">
+            
+            </div>
+            <div class="infocode">
+            
+            </div>
+
+        
+        <br> <br>
+        </td>
+        </tr>
+        </div>
+    
+        <tr id="test3" bgcolor=
+         "#2aa77d"  >
+        <td class="buttonholder">
+        <button class="collapsebutton" onclick="docollapse('content-3')">
+        :)
+        </button>
+        </td>
+        <td class="test_desc"> PASS </td>
+        <td class="test_desc" id="">  </td>
+        </tr>
+        <div class="test-content" >
+        <tr id="content-3" class="collapsible">
+        <td colspan="5" class="code">
+
+        
+            <h2> Compiler info </h2>
+            <div display="inline" class="infocode">
+            
+            </div>
+            <div class="infocode">
+            
+            </div>
+
+        
+        <br> <br>
+        </td>
+        </tr>
+        </div>
+    
+    </table>
+    
+</body>
+<script>
+    function docollapse(contentid) {
+        var content = document.getElementById(contentid);
+        console.log(content + " banana");
+        if (content.style.display == "table-row"){
+            content.style.display = "none";
+        } else {
+            content.style.display = content.style.display = "table-row";
+        }
+    }
+</script>
+</html>
