@@ -1,0 +1,4 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'html-special-chars': Already in it!
+* COMPARISON TEST - prog-chars-test1.out : pass
+1 out of 1 tests passed
