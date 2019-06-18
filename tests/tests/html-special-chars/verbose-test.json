@@ -1,0 +1,31 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'html-special-chars': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "comparelines": [
+        "<h1> I'm \"corn\" > green & < tall <\\h1>\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\">&lt;h1&gt;&nbsp;I'm&nbsp;\"corn\"&nbsp;&gt;&nbsp;green&nbsp;&amp;&nbsp;&lt;&nbsp;tall&nbsp;&lt;\\h1&gt;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\">&lt;h1&gt;&nbsp;I'm&nbsp;\"corn\"&nbsp;&gt;&nbsp;green&nbsp;&amp;&nbsp;&lt;&nbsp;tall&nbsp;&lt;\\h1&gt;</td></tr>\n        </tbody>\n    </table>",
+      "input": "DIR/tests/html-special-chars/testdir/test1.in",
+      "inputlines": [
+        "<h1> I'm \"corn\" > green & < tall <\\h1>\n"
+      ],
+      "name": "prog-chars-test1.out",
+      "pass": true,
+      "path": "DIR/tests/html-special-chars/testdir/prog-chars.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "<h1> I'm \"corn\" > green & < tall <\\h1>\n",
+      "type": "Prog",
+      "userlines": [
+        "<h1> I'm \"corn\" > green & < tall <\\h1>\n"
+      ]
+    }
+  ]
+}
