@@ -226,6 +226,7 @@ JINJAPAGE = u"""
     }
 </script>
 </html>
+
 """
 
 # Store the base test directory
