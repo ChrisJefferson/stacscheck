@@ -26,9 +26,9 @@ for i in $(ls -d tests/*/); do
     diff $i/output.json <(cd $i && ./go.sh "$CHECKPROG" --json /tmp/json.tmp > /dev/null && sed ${FILT} /tmp/json.tmp | sed ${FILT2} && rm /tmp/json.tmp)
     rm -f /tmp/try-harder.html /tmp/try-harder.json /tmp/try-harder.txt
     ( cd $i && ./go.sh "$CHECKPROG" --tryharder --html /tmp/try-harder.html --json /tmp/try-harder.json || true) > /tmp/try-harder.txt
-    # if [ -e /tmp/try-harder.html ]; then
-    #     diff $i/try-harder.html <(filtfile /tmp/try-harder.html)
-    # fi;
+    if [ -e /tmp/try-harder.html ]; then
+        diff $i/try-harder.html <(filtfile /tmp/try-harder.html)
+    fi;
     if [ -e /tmp/try-harder.json ]; then
         diff $i/try-harder.json <(filtfile /tmp/try-harder.json)
     fi;
@@ -38,9 +38,9 @@ for i in $(ls -d tests/*/); do
 
     rm -f /tmp/verbose-test.html /tmp/verbose-test.json /tmp/verbose-test.txt
     ( cd $i && ./go.sh "$CHECKPROG" --verbose --html /tmp/verbose-test.html --json /tmp/verbose-test.json || true) > /tmp/verbose-test.txt
-    # if [ -e /tmp/verbose-test.html ]; then
-    #     diff $i/verbose-test.html <(filtfile /tmp/verbose-test.html)
-    # fi;
+    if [ -e /tmp/verbose-test.html ]; then
+        diff $i/verbose-test.html <(filtfile /tmp/verbose-test.html)
+    fi;
     if [ -e /tmp/try-harder.json ]; then
         diff $i/verbose-test.json <(filtfile /tmp/verbose-test.json)
     fi;
