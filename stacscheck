@@ -3,22 +3,6 @@
 
 VERSION = "2.3.0"
 
-import sys
-import signal
-
-# Functions to convert to UTF-8 and print the string
-
-def toUTF8Replace(bytes):
-    if isinstance(bytes, str):
-        return bytes
-    return str(bytes, "utf8", errors="replace")
-
-def output_str(arg):
-    print(toUTF8Replace(arg), end='')
-
-import configparser
-
-
 # MIT License
 
 # Copyright (c) 2016 University of St Andrews
@@ -41,12 +25,11 @@ import configparser
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Stacscheck
-
+import sys
+import signal
 import os
 import subprocess
 import re
-
 import time
 import json
 import copy
@@ -54,7 +37,9 @@ from threading import Thread
 import difflib
 from optparse import OptionParser, SUPPRESS_HELP
 import argparse
+import configparser
 
+# Stacscheck
 
 # Try importing jinja2, but don't complain if it isn't there
 try:
@@ -241,6 +226,16 @@ SUBMISSIONBASE = None
 # Store parent directory containing practical.config
 PARENTBASE = None
 
+# Functions to convert to UTF-8 and print the string
+unicode = str
+def toUTF8Replace(bytes):
+    if isinstance(bytes, str):
+        return bytes
+    return str(bytes, "utf8", errors="replace")
+
+def output_str(arg):
+    print(toUTF8Replace(arg), end='')
+
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
@@ -333,23 +328,24 @@ CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 def try_parse_config_file(basedir):
     config = configparser.ConfigParser()
 
-    # SPINACH get it to search up until it finds it (limit 5?) and store it under a global
+    # Search up until it finds it (limit 9) and store it under a global
     parentdir = basedir
-    for x in range(6):
+    for x in range(11):
         # Try to get config file path
         filename = os.path.join(parentdir, "practical.config")
         # If it exists, continue
         if os.path.isfile(filename):
-
-            # sys.exit(0)
             break
         # Otherwise, get parent directory and try again
         split_path = os.path.split(parentdir)
         parentdir = split_path[0]
+        if parentdir == "/":
+            warn_print("reached root directory without finding practical.config")
+            sys.exit(1)
 
     # Check that something was found, or quit
     if not os.path.isfile(filename):
-        warn_print("no practical.config file found in directory or 5 parent directories")
+        warn_print("no practical.config file found in directory or 10 parent directories")
         sys.exit(1)
 
     # filename = os.path.join(basedir, "practical.config")
@@ -430,10 +426,8 @@ def find_code_directory():
     info_print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
     for d in recursive_srcdir:
         info_print(" - found " + d)
-    info_print(" - I'm going to guess '" + recursive_srcdir[0] +"'.")
-    info_print(" - If that's wrong, go into the correct directory.")
-    return recursive_srcdir[0]
-
+    info_print("Please go into the correct directory.")
+    sys.exit(1)
 
 def maybe_print_test_input(test):
     if VERBOSE and not test["pass"]:
@@ -835,7 +829,7 @@ def run():
     # Get the absolute path instead of the relative path
     TESTBASE = os.path.realpath(args.testdir)
 
-    # SPINACH if config file isn't found, try looking up. store where you find it
+    # If config file isn't found, try looking up. store where you find it
     PARENTBASE = try_parse_config_file(TESTBASE)
 
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
