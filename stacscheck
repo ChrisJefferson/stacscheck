@@ -38,6 +38,10 @@ import difflib
 from optparse import OptionParser, SUPPRESS_HELP
 import argparse
 import configparser
+import tempfile
+import shutil
+import zipfile
+import tarfile
 
 # Stacscheck
 
@@ -386,19 +390,25 @@ def find_all_directories_with_name(name, rootdir):
 # Find the directory the code is stored in, using 'srcdir' from CONFIG.
 # If 'srcdir' is not defined, assume current directory, else search for a directory called
 # CONFIG['srcdir'] (or check if we are already in it!)
-def find_code_directory():
+def find_code_directory(start_dir=None):
     if not 'srcdir' in CONFIG:
         return None
-    current_dir = os.path.realpath(os.getcwd())
+    # If there's a starting directory, start searching from there. Otherwise use cwd
+    if not start_dir == None:
+        current_dir = start_dir
+    else:
+        current_dir = os.path.realpath(os.getcwd())
+
     in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
     recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
+    print("--- Trying to find code directory in " + str(start_dir))
     info_print_nonewline("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
         info_print("Please put your submission is in a directory called '" + CONFIG['srcdir'] + "'")
         if not TRYHARDER:
-            raise EnvironmentError("No submission found")
+            return -1
         else:
             info_print("Going to try hard, and guess the current directory. I'm probably wrong.")
             return None
@@ -777,6 +787,79 @@ def run_tests_recursive(testdir):
     except OSError as e:
         warn_print(str(e))
 
+def check_more_file_types():
+    # Get cwd and find compressed files in it
+    current_path = os.path.abspath(os.getcwd())
+    dir_contents = os.listdir(current_path)
+
+    other_files = []
+
+    for dir in dir_contents:
+        if ".zip" in dir:
+            other_files.append(dir)
+        elif ".tar.xz" in dir:
+            other_files.append(dir)
+        elif ".tar.gz" in dir:
+            other_files.append(dir)
+        elif ".tar" in dir:
+            other_files.append(dir)
+
+    # Address what to do if there's several or none
+    if len(other_files) > 1:
+        print("There is more than one compressed file in the directory.")
+
+    elif len(other_files) == 0:
+        print("There are no compressed folders to try with.")
+
+    elif len(other_files) == 1:
+        file_name = other_files[0]
+
+        # Check that it's a compressed file according to the libraries
+        if zipfile.is_zipfile(file_name):
+            return file_name
+        elif tarfile.is_tarfile(file_name):
+            return file_name
+        else:
+            print("Compressed files aren't being recognized.")
+
+
+    print("Couldn't find a normal submission or a submission in a .zip file (not nested)")
+    sys.exit(0)
+
+def extract_to_temp(sub_found, temp_dir):
+    info_print_nonewline("- Extracting file: ")
+    print(sub_found)
+
+    # If it's a zip file
+    if '.zip' in sub_found:
+        # Make ZipFile object and extract to temp
+        zip_object = zipfile.ZipFile(sub_found, mode='r')
+        zip_object.extractall(path=temp_dir)
+        zip_object.close()
+    # If it's a tar.xz file
+    elif '.tar.xz' in sub_found:
+        # Make TarFile object and extract to temp
+        tarxz_object = tarfile.open(name=sub_found, mode='r:xz')
+        tarxz_object.extractall(path=temp_dir)
+        tarxz_object.close()
+    elif '.tar.gz' in sub_found:
+        # Make TarFile object and extract to temp
+        targz_object = tarfile.open(name=sub_found, mode='r:gz')
+        targz_object.extractall(path=temp_dir)
+        targz_object.close()
+    elif '.tar' in sub_found:
+        # Make TarFile object and extract to temp
+        tar_object = tarfile.open(name=sub_found, mode='r')
+        tar_object.extractall(path=temp_dir)
+        tar_object.close()
+    else:
+        print("Couldn't find file when trying to compress.")
+        sys.exit(0)
+
+    # Find directory in zip file containing submission
+    submission_dir = find_code_directory(temp_dir)
+    return submission_dir
+
 
 ##################################################################
 # Main program
@@ -837,7 +920,26 @@ def run():
 
     try:
         SUBMISSIONBASE = find_code_directory()
-        run_tests_recursive(TESTBASE)
+        # If submission wasn't found, check if it's contained in another file type
+        if SUBMISSIONBASE == -1:
+            sub_found = check_more_file_types()
+            print("found file type " + sub_found)
+            # Run the tests with a temp file
+            try:
+                # Create temp file to extract the submission to
+                current_path = os.path.abspath(os.getcwd())
+                temp_dir = tempfile.mkdtemp(dir=current_path)
+                # Extract files and run tests
+                SUBMISSIONBASE = extract_to_temp(sub_found, temp_dir)
+                print("extracted and submissionbase is ")
+                print(SUBMISSIONBASE)
+                run_tests_recursive(TESTBASE)
+            finally:
+                shutil.rmtree(temp_dir)
+        else:
+            print("somehow found the submission elsewhere at")
+            print(SUBMISSIONBASE)
+            run_tests_recursive(TESTBASE)
 
         if len(testStore) == 0:
             # Use args.testdir as it is shorter
