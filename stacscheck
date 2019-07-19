@@ -332,7 +332,7 @@ CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 def try_parse_config_file(basedir):
     config = configparser.ConfigParser()
 
-    # Search up until it finds it (limit 9) and store it under a global
+    # Search up until it finds it (limit 10) and store it under a global
     parentdir = basedir
     for x in range(11):
         # Try to get config file path
@@ -809,6 +809,8 @@ def check_more_file_types():
                 other_files.append(dir)
             elif ".tar.gz" in dir:
                 other_files.append(dir)
+            elif ".tar.bz2" in dir:
+                other_files.append(dir)
             elif ".tar" in dir:
                 other_files.append(dir)
 
@@ -852,7 +854,11 @@ def extract_file_with_submission(files_found, temp_dir):
     if not 'srcdir' in CONFIG:
         return extract_to_temp(files_found[0], temp_dir)
 
-    # Find the first file in the list with srcdir in it and extract that
+    # Find files with srcdir in them. If there's several, notify and ask user to
+    # use --archive. If there's exactly one, extract.
+    files_with_srcdir = []
+    objects_with_srcdir = []
+
     for file in files_found:
         file_object = None
         content_list = None
@@ -867,11 +873,14 @@ def extract_file_with_submission(files_found, temp_dir):
         elif '.tar.gz' in file:
             file_object = tarfile.open(name=file, mode='r:gz')
             content_list = file_object.getnames()
+        elif '.tar.bz2' in file:
+            file_object = tarfile.open(name=file, mode='r:bz2')
+            content_list = file_object.getnames()
         elif '.tar' in file:
             file_object = tarfile.open(name=file, mode='r')
             content_list = file_object.getnames()
         else:
-            print("Couldn't find file when trying to extract.")
+            print("Couldn't find file {} when trying to search contents.".format(file))
             continue
 
         # If submission folder is inside (or looks like it), extract. Otherwise move on
@@ -879,11 +888,25 @@ def extract_file_with_submission(files_found, temp_dir):
 
         for content in content_list:
             if submission_name in content:
-                print("- Extracting {} to {}.".format(file, temp_dir))
-                extract_to_temp(file_object, temp_dir)
-                return
+                files_with_srcdir.append(file)
+                objects_with_srcdir.append(file_object)
+            else:
+                # Won't be used anymore, so close
+                file_object.close()
 
+    # If only one submission was found
+    if len(files_with_srcdir) == 1:
+        print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))
+        extract_to_temp(objects_with_srcdir[0], temp_dir)
         file_object.close()
+
+    elif len(files_with_srcdir) > 1:
+        print("- Found several files containing submissions:")
+        for i in range(len(files_with_srcdir)):
+            print("\t- {}".format(files_with_srcdir[i]))
+            objects_with_srcdir[i].close()
+        print("- Please rerun stacscheck with --archive <filename> to specify which one to use.")
+
 
     print("Couldn't find a compressed file containing the submission specified by srcdir in practical.config.")
     sys.exit(0)
@@ -958,17 +981,12 @@ def run():
         # If submission wasn't found, check if it's contained in another file type
         if SUBMISSIONBASE == -1:
             sub_found = check_more_file_types()
-            # Run the tests with a temp file
-            try:
-                # Create temp file to extract the submission to
-                current_path = os.path.abspath(os.getcwd())
-                temp_dir = tempfile.mkdtemp(dir="/tmp")
-                # Extract files and run tests
+            current_path = os.path.abspath(os.getcwd())
+            # Extract files and run tests
+            with tempfile.TemporaryDirectory() as temp_dir:
                 extract_file_with_submission(sub_found, temp_dir)
                 SUBMISSIONBASE = find_code_directory(temp_dir)
                 run_tests_recursive(TESTBASE)
-            finally:
-                shutil.rmtree(temp_dir)
 
         else:
             run_tests_recursive(TESTBASE)
