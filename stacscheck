@@ -406,7 +406,7 @@ def find_code_directory(start_dir=None):
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
-        info_print("Please put your submission is in a directory called '" + CONFIG['srcdir'] + "'")
+        info_print("Please put your submission in a directory called '" + CONFIG['srcdir'] + "'")
         if not TRYHARDER:
             return -1
         else:
@@ -885,20 +885,29 @@ def extract_file_with_submission(files_found, temp_dir):
 
         # If submission folder is inside (or looks like it), extract. Otherwise move on
         submission_name = CONFIG['srcdir'] + "/"
+        foundMatch = False
 
         for content in content_list:
+            print("ENTERED ANOTHER LOOP IN {}".format(content_list))
             if submission_name in content:
+                print("FOUND MATCH INSIDE {}".format(file))
                 files_with_srcdir.append(file)
                 objects_with_srcdir.append(file_object)
-            else:
-                # Won't be used anymore, so close
-                file_object.close()
+                foundMatch = True
+                break
+            # else:
+            #     # Won't be used anymore, so close
+            #     print("CLOSING {}".format(file))
+            #     file_object.close()
+        if foundMatch == False:
+            file_object.close()
 
     # If only one submission was found
     if len(files_with_srcdir) == 1:
         print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))
         extract_to_temp(objects_with_srcdir[0], temp_dir)
         file_object.close()
+        return
 
     elif len(files_with_srcdir) > 1:
         print("- Found several files containing submissions:")
@@ -906,6 +915,7 @@ def extract_file_with_submission(files_found, temp_dir):
             print("\t- {}".format(files_with_srcdir[i]))
             objects_with_srcdir[i].close()
         print("- Please rerun stacscheck with --archive <filename> to specify which one to use.")
+        return
 
 
     print("Couldn't find a compressed file containing the submission specified by srcdir in practical.config.")
