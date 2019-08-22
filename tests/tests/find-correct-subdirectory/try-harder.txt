@@ -1,0 +1,8 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'src': - Warning, there are multiple subdirectories called 'src'.
+ - found DIR/tests/find-correct-subdirectory/CS1234 Practical1 Ext/src
+ - found DIR/tests/find-correct-subdirectory/CS1234 Practical1/src
+ - I'm going to guess 'DIR/tests/find-correct-subdirectory/CS1234 Practical1/src'.
+ - If that's wrong, go into the correct directory.
+* COMPARISON TEST - test_correct_output/prog-test.out : pass
+1 out of 1 tests passed
