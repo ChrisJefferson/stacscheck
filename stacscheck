@@ -738,16 +738,16 @@ def run_tests_recursive(testdir):
     # PROGSCRIPTS
     progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
 
-    outfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
+    outtextfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
 
     # If there isn't exactly one .out file per .sh, warn
-    if (len(outfiles) == 0) != (len(progscripts) == 0):
-        if len(outfiles) == 0:
+    if (len(outtextfiles) == 0) != (len(progscripts) == 0):
+        if len(outtextfiles) == 0:
             warn_print("Found prog*.sh without *.out files in " + testdir)
         else:
             warn_print("Found *.out files without prog*.sh in " + testdir)
     for progsh in progscripts:
-        for out in outfiles:
+        for out in outtextfiles:
             infile = out[:-4] + ".in"
             if not os.path.isfile(infile):
                 infile = None
