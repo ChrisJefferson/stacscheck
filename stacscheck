@@ -7,7 +7,7 @@ import sys
 import signal
 
 # Functions to convert to UTF-8 and print the string
-unicode = str
+
 def toUTF8Replace(bytes):
     if isinstance(bytes, str):
         return bytes
@@ -520,19 +520,19 @@ def register_diff_test(test, comparefile):
         # Print to stdout
         test["textdiff"] = textdiff
         textout = u"".join(test["textdiff"])
-        assert isinstance(textout, unicode)
+        assert isinstance(textout, str)
         output_str(textout + "\n")
 
 
 
-        # Check things are in unicode
+        # Check things are 'str's
 
         for l in test["textdiff"]:
-            assert isinstance(l, unicode)
+            assert isinstance(l, str)
 
     # Create table for html
     test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
-    assert isinstance(test["htmldiff"], unicode)
+    assert isinstance(test["htmldiff"], str)
 
     testStore.append(test)
 
