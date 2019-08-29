@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-VERSION = "2.3.0"
+VERSION = "3.0.0"
 
 # MIT License
 
@@ -391,8 +391,8 @@ def find_all_directories_with_name(name, rootdir):
 # If 'srcdir' is not defined, assume current directory, else search for a directory called
 # CONFIG['srcdir'] (or check if we are already in it!)
 def find_code_directory(start_dir=None):
-    if not 'srcdir' in CONFIG:
-        return None
+    # if not 'srcdir' in CONFIG:  # ACELGA
+    #     return None
     # If there's a starting directory, start searching from there. Otherwise use cwd
     if not start_dir == None:
         current_dir = start_dir
@@ -406,7 +406,7 @@ def find_code_directory(start_dir=None):
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
-        info_print("Please put your submission in a directory called '" + CONFIG['srcdir'] + "'")
+        # info_print("- Please put your submission in a directory called '" + CONFIG['srcdir'] + "'")
         if not TRYHARDER:
             return -1
         else:
@@ -793,8 +793,6 @@ def check_more_file_types():
 
     # If file name was specified, get list of those
     if ARCHIVE is not None:
-        # other_files = os.path.join(current_path, ARCHIVE)
-        # print("files found with name {}: {}".format(ARCHIVE, other_files))
         other_files = [ARCHIVE]
 
     # Otherwise look at all possibilities in cwd
@@ -816,7 +814,7 @@ def check_more_file_types():
 
     # Filter through whatever is found and return
     if len(other_files) > 0:
-        print("There are one or more compressed files in the directory.")
+        print("- There are one or more compressed files in the directory.")
 
         # Check that zipfile and tarfile libraries recognize the files
         valid_files = []
@@ -828,18 +826,18 @@ def check_more_file_types():
             else:
                 print("File {} isn't being recognized.".format(file))
 
-        print("\t\tvalid_files: ", end="")
-        print(valid_files)
+        print("- Found following files:")
+        for i in valid_files:
+            print("    - {}".format(i))
 
         return valid_files
 
     # Deal with it if nothing was found
-    print("Couldn't find a normal submission or a submission in a compressed file.")
-    print("To run stacscheck with a compressed file, please call stacscheck from the same folder containing the file.")
+    print("- Couldn't find a normal submission or a submission in a compressed file.")
+    print("- To run stacscheck with a compressed file, please call stacscheck from the same folder containing the file.")
     sys.exit(1)
 
 def extract_to_temp(sub_found, temp_dir):
-
     sub_found.extractall(path=temp_dir)
     sub_found.close()
 
@@ -851,8 +849,8 @@ def extract_file_with_submission(files_found, temp_dir):
         print("No compressed files were found.")
 
     # If CONFIG['srcdir'] isn't defined, just extract the first one
-    if not 'srcdir' in CONFIG:
-        return extract_to_temp(files_found[0], temp_dir)
+    # if not 'srcdir' in CONFIG:  # ACELGA
+    #     return extract_to_temp(files_found[0], temp_dir)
 
     # Find files with srcdir in them. If there's several, notify and ask user to
     # use --archive. If there's exactly one, extract.
@@ -888,9 +886,7 @@ def extract_file_with_submission(files_found, temp_dir):
         foundMatch = False
 
         for content in content_list:
-            print("ENTERED ANOTHER LOOP IN {}".format(content_list))
             if submission_name in content:
-                print("FOUND MATCH INSIDE {}".format(file))
                 files_with_srcdir.append(file)
                 objects_with_srcdir.append(file_object)
                 foundMatch = True
@@ -904,7 +900,8 @@ def extract_file_with_submission(files_found, temp_dir):
 
     # If only one submission was found
     if len(files_with_srcdir) == 1:
-        print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))
+        # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
+        print("- Extracting {} to temp folder".format(files_with_srcdir[0]))
         extract_to_temp(objects_with_srcdir[0], temp_dir)
         file_object.close()
         return
@@ -912,13 +909,12 @@ def extract_file_with_submission(files_found, temp_dir):
     elif len(files_with_srcdir) > 1:
         print("- Found several files containing submissions:")
         for i in range(len(files_with_srcdir)):
-            print("\t- {}".format(files_with_srcdir[i]))
+            print("    - {}".format(files_with_srcdir[i]))
             objects_with_srcdir[i].close()
         print("- Please rerun stacscheck with --archive <filename> to specify which one to use.")
-        return
+        sys.exit(1)
 
-
-    print("Couldn't find a compressed file containing the submission specified by srcdir in practical.config.")
+    print("- Couldn't find a compressed file containing the submission specified by srcdir in practical.config.")
     sys.exit(0)
 
 
@@ -978,6 +974,10 @@ def run():
 
     # If config file isn't found, try looking up. store where you find it
     PARENTBASE = try_parse_config_file(TESTBASE)
+
+    if not 'srcdir' in CONFIG:
+        print("A srcdir needs to be specified in practical.config.")
+        sys.exit(1)
 
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
         print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])

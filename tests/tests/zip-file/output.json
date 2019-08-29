@@ -1,0 +1,37 @@
+{
+  "course": "CS2002",
+  "infotext": [
+    "- Looking for submission in a directory called 'submission': ",
+    "Cannot find it....\n",
+    "- Looking for submission in a directory called 'submission': ",
+    "found in current directory\n"
+  ],
+  "practical": "C2",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build1",
+      "pass": true,
+      "path": "DIR/tests/zip-file/testdir/build1.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build2",
+      "pass": true,
+      "path": "DIR/tests/zip-file/testdir/build2.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "a\n",
+      "type": "Build"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "course": "CS2002",
+  "infotext": [
+    "- Looking for submission in a directory called 'submission': ",
+    "Cannot find it....\n",
+    "Going to try hard, and guess the current directory. I'm probably wrong.\n"
+  ],
+  "practical": "C2",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build1",
+      "pass": false,
+      "path": "DIR/tests/zip-file/testdir/build1.sh",
+      "returnval": 1,
+      "stderr": "chmod: cannot access 'practical.sh': No such file or directory\n",
+      "stdout": "",
+      "type": "Build"
+    }
+  ]
+}
