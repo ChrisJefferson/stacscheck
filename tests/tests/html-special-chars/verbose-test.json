@@ -8,6 +8,18 @@
   "subid": "<unknown>",
   "tests": [
     {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build",
+      "pass": true,
+      "path": "DIR/tests/html-special-chars/testdir/build.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "",
+      "type": "Build"
+    },
+    {
       "comparelines": [
         "<h1> I'm \"corn\" > green & < tall <\\h1>\n"
       ],

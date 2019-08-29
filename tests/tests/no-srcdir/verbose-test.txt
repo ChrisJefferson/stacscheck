@@ -1,0 +1,1 @@
+A srcdir needs to be specified in practical.config.

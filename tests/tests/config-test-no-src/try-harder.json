@@ -3,7 +3,6 @@
   "infotext": [
     "- Looking for submission in a directory called 'nodir': ",
     "Cannot find it....\n",
-    "Please put your submission is in a directory called 'nodir'\n",
     "Going to try hard, and guess the current directory. I'm probably wrong.\n"
   ],
   "practical": "Practical 1",

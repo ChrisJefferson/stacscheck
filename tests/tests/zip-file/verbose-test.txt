@@ -1,0 +1,10 @@
+Testing CS2002 C2
+- Looking for submission in a directory called 'submission': Cannot find it....
+- There are one or more compressed files in the directory.
+- Found following files:
+    - submission.zip
+- Extracting submission.zip to temp folder
+- Looking for submission in a directory called 'submission': found in current directory
+* BUILD TEST - build1 : pass
+* BUILD TEST - build2 : pass
+2 out of 2 tests passed

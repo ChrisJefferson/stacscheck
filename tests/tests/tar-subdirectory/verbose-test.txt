@@ -1,0 +1,9 @@
+Testing CS2002 C2
+- Looking for submission in a directory called 'submission': Cannot find it....
+- There are one or more compressed files in the directory.
+- Found following files:
+    - blue.tar
+- Extracting blue.tar to temp folder
+- Looking for submission in a directory called 'submission': found at 'blue/red/submission'
+* BUILD TEST - build : pass
+1 out of 1 tests passed

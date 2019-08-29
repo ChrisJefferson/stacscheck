@@ -1,0 +1,6 @@
+aTesting CS2002 C2
+- Looking for submission in a directory called 'submission': Cannot find it....
+- There are one or more compressed files in the directory.
+- Files found with the correct submission name:
+    - submission.zip
+- Couldn't find a compressed file containing the submission specified by srcdir in practical.config.
