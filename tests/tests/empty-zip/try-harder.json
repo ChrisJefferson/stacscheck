@@ -14,7 +14,7 @@
       ],
       "name": "build1",
       "pass": false,
-      "path": "/mnt/c/Users/Paula/Documents/StAndrews/Stacscheck/stacscheck/tests/tests/empty-zip/testdir/build1.sh",
+      "path": "DIR/tests/empty-zip/testdir/build1.sh",
       "returnval": 1,
       "stderr": "chmod: cannot access 'practical.sh': No such file or directory\n",
       "stdout": "",
