@@ -11,19 +11,19 @@ CHECKPROG=$(pwd)/../stacscheck
 
 VERSION=$($CHECKPROG --version)
 
-FILT='s|'$CURRENTDIR'|DIR|g'
-FILT2='s|'$VERSION'|VERSION|g'
+FILT='s|\Q'$CURRENTDIR'\E|DIR|g'
+FILT2='s|\Q'$VERSION'\E|VERSION|g'
 
 function filtfile {
-    sed ${FILT} $1 | sed ${FILT2}
+    perl -pe ${FILT} $1 | perl -pe ${FILT2}
 }
 
 for i in $(ls -d tests/*/); do
     echo Testing $i
-    diff $i/output.txt  <( cd $i && ./go.sh "$CHECKPROG" | sed ${FILT} | sed ${FILT2})
-    diff $i/verbose-output.txt <( cd $i && ./go.sh "$CHECKPROG" --verbose | sed ${FILT} | sed ${FILT2})
-    diff $i/output.html <(cd $i && ./go.sh "$CHECKPROG" --html /tmp/html.tmp > /dev/null && sed ${FILT} /tmp/html.tmp | sed ${FILT2} && rm /tmp/html.tmp)
-    diff $i/output.json <(cd $i && ./go.sh "$CHECKPROG" --json /tmp/json.tmp > /dev/null && sed ${FILT} /tmp/json.tmp | sed ${FILT2} && rm /tmp/json.tmp)
+    diff $i/output.txt  <( cd $i && ./go.sh "$CHECKPROG" | perl -pe ${FILT} | perl -pe ${FILT2})
+    diff $i/verbose-output.txt <( cd $i && ./go.sh "$CHECKPROG" --verbose | perl -pe ${FILT} | perl -pe ${FILT2})
+    diff $i/output.html <(cd $i && ./go.sh "$CHECKPROG" --html /tmp/html.tmp > /dev/null && perl -pe ${FILT} /tmp/html.tmp | perl -pe ${FILT2} && rm /tmp/html.tmp)
+    diff $i/output.json <(cd $i && ./go.sh "$CHECKPROG" --json /tmp/json.tmp > /dev/null && perl -pe ${FILT} /tmp/json.tmp | perl -pe ${FILT2} && rm /tmp/json.tmp)
     rm -f /tmp/try-harder.html /tmp/try-harder.json /tmp/try-harder.txt
     ( cd $i && ./go.sh "$CHECKPROG" --tryharder --html /tmp/try-harder.html --json /tmp/try-harder.json || true) > /tmp/try-harder.txt
     if [ -e /tmp/try-harder.html ]; then
