@@ -18,7 +18,7 @@
       "path": "DIR/tests/zip-file/testdir/build1.sh",
       "returnval": 0,
       "stderr": "",
-      "stdout": "",
+      "stdout": "build1\n",
       "type": "Build"
     },
     {
@@ -26,11 +26,11 @@
         "No .in input file (search manually)."
       ],
       "name": "build2",
-      "pass": true,
+      "pass": false,
       "path": "DIR/tests/zip-file/testdir/build2.sh",
-      "returnval": 0,
-      "stderr": "",
-      "stdout": "a\n",
+      "returnval": 126,
+      "stderr": "DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: Permission denied\n",
+      "stdout": "",
       "type": "Build"
     }
   ]

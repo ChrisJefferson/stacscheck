@@ -13,10 +13,22 @@
         "No .in input file (search manually)."
       ],
       "name": "build1",
-      "pass": false,
+      "pass": true,
       "path": "DIR/tests/zip-file/testdir/build1.sh",
-      "returnval": 1,
-      "stderr": "chmod: cannot access 'practical.sh': No such file or directory\n",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "build1\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build2",
+      "pass": false,
+      "path": "DIR/tests/zip-file/testdir/build2.sh",
+      "returnval": 127,
+      "stderr": "DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: No such file or directory\n",
       "stdout": "",
       "type": "Build"
     }
