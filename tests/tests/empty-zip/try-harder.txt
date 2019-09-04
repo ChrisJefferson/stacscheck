@@ -1,10 +1,11 @@
 Testing CS2002 C2
 - Looking for submission in a directory called 'submission': Cannot find it....
 Going to try hard, and guess the current directory. I'm probably wrong.
-* BUILD TEST - build1 : fail
+* BUILD TEST - build1 : pass
+* BUILD TEST - build2 : fail
 --- submission output ---
-chmod: cannot access 'practical.sh': No such file or directory
+DIR/tests/empty-zip/testdir/build2.sh: line 3: ./practical.sh: No such file or directory
 ---
 
-0 out of 1 tests passed
+1 out of 2 tests passed
 Building is failing, skipping tests

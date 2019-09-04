@@ -56,7 +56,7 @@
 </style>
 <head>
     <title>CS2002 C2 - &lt;unknown&gt; </title>
-    <h1 class="test_desc">2 out of 2 tests passed</h1>
+    <h1 class="test_desc">1 out of 2 tests passed</h1>
     <br>
 </head>
 <body>
@@ -98,6 +98,8 @@
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
             
+                build1<br>
+            
             </div>
             <div class="infocode">
             
@@ -110,13 +112,13 @@
         </div>
     
         <tr id="test2" bgcolor=
-         "#2aa77d"  >
+         "#E44C4B"  >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-2')">
         :)
         </button>
         </td>
-        <td class="test_desc"> PASS </td>
+        <td class="test_desc"> FAIL </td>
         <td class="test_desc" id="build2"> build2 </td>
         </tr>
         <div class="test-content" >
@@ -127,10 +129,10 @@
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
             
-                a<br>
-            
             </div>
             <div class="infocode">
+            
+                DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: Permission denied<br>
             
             </div>
 
@@ -141,6 +143,8 @@
         </div>
     
     </table>
+    
+    <p>Building is failing, skipping tests</p>
     
 </body>
 <script>

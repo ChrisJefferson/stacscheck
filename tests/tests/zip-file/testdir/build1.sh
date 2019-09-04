@@ -1,3 +1,3 @@
 #!/bin/bash
 
-chmod +x practical.sh
+echo "build1"
