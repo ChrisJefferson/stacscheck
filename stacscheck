@@ -798,7 +798,9 @@ def check_more_file_types():
     # Otherwise look at all possibilities in cwd
     else:
         # Find compressed files in cwd
+        # Sort so they are always in the same order
         dir_contents = os.listdir(current_path)
+        dir_contents.sort()
 
         for dir in dir_contents:
             if ".zip" in dir:
