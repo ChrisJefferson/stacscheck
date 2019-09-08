@@ -406,9 +406,8 @@ def find_code_directory(start_dir=None):
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
-        # info_print("- Please put your submission in a directory called '" + CONFIG['srcdir'] + "'")
         if not TRYHARDER:
-            return -1
+            raise EnvironmentError("No submission found. Try running with --archive <filename> if submission is compressed.")
         else:
             info_print("Going to try hard, and guess the current directory. I'm probably wrong.")
             return None
@@ -791,28 +790,8 @@ def check_more_file_types():
     current_path = os.path.abspath(os.getcwd())
     other_files = []
 
-    # If file name was specified, get list of those
-    if ARCHIVE is not None:
-        other_files = [ARCHIVE]
-
-    # Otherwise look at all possibilities in cwd
-    else:
-        # Find compressed files in cwd
-        # Sort so they are always in the same order
-        dir_contents = os.listdir(current_path)
-        dir_contents.sort()
-
-        for dir in dir_contents:
-            if ".zip" in dir:
-                other_files.append(dir)
-            elif ".tar.xz" in dir:
-                other_files.append(dir)
-            elif ".tar.gz" in dir:
-                other_files.append(dir)
-            elif ".tar.bz2" in dir:
-                other_files.append(dir)
-            elif ".tar" in dir:
-                other_files.append(dir)
+    # Get list of files with name specified in --archive
+    other_files = [ARCHIVE]
 
     # Filter through whatever is found and return
     if len(other_files) > 0:
@@ -988,10 +967,9 @@ def run():
         # If a .zip/.tar/other name was specified, skip normal searching
         if args.archive is None:
             SUBMISSIONBASE = find_code_directory()
+            run_tests_recursive(TESTBASE)
+        # Try running with compressed file specified with --archive
         else:
-            SUBMISSIONBASE = -1
-        # If submission wasn't found, check if it's contained in another file type
-        if SUBMISSIONBASE == -1:
             sub_found = check_more_file_types()
             current_path = os.path.abspath(os.getcwd())
             # Extract files and run tests
@@ -999,9 +977,6 @@ def run():
                 extract_file_with_submission(sub_found, temp_dir)
                 SUBMISSIONBASE = find_code_directory(temp_dir)
                 run_tests_recursive(TESTBASE)
-
-        else:
-            run_tests_recursive(TESTBASE)
 
         if len(testStore) == 0:
             # Use args.testdir as it is shorter
