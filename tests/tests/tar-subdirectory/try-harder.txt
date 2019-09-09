@@ -1,10 +1,3 @@
 Testing CS2002 C2
-- Looking for submission in a directory called 'submission': Cannot find it....
-Going to try hard, and guess the current directory. I'm probably wrong.
-* BUILD TEST - build : fail
---- submission output ---
-DIR/tests/tar-subdirectory/testdir/build.sh: line 3: ./practical.sh: No such file or directory
----
-
-0 out of 1 tests passed
-Building is failing, skipping tests
+- Couldn't find a compressed file with specified name.
+- To use --archive, please call stacscheck from the same folder containing the file.

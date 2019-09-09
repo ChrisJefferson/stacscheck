@@ -1,13 +1,6 @@
 Testing CS2002 C2
-- Looking for submission in a directory called 'submission': Cannot find it....
-- There are one or more compressed files in the directory.
-- Found following files:
-    - sike.zip
-    - submission.tar
-    - submission.tar.gz
-    - submission.tar.xz
-- Found several files containing submissions:
-    - submission.tar
-    - submission.tar.gz
-    - submission.tar.xz
-- Please rerun stacscheck with --archive <filename> to specify which one to use.
+- Found file submission.tar
+- Extracting submission.tar to temp folder
+- Looking for submission in a directory called 'submission': found in current directory
+* BUILD TEST - build : pass
+1 out of 1 tests passed
