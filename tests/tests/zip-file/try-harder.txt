@@ -1,10 +1,11 @@
 Testing CS2002 C2
-- Looking for submission in a directory called 'submission': Cannot find it....
-Going to try hard, and guess the current directory. I'm probably wrong.
+- Found file submission.zip
+- Extracting submission.zip to temp folder
+- Looking for submission in a directory called 'submission': found in current directory
 * BUILD TEST - build1 : pass
 * BUILD TEST - build2 : fail
 --- submission output ---
-DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: No such file or directory
+DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: Permission denied
 ---
 
 1 out of 2 tests passed
