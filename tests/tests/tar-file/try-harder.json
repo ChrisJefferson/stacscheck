@@ -2,8 +2,7 @@
   "course": "CS2002",
   "infotext": [
     "- Looking for submission in a directory called 'submission': ",
-    "Cannot find it....\n",
-    "Going to try hard, and guess the current directory. I'm probably wrong.\n"
+    "found in current directory\n"
   ],
   "practical": "C2",
   "subid": "<unknown>",
@@ -13,11 +12,11 @@
         "No .in input file (search manually)."
       ],
       "name": "build",
-      "pass": false,
+      "pass": true,
       "path": "DIR/tests/tar-file/testdir/build.sh",
-      "returnval": 127,
-      "stderr": "DIR/tests/tar-file/testdir/build.sh: line 3: ./practical.sh: No such file or directory\n",
-      "stdout": "",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "a\n",
       "type": "Build"
     }
   ]

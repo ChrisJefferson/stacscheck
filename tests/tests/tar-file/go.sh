@@ -1,3 +1,3 @@
 #!/bin/bash
 
-$* testdir
+$* --archive submission.tar testdir

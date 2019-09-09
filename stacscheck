@@ -788,34 +788,26 @@ def run_tests_recursive(testdir):
 
 def check_more_file_types():
     current_path = os.path.abspath(os.getcwd())
-    other_files = []
-
-    # Get list of files with name specified in --archive
     other_files = [ARCHIVE]
 
-    # Filter through whatever is found and return
-    if len(other_files) > 0:
-        print("- There are one or more compressed files in the directory.")
+    # Check that the file specified with --archive exists in cwd
+    if os.path.exists(os.path.join(current_path, ARCHIVE)):
+        # Check that zipfile and tarfile libraries recognize the file
+        valid_file = False
+        if zipfile.is_zipfile(ARCHIVE):
+            valid_file = True
+        elif tarfile.is_tarfile(ARCHIVE):
+            valid_file = True
+        else:
+            print("- File {} isn't being recognized.".format(file))
 
-        # Check that zipfile and tarfile libraries recognize the files
-        valid_files = []
-        for file in other_files:
-            if zipfile.is_zipfile(file):
-                valid_files.append(file)
-            elif tarfile.is_tarfile(file):
-                valid_files.append(file)
-            else:
-                print("File {} isn't being recognized.".format(file))
+        print("- Found file {}".format(ARCHIVE))
 
-        print("- Found following files:")
-        for i in valid_files:
-            print("    - {}".format(i))
-
-        return valid_files
+        return [ARCHIVE]
 
     # Deal with it if nothing was found
-    print("- Couldn't find a normal submission or a submission in a compressed file.")
-    print("- To run stacscheck with a compressed file, please call stacscheck from the same folder containing the file.")
+    print("- Couldn't find a compressed file with specified name.")
+    print("- To use --archive, please call stacscheck from the same folder containing the file.")
     sys.exit(0)
 
 def extract_to_temp(sub_found, temp_dir):
