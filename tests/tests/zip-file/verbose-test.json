@@ -2,8 +2,6 @@
   "course": "CS2002",
   "infotext": [
     "- Looking for submission in a directory called 'submission': ",
-    "Cannot find it....\n",
-    "- Looking for submission in a directory called 'submission': ",
     "found in current directory\n"
   ],
   "practical": "C2",
