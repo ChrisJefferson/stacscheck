@@ -11,7 +11,7 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "child_a/build_a",
+      "name": "parent1/child_a/build_a",
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_a/build_a.sh",
       "returnval": 0,
@@ -23,7 +23,7 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "child_b/build_b",
+      "name": "parent1/child_b/build_b",
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/build_b.sh",
       "returnval": 0,
@@ -40,7 +40,7 @@
       "inputlines": [
         "jh > jc\n"
       ],
-      "name": "child_b/prog_b-test1.out",
+      "name": "parent1/child_b/prog_b-test1.out",
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/prog_b.sh",
       "returnval": 0,

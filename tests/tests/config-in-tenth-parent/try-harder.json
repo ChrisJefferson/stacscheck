@@ -11,7 +11,7 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "build",
+      "name": "parent10/parent9/parent8/parent7/parent6/parent5/parent4/parent3/parent2/parent1/build",
       "pass": true,
       "path": "DIR/tests/config-in-tenth-parent/parent10/parent9/parent8/parent7/parent6/parent5/parent4/parent3/parent2/parent1/build.sh",
       "returnval": 0,

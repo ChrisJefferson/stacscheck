@@ -11,9 +11,9 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "build1",
+      "name": "parent3/build3",
       "pass": true,
-      "path": "DIR/tests/run-parent-builds/parent3/parent2/parent1/build1.sh",
+      "path": "DIR/tests/run-parent-builds/parent3/build3.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",
@@ -23,7 +23,7 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "",
+      "name": "parent3/parent2/build2",
       "pass": true,
       "path": "DIR/tests/run-parent-builds/parent3/parent2/build2.sh",
       "returnval": 0,
@@ -35,9 +35,9 @@
       "inputlines": [
         "No .in input file (search manually)."
       ],
-      "name": "",
+      "name": "parent3/parent2/parent1/build1",
       "pass": true,
-      "path": "DIR/tests/run-parent-builds/parent3/build3.sh",
+      "path": "DIR/tests/run-parent-builds/parent3/parent2/parent1/build1.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "",

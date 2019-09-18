@@ -892,7 +892,7 @@ def extract_file_with_submission(files_found, temp_dir):
         print("- Please rerun stacscheck with --archive <filename> to specify which one to use.")
         sys.exit(1)
 
-    print("- Couldn't find a compressed file containing the submission specified by srcdir in practical.config.")
+    print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the compressed file.")
     sys.exit(0)
 
 
