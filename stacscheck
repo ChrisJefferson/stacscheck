@@ -129,7 +129,7 @@ JINJAPAGE = u"""
         {% if test.pass %} "#2aa77d" {% else %} "#E44C4B" {% endif %} >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-{{loop.index}}')">
-        :)
+        expand
         </button>
         </td>
         <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
