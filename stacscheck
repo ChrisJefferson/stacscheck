@@ -541,10 +541,10 @@ def register_diff_test(test, comparefile):
 
 
 # Given a filename of a test, get a nicer, shorter name which
-# describes the test. First drop extension, then remove TESTBASE
+# describes the test. First drop extension, then remove PARENTBASE
 def nice_name(name):
     noextension = os.path.splitext(name)[0]
-    dropdir = noextension[len(TESTBASE):]
+    dropdir = noextension[len(PARENTBASE):]
     return dropdir.lstrip("/")
 
 
@@ -664,6 +664,28 @@ def run_tests_recursive(testdir):
     # First check for a build*.sh
     extra_env = {"TESTDIR" : testdir}
 
+    return_after_build_tests = False
+
+    # CUTOFF POINT FOR FILES ABOVE TESTDIR
+    # If the config file is not in TESTBASE and testdir is not a subdirectory of
+    # TESTBASE, search up to find the config file
+    if not os.path.samefile(str(TESTBASE), str(PARENTBASE)) and (str(testdir) in str(TESTBASE)):
+        # If testdir is PARENTBASE containing config file, return.
+        if (os.path.samefile(str(testdir), str(PARENTBASE))):
+            return_after_build_tests = True
+        # If testdir is TESTBASE, then search up for build tests but continue
+        # doing the normal tests (don't return)
+        elif os.path.samefile(str(testdir), str(TESTBASE)):
+            # Get parent directory and run tests with it (should stop after build)
+            split_path = os.path.split(testdir)
+            run_tests_recursive(split_path[0])
+        # Otherwise if testdir is between TESTBASE and PARENTBASE, recurse with
+        # parent and don't do any of the other tests (return).
+        else:
+            split_path = os.path.split(testdir)
+            run_tests_recursive(split_path[0])
+            return_after_build_tests = True
+
     # BUILDSCRIPTS
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
 
@@ -685,25 +707,8 @@ def run_tests_recursive(testdir):
             anyBuildTestFailed = True
             return
 
-    # CUTOFF POINT FOR FILES ABOVE TESTDIR
-    # If the config file is not in TESTBASE and testdir is not a subdirectory of
-    # TESTBASE, search up to find the config file
-    if not os.path.samefile(str(TESTBASE), str(PARENTBASE)) and (str(testdir) in str(TESTBASE)):
-        # If testdir is PARENTBASE containing config file, return.
-        if (os.path.samefile(str(testdir), str(PARENTBASE))):
-            return
-        # If testdir is TESTBASE, then search up for build tests but continue
-        # doing the normal tests (don't return)
-        elif os.path.samefile(str(testdir), str(TESTBASE)):
-            # Get parent directory and run tests with it (should stop after build)
-            split_path = os.path.split(testdir)
-            run_tests_recursive(split_path[0])
-        # Otherwise if testdir is between TESTBASE and PARENTBASE, recurse with
-        # parent and don't do any of the other tests (return).
-        else:
-            split_path = os.path.split(testdir)
-            run_tests_recursive(split_path[0])
-            return
+    if return_after_build_tests:
+        return
 
     # TESTSCRIPTS
     testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
