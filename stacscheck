@@ -653,12 +653,6 @@ def files_in_dir_matching_regex(directory, regex):
 
     return files
 
-# Determine whether test should run (if it's part of the group of tests to be run)
-def should_test_run(testdir):
-    output_str("DIRECTORY: " + str(testdir) + "\n")
-
-    return True
-
 # Accept a directory name relative to
 def run_tests_recursive(testdir):
     # First check for a build*.sh
@@ -786,7 +780,6 @@ def run_tests_recursive(testdir):
                 if os.path.isdir(os.path.join(testdir, d))]
 
         for d in subdirs:
-            # if (should_test_run(d)):
             run_tests_recursive(d)
     except OSError as e:
         warn_print(str(e))
