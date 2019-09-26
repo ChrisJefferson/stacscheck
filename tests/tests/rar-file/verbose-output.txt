@@ -1,0 +1,2 @@
+Testing CS2002 C2
+- File submission.rar is not a recognised type of archive (only zip and tar files are supported)

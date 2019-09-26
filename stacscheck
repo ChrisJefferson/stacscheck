@@ -797,7 +797,9 @@ def check_more_file_types():
         elif tarfile.is_tarfile(ARCHIVE):
             valid_file = True
         else:
-            print("- File {} isn't being recognized.".format(file))
+            print("- File {} is not a recognised type of archive (only zip and tar files are supported)".format(ARCHIVE))
+            sys.exit(1)
+
 
         print("- Found file {}".format(ARCHIVE))
 
