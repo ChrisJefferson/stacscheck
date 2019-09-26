@@ -784,32 +784,6 @@ def run_tests_recursive(testdir):
     except OSError as e:
         warn_print(str(e))
 
-def validate_archivecheck_more_file_types():
-    current_path = os.path.abspath(os.getcwd())
-    other_files = [ARCHIVE]
-
-    # Check that the file specified with --archive exists in cwd
-    if os.path.exists(os.path.join(current_path, ARCHIVE)):
-        # Check that zipfile and tarfile libraries recognize the file
-        valid_file = False
-        if zipfile.is_zipfile(ARCHIVE):
-            valid_file = True
-        elif tarfile.is_tarfile(ARCHIVE):
-            valid_file = True
-        else:
-            print("- File {} is not a recognised type of archive (only zip and tar files are supported)".format(ARCHIVE))
-            sys.exit(1)
-
-
-        print("- Found file {}".format(ARCHIVE))
-
-        return [ARCHIVE]
-
-    # Deal with it if nothing was found
-    print("- Couldn't find a compressed file with specified name.")
-    print("- To use --archive, please call stacscheck from the same folder containing the file.")
-    sys.exit(0)
-
 def extract_to_temp(sub_found, temp_dir):
     sub_found.extractall(path=temp_dir)
     sub_found.close()
