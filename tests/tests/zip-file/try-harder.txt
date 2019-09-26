@@ -1,5 +1,4 @@
 Testing CS2002 C2
-- Found file submission.zip
 - Extracting submission.zip to temp folder
 - Looking for submission in a directory called 'submission': found in current directory
 * BUILD TEST - build1 : pass

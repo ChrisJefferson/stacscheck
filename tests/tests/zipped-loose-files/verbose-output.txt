@@ -1,3 +1,2 @@
 Testing CS2002 C2
-- Found file submission.zip
-- Couldn't find a directory called submission in the compressed file.
+- Couldn't find a directory called submission in the archive submission.zip

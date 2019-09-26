@@ -1,5 +1,4 @@
 Testing CS2002 C2
-- Found file submission.tar.xz
 - Extracting submission.tar.xz to temp folder
 - Looking for submission in a directory called 'submission': found in current directory
 * BUILD TEST - build : pass

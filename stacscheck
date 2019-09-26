@@ -784,7 +784,7 @@ def run_tests_recursive(testdir):
     except OSError as e:
         warn_print(str(e))
 
-def check_more_file_types():
+def validate_archivecheck_more_file_types():
     current_path = os.path.abspath(os.getcwd())
     other_files = [ARCHIVE]
 
@@ -817,78 +817,56 @@ def extract_to_temp(sub_found, temp_dir):
     # Note: this works because both tarfile and zipfile libraries have these functions. If
     # something else is added that doesn't have these functions it will need changing.
 
-def extract_file_with_submission(files_found, temp_dir):
-    if len(files_found) == 0:
-        print("No compressed files were found.")
-
-    # If CONFIG['srcdir'] isn't defined, just extract the first one
-    # if not 'srcdir' in CONFIG:  # ACELGA
-    #     return extract_to_temp(files_found[0], temp_dir)
-
-    # Find files with srcdir in them. If there's several, notify and ask user to
-    # use --archive. If there's exactly one, extract.
+def extract_file_with_submission(archive_name, temp_dir):
     files_with_srcdir = []
     objects_with_srcdir = []
 
-    for file in files_found:
-        file_object = None
-        content_list = None
+    file_object = None
+    content_list = None
 
-        # Make object and get list of contents
-        if '.zip' in file:
-            file_object = zipfile.ZipFile(file, mode='r')
-            content_list = file_object.namelist()
-        elif '.tar.xz' in file:
-            file_object = tarfile.open(name=file, mode='r:xz')
-            content_list = file_object.getnames()
-        elif '.tar.gz' in file:
-            file_object = tarfile.open(name=file, mode='r:gz')
-            content_list = file_object.getnames()
-        elif '.tar.bz2' in file:
-            file_object = tarfile.open(name=file, mode='r:bz2')
-            content_list = file_object.getnames()
-        elif '.tar' in file:
-            file_object = tarfile.open(name=file, mode='r')
-            content_list = file_object.getnames()
-        else:
-            print("Couldn't find file {} when trying to search contents.".format(file))
-            continue
-
-        # If submission folder is inside (or looks like it), extract. Otherwise move on
-        submission_name = CONFIG['srcdir'] + "/"
-        foundMatch = False
-
-        for content in content_list:
-            if submission_name in content:
-                files_with_srcdir.append(file)
-                objects_with_srcdir.append(file_object)
-                foundMatch = True
-                break
-            # else:
-            #     # Won't be used anymore, so close
-            #     print("CLOSING {}".format(file))
-            #     file_object.close()
-        if foundMatch == False:
-            file_object.close()
-
-    # If only one submission was found
-    if len(files_with_srcdir) == 1:
-        # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
-        print("- Extracting {} to temp folder".format(files_with_srcdir[0]))
-        extract_to_temp(objects_with_srcdir[0], temp_dir)
-        file_object.close()
-        return
-
-    elif len(files_with_srcdir) > 1:
-        print("- Found several files containing submissions:")
-        for i in range(len(files_with_srcdir)):
-            print("    - {}".format(files_with_srcdir[i]))
-            objects_with_srcdir[i].close()
-        print("- Please rerun stacscheck with --archive <filename> to specify which one to use.")
+    current_path = os.path.abspath(os.getcwd())
+    
+    # Check that the file specified with --archive exists in cwd
+    if not os.path.exists(os.path.join(current_path, ARCHIVE)):
+        print("- File not found: " + archive_name);
+        sys.exit(1)
+    # Make object and get list of contents
+    if '.zip' in archive_name:
+        file_object = zipfile.ZipFile(archive_name, mode='r')
+        content_list = file_object.namelist()
+    elif '.tar.xz' in archive_name:
+        file_object = tarfile.open(name=archive_name, mode='r:xz')
+        content_list = file_object.getnames()
+    elif '.tar.gz' in archive_name:
+        file_object = tarfile.open(name=archive_name, mode='r:gz')
+        content_list = file_object.getnames()
+    elif '.tar.bz2' in archive_name:
+        file_object = tarfile.open(name=archive_name, mode='r:bz2')
+        content_list = file_object.getnames()
+    elif '.tar' in archive_name:
+        file_object = tarfile.open(name=archive_name, mode='r')
+        content_list = file_object.getnames()
+    else:
+        print("- File {} is not a recognised type of archive (only zip and tar files are supported)".format(ARCHIVE))
         sys.exit(1)
 
-    print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the compressed file.")
-    sys.exit(0)
+    # If submission folder is inside (or looks like it), extract. Otherwise move on
+    submission_name = CONFIG['srcdir'] + "/"
+    foundMatch = False
+
+    for content in content_list:
+        if submission_name in content:
+            foundMatch = True
+            break
+    if foundMatch == False:
+        file_object.close()
+        print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the archive " + archive_name)
+        sys.exit(1)
+
+    # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
+    print("- Extracting {} to temp folder".format(archive_name))
+    extract_to_temp(file_object, temp_dir)
+    file_object.close()
 
 
 ##################################################################
@@ -962,11 +940,10 @@ def run():
             run_tests_recursive(TESTBASE)
         # Try running with compressed file specified with --archive
         else:
-            sub_found = check_more_file_types()
             current_path = os.path.abspath(os.getcwd())
             # Extract files and run tests
             with tempfile.TemporaryDirectory() as temp_dir:
-                extract_file_with_submission(sub_found, temp_dir)
+                extract_file_with_submission(ARCHIVE, temp_dir)
                 SUBMISSIONBASE = find_code_directory(temp_dir)
                 run_tests_recursive(TESTBASE)
 

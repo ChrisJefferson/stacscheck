@@ -1,3 +1,2 @@
 Testing CS2002 C2
-- Couldn't find a compressed file with specified name.
-- To use --archive, please call stacscheck from the same folder containing the file.
+- File not found: submission.tar
