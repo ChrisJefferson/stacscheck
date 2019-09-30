@@ -1,0 +1,32 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'test_TESTDIR': Already in it!
+* TEST - test1 : fail
+--- submission output ---
+I am a file
+---
+
+* INFO - info1 : fail
+--- submission output ---
+I am a file
+failing
+---
+
+* INFO - info2 : pass
+--- submission output ---
+I am a file
+passing
+---
+
+* COMPARISON TEST - prog1-empty.out : fail
+--- no output expected ---
+--- submission output ---
+I am a file
+---
+
+* BUILD TEST - build-subdir/build1 : fail
+--- submission output ---
+I am a file in a sub-directory
+---
+
+1 out of 5 tests passed
+Building is failing, so some tests were skipped

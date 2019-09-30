@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 
 # MIT License
 
@@ -582,9 +582,8 @@ def read_stream(outdict, name, stream):
             outdict[name] = bytes(outstr)
 
 
-# Run a program, given as a list [prog, arg1, arg2], with
-# an optional file to read as stdin, and optional extra environment variables
-def run_program(program, stdin, extra_env):
+# This is an internal function, use run_program below
+def run_program_popen(program, stdin, extra_env):
     env_copy = os.environ.copy()
 
     if extra_env is not None:
@@ -644,6 +643,13 @@ def run_program(program, stdin, extra_env):
         warn_print(program[0] + " is broken: " + e.strerror)
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
+# Run a program, given as a list [prog, arg1, arg2], with
+# an optional file to read as stdin, and optional extra environment variables
+def run_program(program, stdin, extra_env):
+    with tempfile.TemporaryDirectory() as scratchdir:
+        extra_env["SCRATCHDIR"] = scratchdir
+        return run_program_popen(program, stdin, extra_env)
+    
 def run_bash_script(script, stdin, extra_env):
     return run_program(["bash", script], stdin, extra_env)
 
