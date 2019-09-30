@@ -1,5 +1,5 @@
 Testing CS1234 Practical 1
-- Looking for submission in a directory called 'test_SCRATCHDIR': Already in it!
+- Looking for submission in a directory called 'test_VERSION_EQUAL': Already in it!
 * INFO - info1 : pass
 --- submission output ---
 Hello

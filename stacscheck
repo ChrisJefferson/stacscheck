@@ -370,12 +370,18 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed, or not readable")
         sys.exit(1)
 
-    valid_options = ['course', 'practical', 'srcdir', 'timeout']
+    valid_options = ['course', 'practical', 'srcdir', 'timeout', 'version']
     for option in config.options('info'):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
         CONFIG[option] = config.get('info', option)
 
+    if 'version' in CONFIG:
+        if [int(x) for x in CONFIG['version'].split(".")] > [int(x) for x in VERSION.split(".")]:
+            print("- ERROR -")
+            print("This practical requires stacscheck version " + CONFIG[option])
+            print("But this is stacscheck " + VERSION)
+            sys.exit(1)
     return parentdir
 
 # Walk directory tree under 'rootdir', finding all directories with 'name'.

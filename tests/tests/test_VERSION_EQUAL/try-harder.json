@@ -1,7 +1,7 @@
 {
   "course": "CS1234",
   "infotext": [
-    "- Looking for submission in a directory called 'test_SCRATCHDIR': ",
+    "- Looking for submission in a directory called 'test_VERSION_EQUAL': ",
     "Already in it!\n"
   ],
   "practical": "Practical 1",
@@ -14,7 +14,7 @@
       ],
       "name": "info1",
       "pass": true,
-      "path": "DIR/tests/test_SCRATCHDIR/testdir/info1.sh",
+      "path": "DIR/tests/test_VERSION_EQUAL/testdir/info1.sh",
       "returnval": 0,
       "stderr": "",
       "stdout": "Hello\n",
@@ -27,7 +27,7 @@
       ],
       "name": "info2",
       "pass": false,
-      "path": "DIR/tests/test_SCRATCHDIR/testdir/info2.sh",
+      "path": "DIR/tests/test_VERSION_EQUAL/testdir/info2.sh",
       "returnval": 1,
       "stderr": "",
       "stdout": "",
