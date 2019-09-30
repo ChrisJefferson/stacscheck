@@ -931,7 +931,7 @@ def run():
     print(finalmessage)
 
     if anyBuildTestFailed:
-        print("Building is failing, skipping tests")
+        print("Building is failing, so some tests were skipped")
 
 
     try:

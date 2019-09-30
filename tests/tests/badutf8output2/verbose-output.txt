@@ -79,4 +79,4 @@ exit 1
 Exiting early due to failed DIR/tests/badutf8output2/testdir/subdir2/build-fail-two.sh
 
 3 out of 9 tests passed
-Building is failing, skipping tests
+Building is failing, so some tests were skipped

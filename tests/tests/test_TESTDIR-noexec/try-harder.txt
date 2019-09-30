@@ -29,4 +29,4 @@ I am a file in a sub-directory
 ---
 
 1 out of 5 tests passed
-Building is failing, skipping tests
+Building is failing, so some tests were skipped

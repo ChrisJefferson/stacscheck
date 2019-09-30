@@ -11,4 +11,4 @@ sleep 8
 Exiting early due to failed DIR/tests/timeout-fail-test/testdir/build.sh
 
 0 out of 1 tests passed
-Building is failing, skipping tests
+Building is failing, so some tests were skipped

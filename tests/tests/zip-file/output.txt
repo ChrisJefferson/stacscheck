@@ -8,4 +8,4 @@ DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: Permission denied
 ---
 
 1 out of 2 tests passed
-Building is failing, skipping tests
+Building is failing, so some tests were skipped
