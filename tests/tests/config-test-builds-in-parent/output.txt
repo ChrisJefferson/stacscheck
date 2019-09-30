@@ -1,0 +1,20 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'config-test-builds-in-parent': Already in it!
+* BUILD TEST - parent5/build-A : pass
+* BUILD TEST - parent5/parent4/build-B : pass
+* BUILD TEST - parent5/parent4/parent3/build-C : pass
+* BUILD TEST - parent5/parent4/parent3/parent2/build-D : pass
+* BUILD TEST - parent5/parent4/parent3/parent2/parent1/build : pass
+* BUILD TEST - parent5/parent4/parent3/parent2/parent1/childA/build-ChildA : pass
+* INFO - parent5/parent4/parent3/parent2/parent1/childA/info-A : pass
+--- submission output ---
+info-A.sh
+---
+
+* BUILD TEST - parent5/parent4/parent3/parent2/parent1/childB/build-ChildB : pass
+* INFO - parent5/parent4/parent3/parent2/parent1/childB/info-B : pass
+--- submission output ---
+info-B.sh
+---
+
+9 out of 9 tests passed

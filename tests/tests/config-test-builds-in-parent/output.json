@@ -1,0 +1,121 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'config-test-builds-in-parent': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/build-A",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/build-A.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "build-A\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/build-B",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/build-B.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "build-B\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/build-C",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/build-C.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "build-C\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/build-D",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/build-D.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "build-D\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/parent1/build",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/build.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "base\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/parent1/childA/build-ChildA",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childA/build-ChildA.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "child-A\n",
+      "type": "Build"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/parent1/childA/info-A",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childA/info-A.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "info-A.sh\n",
+      "type": "Info"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/parent1/childB/build-ChildB",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childB/build-ChildB.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "childB\n",
+      "type": "Build"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "parent5/parent4/parent3/parent2/parent1/childB/info-B",
+      "pass": true,
+      "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childB/info-B.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "info-B.sh\n",
+      "type": "Info"
+    }
+  ]
+}

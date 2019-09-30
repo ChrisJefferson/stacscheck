@@ -540,6 +540,7 @@ def register_diff_test(test, comparefile):
     testStore.append(test)
 
 
+#################### FILE UTILITIES ######################
 # Given a filename of a test, get a nicer, shorter name which
 # describes the test. First drop extension, then remove PARENTBASE
 def nice_name(name):
@@ -547,6 +548,12 @@ def nice_name(name):
     dropdir = noextension[len(PARENTBASE):]
     return dropdir.lstrip("/")
 
+# Check if one directory is contained within another
+def in_directory(basedir, childdir):
+    #make both absolute    
+    basedir = os.path.join(os.path.realpath(basedir),'')
+    childdir = os.path.join(os.path.realpath(childdir), '')
+    return os.path.commonprefix([basedir, childdir]) == basedir
 
 # Read from a stream, recording result in a record
 # Caps the total amount read to ~1MB
@@ -658,27 +665,14 @@ def run_tests_recursive(testdir):
     # First check for a build*.sh
     extra_env = {"TESTDIR" : testdir}
 
-    return_after_build_tests = False
+    # In this case run all tests
+    inside_TESTBASE = in_directory(TESTBASE, testdir)
 
-    # CUTOFF POINT FOR FILES ABOVE TESTDIR
-    # If the config file is not in TESTBASE and testdir is not a subdirectory of
-    # TESTBASE, search up to find the config file
-    if not os.path.samefile(str(TESTBASE), str(PARENTBASE)) and (str(testdir) in str(TESTBASE)):
-        # If testdir is PARENTBASE containing config file, return.
-        if (os.path.samefile(str(testdir), str(PARENTBASE))):
-            return_after_build_tests = True
-        # If testdir is TESTBASE, then search up for build tests but continue
-        # doing the normal tests (don't return)
-        elif os.path.samefile(str(testdir), str(TESTBASE)):
-            # Get parent directory and run tests with it (should stop after build)
-            split_path = os.path.split(testdir)
-            run_tests_recursive(split_path[0])
-        # Otherwise if testdir is between TESTBASE and PARENTBASE, recurse with
-        # parent and don't do any of the other tests (return).
-        else:
-            split_path = os.path.split(testdir)
-            run_tests_recursive(split_path[0])
-            return_after_build_tests = True
+    # In this case just run build tests
+    prefix_of_TESTBASE = in_directory(testdir, TESTBASE)
+
+    if not inside_TESTBASE and not prefix_of_TESTBASE:
+        return
 
     # BUILDSCRIPTS
     buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
@@ -701,79 +695,78 @@ def run_tests_recursive(testdir):
             anyBuildTestFailed = True
             return
 
-    if return_after_build_tests:
-        return
+    if inside_TESTBASE:
+        # TESTSCRIPTS
+        testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
-    # TESTSCRIPTS
-    testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
-
-    for test in testscripts:
-        name = nice_name(test)
-        output_str("* TEST - " + name + " : ")
-        result = run_bash_script(test, None, extra_env)
-        result["name"] = name
-        result["path"] = test
-        result["type"] = "Test"
-
-        # State there is no fixed input file
-        result["inputlines"] = ["No .in input file (search manually)."]
-
-        register_returnval_test(result)
-
-    # INFOSCRIPTS
-    infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
-
-    for info in infoscripts:
-        name = nice_name(info)
-        output_str("* INFO - " + name + " : ")
-        result = run_bash_script(info, None, extra_env)
-        result["name"] = name
-        result["path"] = info
-        result["type"] = "Info"
-        result["alwaysoutput"] = True
-
-        # State there is no fixed input file
-        result["inputlines"] = ["No .in input file (search manually)."]
-
-        register_returnval_test(result)
-
-    # PROGSCRIPTS
-    progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
-
-    outtextfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
-
-    # If there isn't exactly one .out file per .sh, warn
-    if (len(outtextfiles) == 0) != (len(progscripts) == 0):
-        if len(outtextfiles) == 0:
-            warn_print("Found prog*.sh without *.out files in " + testdir)
-        else:
-            warn_print("Found *.out files without prog*.sh in " + testdir)
-    for progsh in progscripts:
-        for out in outtextfiles:
-            infile = out[:-4] + ".in"
-            if not os.path.isfile(infile):
-                infile = None
-            name = nice_name(progsh) + "-" + os.path.basename(out)
-            output_str("* COMPARISON TEST - " + name + " : ")
-            result = run_bash_script(progsh, infile, extra_env)
+        for test in testscripts:
+            name = nice_name(test)
+            output_str("* TEST - " + name + " : ")
+            result = run_bash_script(test, None, extra_env)
             result["name"] = name
-            result["input"] = infile
-            result["path"] = progsh
-            result["type"] = "Prog"
+            result["path"] = test
+            result["type"] = "Test"
 
-            # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
-            if (result["input"] != None):
-                with open(result["input"], 'rb') as stream:
-                    inputlines = toUTF8Replace(stream.read())
+            # State there is no fixed input file
+            result["inputlines"] = ["No .in input file (search manually)."]
 
-                inputlines = strip_string(inputlines)
-                result["inputlines"] = inputlines
+            register_returnval_test(result)
+
+        # INFOSCRIPTS
+        infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
+
+        for info in infoscripts:
+            name = nice_name(info)
+            output_str("* INFO - " + name + " : ")
+            result = run_bash_script(info, None, extra_env)
+            result["name"] = name
+            result["path"] = info
+            result["type"] = "Info"
+            result["alwaysoutput"] = True
+
+            # State there is no fixed input file
+            result["inputlines"] = ["No .in input file (search manually)."]
+
+            register_returnval_test(result)
+
+        # PROGSCRIPTS
+        progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
+
+        outtextfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
+
+        # If there isn't exactly one .out file per .sh, warn
+        if (len(outtextfiles) == 0) != (len(progscripts) == 0):
+            if len(outtextfiles) == 0:
+                warn_print("Found prog*.sh without *.out files in " + testdir)
             else:
-                result["inputlines"] = None
+                warn_print("Found *.out files without prog*.sh in " + testdir)
+        for progsh in progscripts:
+            for out in outtextfiles:
+                infile = out[:-4] + ".in"
+                if not os.path.isfile(infile):
+                    infile = None
+                name = nice_name(progsh) + "-" + os.path.basename(out)
+                output_str("* COMPARISON TEST - " + name + " : ")
+                result = run_bash_script(progsh, infile, extra_env)
+                result["name"] = name
+                result["input"] = infile
+                result["path"] = progsh
+                result["type"] = "Prog"
 
-            # Add diff for html to result
-            register_diff_test(result, out)
+                # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
+                if (result["input"] != None):
+                    with open(result["input"], 'rb') as stream:
+                        inputlines = toUTF8Replace(stream.read())
 
+                    inputlines = strip_string(inputlines)
+                    result["inputlines"] = inputlines
+                else:
+                    result["inputlines"] = None
+
+                # Add diff for html to result
+                register_diff_test(result, out)
+        
+    # Always search in subdirectories
     # Run tests for subdirectories
     try:
         subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
@@ -911,7 +904,7 @@ def run():
         # If a .zip/.tar/other name was specified, skip normal searching
         if args.archive is None:
             SUBMISSIONBASE = find_code_directory()
-            run_tests_recursive(TESTBASE)
+            run_tests_recursive(PARENTBASE)
         # Try running with compressed file specified with --archive
         else:
             current_path = os.path.abspath(os.getcwd())
@@ -919,7 +912,7 @@ def run():
             with tempfile.TemporaryDirectory() as temp_dir:
                 extract_file_with_submission(ARCHIVE, temp_dir)
                 SUBMISSIONBASE = find_code_directory(temp_dir)
-                run_tests_recursive(TESTBASE)
+                run_tests_recursive(PARENTBASE)
 
         if len(testStore) == 0:
             # Use args.testdir as it is shorter

@@ -1,0 +1,2 @@
+echo info-A.sh
+
