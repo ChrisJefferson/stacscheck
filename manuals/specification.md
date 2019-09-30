@@ -62,3 +62,5 @@ Environment variables
 Sometimes you might want to be able to access the directory the test specification is in, in one of the testing scripts.
 Rather than hard-wiring it, the variable `$TESTDIR` will be set to the directory of the currently executing `.sh` file.
 
+There is also a variable `$SCRATCHDIR`, which is set to a temporary directory which will be removed when `stacscheck` is finished.
+
