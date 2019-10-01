@@ -1,3 +1,19 @@
+3.0.0 -> 3.1.0
+==============
+
+* Fix bug in running builds in subdirectories in tests in correct order
+* Improve some warning messages
+* Add SCRATCHDIR, a directory which is cleaned up after every test
+
+2.2.4 -> 3.0.0
+==============
+
+* Significant improvements to HTML output
+* Add --archive flag for running compressed files directly
+* Require Python 3
+* Allow running subdirectories of tests
+
+
 2.2.3 -> 2.2.4
 ==============
 
