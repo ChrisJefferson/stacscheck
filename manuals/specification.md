@@ -20,6 +20,16 @@ srcdir = <name of directory>
 
 Where` srcdir` specifies the name of the directory the student's source should be contained in.
 
+You are also encouraged, but not required, to add:
+
+```
+[version]
+required = 3.1.0
+```
+
+To give a required stacscheck version. This is used to produce more useful
+error messages to users with out-of-date versions.
+
 
 Running tests
 -------------

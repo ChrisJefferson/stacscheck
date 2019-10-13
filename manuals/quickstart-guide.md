@@ -10,7 +10,7 @@ On lab machines, and the host servers, `stacscheck` should just be installed. Yo
 `stacscheck`. You should see the output (possibly with an updated version number)
 
 ```
-stacscheck 2.0.1
+stacscheck 3.2.0
 You must give a directory of tests to run!
 ```
 

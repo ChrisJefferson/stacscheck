@@ -10,6 +10,12 @@ course = &lt;course name&gt;
 srcdir = &lt;name of directory&gt;
 </code></pre>
 <p>Where<code>srcdir</code> specifies the name of the directory the student's source should be contained in.</p>
+<p>You are also encouraged, but not required, to add:</p>
+<pre><code>[version]
+required = 3.1.0
+</code></pre>
+<p>To give a required stacscheck version. This is used to produce more useful
+error messages to users with out-of-date versions.</p>
 <h2>Running tests</h2>
 <p>Each test is stored as a list of commands which should be run. These files always end with <code>sh</code>.
 They will be run from the directory where <code>stacscheck</code> was started from.</p>
