@@ -263,9 +263,11 @@ def verbose_print(arg):
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
     info_print("The problem is: " + str(arg) + ".")
+#    info_print("Possible reasons:")
+#    info_print("  - Your copy of stacscheck is out of date.")
+#    info_print("  - The directory of tests is missing some files, or is broken.")
     info_print("This may be caused by a broken test directory, or")
     info_print("the test directory may have been copied incorrectly.")
-
 def print_file_contents(
         file_loc,
         ignore_prefixes=["#!"], #Do not modify the list in the method, otherwise troubles may occur
@@ -366,22 +368,58 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed")
         sys.exit(1)
 
-    if config.sections() != ['info']:
-        warn_print("practical.config is malformed, or not readable")
+    if not 'info' in config.sections():
+        warn_print("practical.config does not have an '[info]' section")
+        sys.exit(1)
+
+    practical_version = None
+    # Check version early, for useful error messages
+    if 'version' in config.options('info'):
+        practical_version = config.get('info', 'version')
+    elif 'version' in config.sections() and 'required' in config.options('version'):
+        practical_version = config.get('version', 'required')
+
+    if practical_version is not None:
+        if [int(x) for x in practical_version.split(".")] > [int(x) for x in VERSION.split(".")]:
+            print("- ERROR -")
+            print("This practical requires stacscheck version " + practical_version)
+            print("But this is stacscheck " + VERSION)
+            sys.exit(1)
+
+
+    for section in config.sections():
+        if not section in ['info', 'version']:
+            warn_print("practical.config has an unexpected section: ", section)
+            sys.exit(1)
+    
+    if not 'info' in config.sections():
+        warn_print("practical.config does not have an [info] section")
         sys.exit(1)
 
     valid_options = ['course', 'practical', 'srcdir', 'timeout', 'version']
+
     for option in config.options('info'):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
+            sys.exit(1)
         CONFIG[option] = config.get('info', option)
 
-    if 'version' in CONFIG:
-        if [int(x) for x in CONFIG['version'].split(".")] > [int(x) for x in VERSION.split(".")]:
-            print("- ERROR -")
-            print("This practical requires stacscheck version " + CONFIG[option])
-            print("But this is stacscheck " + VERSION)
+    if 'version' in config.sections():
+        for option in config.options('version'):
+            if not(option in ['required']):
+                warn_print("Don't understand [version] in practical.config: '" + version +"'")
+                sys.exit(1)
+            if 'version' in CONFIG:
+                warn_print("'version' defined twice in practical.config")
+                sys.exit(1)
+            CONFIG['version'] = config.get('version', option)
+
+
+    for section in config.sections():
+        if not(section in ['info', 'version']):
+            warn_print("practical.config contains invalid section: ", section)
             sys.exit(1)
+
     return parentdir
 
 # Walk directory tree under 'rootdir', finding all directories with 'name'.

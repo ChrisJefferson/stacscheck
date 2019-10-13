@@ -1,0 +1,37 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'test_VERSION_LOW_SECTION': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "info1",
+      "pass": true,
+      "path": "DIR/tests/test_VERSION_LOW_SECTION/testdir/info1.sh",
+      "returnval": 0,
+      "stderr": "",
+      "stdout": "Hello\n",
+      "type": "Info"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "info2",
+      "pass": false,
+      "path": "DIR/tests/test_VERSION_LOW_SECTION/testdir/info2.sh",
+      "returnval": 1,
+      "stderr": "",
+      "stdout": "",
+      "type": "Info"
+    }
+  ]
+}
