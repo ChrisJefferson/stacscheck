@@ -28,6 +28,7 @@ VERSION = "3.2.0"
 import sys
 import signal
 import os
+import glob
 import subprocess
 import re
 import time
@@ -391,7 +392,7 @@ def try_parse_config_file(basedir):
         if not section in ['info', 'version']:
             warn_print("practical.config has an unexpected section: ", section)
             sys.exit(1)
-    
+
     if not 'info' in config.sections():
         warn_print("practical.config does not have an [info] section")
         sys.exit(1)
@@ -594,7 +595,7 @@ def nice_name(name):
 
 # Check if one directory is contained within another
 def in_directory(basedir, childdir):
-    #make both absolute    
+    #make both absolute
     basedir = os.path.join(os.path.realpath(basedir),'')
     childdir = os.path.join(os.path.realpath(childdir), '')
     return os.path.commonprefix([basedir, childdir]) == basedir
@@ -693,7 +694,7 @@ def run_program(program, stdin, extra_env):
     with tempfile.TemporaryDirectory() as scratchdir:
         extra_env["SCRATCHDIR"] = scratchdir
         return run_program_popen(program, stdin, extra_env)
-    
+
 def run_bash_script(script, stdin, extra_env):
     return run_program(["bash", script], stdin, extra_env)
 
@@ -815,7 +816,7 @@ def run_tests_recursive(testdir):
 
                 # Add diff for html to result
                 register_diff_test(result, out)
-        
+
     # Always search in subdirectories
     # Run tests for subdirectories
     try:
@@ -842,7 +843,7 @@ def extract_file_with_submission(archive_name, temp_dir):
     content_list = None
 
     current_path = os.path.abspath(os.getcwd())
-    
+
     # Check that the file specified with --archive exists in cwd
     if not os.path.exists(os.path.join(current_path, ARCHIVE)):
         print("- File not found: " + archive_name);
@@ -889,7 +890,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
+    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE, CLEAN
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument("--id", dest="subid", default="<unknown>",
@@ -908,6 +909,8 @@ def run():
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--archive", dest="archive",
                       help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name")
+    parser.add_argument("--clean", action="store_true", dest="clean", default=False,
+                        help="Clean source directory of .class files after running")
     parser.add_argument("testdir")
 
     args = parser.parse_args()
@@ -924,6 +927,7 @@ def run():
     VERBOSE = args.verbose
     TRYHARDER = args.tryharder
     ARCHIVE = args.archive
+    CLEAN = args.clean
 
     if not os.path.exists(args.testdir):
         print("stacscheck " + VERSION)
@@ -1007,6 +1011,14 @@ def run():
                 jsonfile.write("\n")
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
+
+    # If the clean flag is set clear out class files
+    if CLEAN and SUBMISSIONBASE is not None:
+        for filePath in glob.glob(os.path.join(SUBMISSIONBASE, "*.class")):
+            try:
+                os.remove(filePath);
+            except:
+                print("Error while deleting file: ", filePath);
 
 
 if __name__ == "__main__":
