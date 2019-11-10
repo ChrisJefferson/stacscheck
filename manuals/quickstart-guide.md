@@ -14,7 +14,7 @@ stacscheck 3.2.0
 You must give a directory of tests to run!
 ```
 
-If the machine doesn't have it, you can download it from 
+If the machine doesn't have it, you can download it from
 [https://studres.cs.st-andrews.ac.uk/Library/stacscheck/](https://studres.cs.st-andrews.ac.uk/Library/stacscheck/).
 You only need the `stacscheck` script. See [installing stacscheck](installing-stacscheck.md) for more guidance
 on installing `stacscheck` on your own machine.
@@ -39,6 +39,7 @@ Useful options for `stacscheck`:
 *  `--html=FILE` : Output a nice HTML output to FILE
 *  `--version`   : Print out version of checker
 *  `--verbose`   : Output lots of information about how the testing is progressing (probably too much)
+*  `--clean`     : Remove .class files from the source directory after the tests are run
 
 Understanding tests
 -------------------
@@ -47,4 +48,3 @@ If you want to understand what is being tested, go into the tests directory. Eac
 on a shell script (which is a series of commands which can be run)
 
 A full specification on how to read the tests is available [here](specification.html).
-
