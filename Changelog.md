@@ -1,3 +1,8 @@
+3.2.0 -> 3.2.1
+==============
+
+* Added --clean to clear .class files from source file
+
 3.0.0 -> 3.1.0
 ==============
 
