@@ -24,66 +24,13 @@
 # SOFTWARE.
 
 import sys
-import jinja2
 import json
 import pprint
 import functools
-
-JINJAPAGE = """
-<!DOCTYPE html>
-<style type="text/css">
-    </style>
-<html lang="en">
-<head>
-    <title>{{Practical}}</title>
-</head>
-<body>
-    <table>
-    <tr><th></th>
-    {% for name in testnames %}
-    <th> {{ name.replace("/","/ ").replace("_","_ ") }} </th>
-    {% endfor %}
-    <th>total (/{{ testnames | length}})</th>
-    </tr>
-
-    {% for student in students %}
-    <tr>
-    <td style="width:10px"> <a href="txt/{{student.subid}}.txt">{{ student.subid }}</a> </td>
-    {%- for name in testnames -%}
-    {%- if name in student.dicttests -%}
-        {%- if student.dicttests[name].pass -%}
-        <td bgcolor = "#BFB"><a href="html/{{student.subid}}.html#{{name}}">Y</a></td>
-        {%- else -%}
-        <td bgcolor = "#FBB"><a href="html/{{student.subid}}.html#{{name}}">N</a></td>
-        {%- endif -%}
-    {%- else -%}
-        <td> </td>
-    {%- endif -%}
-    {%- endfor -%}
-    <td>{{student.passes}}</td>
-    </tr>
-    {%- endfor -%}
-    <tr>
-    <td> total: {{ students | length }}</td>
-    {%- for name in testnames -%}
-       <td> {{ passcount[name] }} </td> 
-    {%- endfor -%}
-    <td>
-    </tr>
-    <tr>
-    <td>  </td>
-    {%- for name in testnames -%}
-       <td> {{ (passcount[name] / ( students | length ) * 100) | int }} </td> 
-    {%- endfor -%}
-    <td>
-    </tr>
-</table>
-</body>
-</html>
-"""
+import re
 
 if len(sys.argv) < 2:
-    print("Usage: ./student_overview <list of json outputs from stacscheck>")
+    print("Usage: ./student_csv <list of json outputs from stacscheck>")
     print("Generate json from stacscheck with the --json flag")
 
 jsons = []
@@ -122,17 +69,33 @@ passcount = dict()
 for t in allTestNames:
     passcount[t] = 0
 
+_RE_COMBINE_WHITESPACE = re.compile(r"\s+")
+#get each student from our jsons object
 for student in jsons:
-    student["dicttests"] = dict()
-    student["passes"] = 0
+    #set up the mark and feedback
+    student["mark"] = ""
+    student["feedback"] = ""
+    #get each test from the student's submission
     for test in student["tests"]:
-        student["dicttests"][test["name"]] = test
-        if test["pass"]:
-            student["passes"] += 1
-            passcount[test["name"]] += 1
+        try:
+            output = json.loads(_RE_COMBINE_WHITESPACE.sub(" ", test["stdout"]))
+            student["mark"] = output["mark"]
+            student["feedback"] = output["feedback"].replace('"', "'")
+            break
+        except EnvironmentError as e:
+            print("Couldn't read JSON file: " + str(e))
+            sys.exit(1)
+        except ValueError as e:
+            if test["stdout"] == "":
+                student["mark"] = "RED"
+                student["feedback"] = _RE_COMBINE_WHITESPACE.sub(" ", test["stderr"].replace('"', "'"))
+            else:
+                student["mark"] = "RED"
+                student["feedback"] = _RE_COMBINE_WHITESPACE.sub(" ", test["stdout"].replace('"', "'"))
+
+#get each student from our jsons object
+for student in jsons:
+    print(student["subid"] + ',' + student["mark"] + ',,"' + student["feedback"] + '"')
 
 
-env = jinja2.Environment(autoescape=True)
-template = env.from_string(JINJAPAGE)
 
-print(template.render(testnames=allTestNames, passcount=passcount, students=jsons))

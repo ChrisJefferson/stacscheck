@@ -70,7 +70,7 @@ JINJAPAGE = u"""
     td.diff_header {text-align: center;}
     .diff_next {background-color:#ff00dd; display: none}
     .diff_add {background-color:#24906c}
-    .diff_chg {background-color:#ffff77}
+    .diff_chg {background-color:#ffff77; color:black}
     .diff_sub {background-color:#E44C4B}
     :target {
     background: yellow;
@@ -895,7 +895,7 @@ def run():
     parser.add_argument("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
     parser.add_argument("--html", dest="htmlout",
-                      help="Produce HTML overview", metavar="FILE")
+                      help="Produce HTML overview", metavar="FILE")                 
     # This isn't documented, because the output format isn't (yet) stable.
     # You can use this, but don't complain if the format changes in future.
     parser.add_argument("--json", dest="jsonout",
@@ -1007,7 +1007,6 @@ def run():
                 jsonfile.write("\n")
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
-
 
 if __name__ == "__main__":
     try:
