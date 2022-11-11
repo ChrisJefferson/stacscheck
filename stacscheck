@@ -637,27 +637,25 @@ def in_directory(basedir, childdir):
 # Caps the total amount read to ~1MB
 def read_stream(outdict, name, stream):
     stream_limit = 1024*1024
-    outstr = bytearray()
+    outdict[name] = bytearray()
     while True:
         try:
-            chunk = stream.read(stream_limit - len(outstr))
+            chunk = stream.read(stream_limit - len(outdict[name]))
             # End of file reached
             if chunk == b'':
-                outdict[name] = bytes(outstr)
                 return
 
             # Add chunk
-            outstr.extend(chunk)
+            outdict[name].extend(chunk)
 
-            if len(outstr) == stream_limit:
-                outstr += b"\n ... Output truncated\n"
-                outdict[name] = bytes(outstr)
+            if len(outdict[name]) == stream_limit:
+                outdict[name] += b"\n ... Output truncated\n"
                 # Throw away rest of stream
                 while stream.read(1024) != b'':
                     pass
                 return
         except IOError:
-            outdict[name] = bytes(outstr)
+            pass
 
 
 # This is an internal function, use run_program below
@@ -705,13 +703,16 @@ def run_program_popen(program, stdin, extra_env):
             proc.terminate()
             proc.kill()
 
-        thread_err.join()
-        thread_out.join()
+        # Give 10 seconds for the output streams to finish absorbing output
+        # This limit should only be reached if another forked process holds the
+        # streams
+        thread_err.join(10)
+        thread_out.join(10)
         proc.wait()
-        retdict["stderr"] = toUTF8Replace(retdict["stderr"])
+        retdict["stderr"] = toUTF8Replace(bytes(retdict["stderr"]))
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
-        retdict["stdout"] = toUTF8Replace(retdict["stdout"])
+        retdict["stdout"] = toUTF8Replace(bytes(retdict["stdout"]))
 
 
         retdict["returnval"] = proc.returncode
