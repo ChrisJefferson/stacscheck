@@ -1,0 +1,46 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'hard-to-stop': Already in it!
+* COMPARISON TEST - nooutput/progcat-test.out : fail
+--- no output expected ---
+--- submission output ---
+ ... Process (or its children) did not cleanly exit
+---
+
+* COMPARISON TEST - stderrstdout/progcat-test.out : fail
+--- expected output ---
+line 1
+line 3
+line 2
+--- submission output ---
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+hi
+... (output truncated)
+---
+
+0 out of 2 tests passed

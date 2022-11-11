@@ -605,34 +605,37 @@ def in_directory(basedir, childdir):
 
 # Read from a stream, recording result in a record
 # Caps the total amount read to ~1MB
-def read_stream(outdict, name, stream):
+# 'stopreading' is a list of length 1 (so changes can be passed in)
+# to denote when reading should stop. This is only used when the
+# spawned programs spawn child which we cannot stop, so we have
+# to abandon the running programs even if they are still producing output
+def read_stream(outdict, name, stream, stopreading):
     stream_limit = 1024*1024
-    outstr = bytearray()
+    outdict[name] = bytearray()
     while True:
         try:
-            chunk = stream.read(stream_limit - len(outstr))
+            chunk = stream.read(stream_limit - len(outdict[name]))
             # End of file reached
-            if chunk == b'':
-                outdict[name] = bytes(outstr)
+            if chunk == b'' or (stopreading[0]):
                 return
 
             # Add chunk
-            outstr.extend(chunk)
+            outdict[name].extend(chunk)
 
-            if len(outstr) == stream_limit:
-                outstr += b"\n ... Output truncated\n"
-                outdict[name] = bytes(outstr)
+            if len(outdict[name]) == stream_limit:
+                outdict[name] += b"\n ... Output truncated\n"
                 # Throw away rest of stream
-                while stream.read(1024) != b'':
+                while stream.read(1024) != b'' and not stopreading[0]:
                     pass
                 return
         except IOError:
-            outdict[name] = bytes(outstr)
+            pass
 
 
 # This is an internal function, use run_program below
 def run_program_popen(program, stdin, extra_env):
     env_copy = os.environ.copy()
+    stopreading = [False]
 
     if extra_env is not None:
         for key in extra_env:
@@ -647,9 +650,11 @@ def run_program_popen(program, stdin, extra_env):
 
         retdict = dict()
 
-        thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr))
+        thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr, stopreading))
+        thread_err.daemon = True
         thread_err.start()
-        thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout))
+        thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout, stopreading))
+        thread_out.daemon = True
         thread_out.start()
 
         if stdin is not None:
@@ -675,13 +680,26 @@ def run_program_popen(program, stdin, extra_env):
             proc.terminate()
             proc.kill()
 
-        thread_err.join()
-        thread_out.join()
+        # Give 5 seconds for the output streams to finish absorbing output
+        # This will only be used if required
+        thread_err.join(5)
+        thread_out.join(5)
         proc.wait()
-        retdict["stderr"] = toUTF8Replace(retdict["stderr"])
+
+        if thread_err.is_alive() or thread_out.is_alive():
+            # Now, really tell the threads to stop reading -- this should normally
+            # do nothing, unless the child spawned extra children which are holding
+            # stderr and stdout and continuing to write to them
+            stopreading[0] = True
+            thread_err.join(5)
+            thread_out.join(5)
+            retdict["stderr"] += b"\n ... Process (or its children) did not cleanly exit"
+
+        
+        retdict["stderr"] = toUTF8Replace(bytes(retdict["stderr"]))
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
-        retdict["stdout"] = toUTF8Replace(retdict["stdout"])
+        retdict["stdout"] = toUTF8Replace(bytes(retdict["stdout"]))
 
 
         retdict["returnval"] = proc.returncode
