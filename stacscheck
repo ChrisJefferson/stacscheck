@@ -914,7 +914,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 def run():
     global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
-    parser = argparse.ArgumentParser(prog="PROG")
+    parser = argparse.ArgumentParser(prog="stacscheck")
     parser.add_argument("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
     parser.add_argument("--html", dest="htmlout",
