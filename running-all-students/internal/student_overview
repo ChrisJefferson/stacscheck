@@ -98,24 +98,7 @@ for f in sys.argv[1:]:
 
 allTestNames = set([ test["name"] for student in jsons for test in student["tests"] ])
 
-def nameComp(file1, file2):
-    s1 = file1.split("/")
-    s2 = file2.split("/")
-    if s1 == s2:
-        return 0
-    for i in range(min(len(s1),len(s2))):
-        if s1[i] != s2[i]:
-            if len(s1) == i+1 and len(s2) > i+1:
-                return -1
-            if len(s1) > i+1 and len(s2) == i+1:
-                return 1
-            if s1 < s2:
-                return -1
-            if s2 > s1:
-                return 1
-    return 0
-
-allTestNames = sorted(list(allTestNames), key=functools.cmp_to_key(nameComp))
+allTestNames = sorted(list(allTestNames), key=lambda x: x.split("/"))
 
 passcount = dict()
 
