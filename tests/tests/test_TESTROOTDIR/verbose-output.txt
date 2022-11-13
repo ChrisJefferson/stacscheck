@@ -1,0 +1,70 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'test_TESTROOTDIR': Already in it!
+* TEST - test1 : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+exit 1
+--- submission output ---
+I am a file
+---
+
+* INFO - info1 : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+echo 'failing'
+exit 1
+--- submission output ---
+I am a file
+failing
+---
+
+* INFO - info2 : pass
+--- submission output ---
+I am a file
+passing
+---
+
+* COMPARISON TEST - prog1-empty.out : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+exit 1
+--- no output expected ---
+--- submission output ---
+I am a file
+---
+
+* BUILD TEST - build-subdir/build1 : pass
+* TEST - build-subdir/test1 : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+exit 1
+--- submission output ---
+I am a file
+---
+
+* INFO - build-subdir/info1 : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+echo 'failing'
+exit 1
+--- submission output ---
+I am a file
+failing
+---
+
+* INFO - build-subdir/info2 : pass
+--- submission output ---
+I am a file
+passing
+---
+
+* COMPARISON TEST - build-subdir/prog1-empty.out : fail
+--- ran script ---
+cat "$TESTROOTDIR/info.txt"
+exit 1
+--- no output expected ---
+--- submission output ---
+I am a file
+---
+
+3 out of 9 tests passed
