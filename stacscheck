@@ -676,8 +676,10 @@ def run_program_popen(program, stdin, extra_env):
         retdict = dict()
 
         thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr))
+        thread_err.daemon = True
         thread_err.start()
         thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout))
+        thread_out.daemon = True
         thread_out.start()
 
         if stdin is not None:
