@@ -300,13 +300,17 @@ def strip_string(string):
 # comparelines: Expected output (or an empty list if there is no expected output)
 def reduce_huge_output(userlines, comparelines):
     if VERBOSE:
-        return userlines
+        maxpad = 500
+        maxline = 5000
+    else:
+        maxpad = 25
+        maxline = 256
 
     # Don't break the original
     userlines = copy.deepcopy(userlines)
     # If the number of lines is massive, bring it slightly more under control.
-    if len(userlines) > len(comparelines) + 25:
-        userlines = userlines[:len(comparelines) + 25] + [u"... (output truncated)\n"]
+    if len(userlines) > len(comparelines) + maxpad:
+        userlines = userlines[:len(comparelines) + maxpad] + [u"... (output truncated)\n"]
 
     # Now check if any line is stupidly long
     for i in range(len(userlines)):
@@ -315,7 +319,7 @@ def reduce_huge_output(userlines, comparelines):
         else:
             comparelen = 0
 
-        keeplen = max(comparelen + 25, 256)
+        keeplen = max(comparelen + maxpad, maxline)
         if len(userlines[i]) > keeplen:
             userlines[i] = userlines[i][:keeplen] + u" ... (line truncated)\n"
 
