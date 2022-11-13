@@ -692,6 +692,7 @@ def run_program_popen(program, stdin, extra_env):
 def run_program(program, stdin, extra_env):
     with tempfile.TemporaryDirectory() as scratchdir:
         extra_env["SCRATCHDIR"] = scratchdir
+        extra_env["TESTROOTDIR"] = PARENTBASE
         return run_program_popen(program, stdin, extra_env)
     
 def run_bash_script(script, stdin, extra_env):
