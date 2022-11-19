@@ -914,7 +914,8 @@ def extract_file_with_submission(archive_name, temp_dir):
 def run():
     global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
-    parser = argparse.ArgumentParser(prog="stacscheck")
+    parser = argparse.ArgumentParser(prog="stacscheck",
+                                     description="Automatic code checker")
     parser.add_argument("--id", dest="subid", default="<unknown>",
                       help="Give identifier for submission")
     parser.add_argument("--html", dest="htmlout",
@@ -931,14 +932,15 @@ def run():
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--archive", dest="archive",
                       help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name")
-    parser.add_argument("testdir")
+    parser.add_argument("testdir", nargs='?')
 
     args = parser.parse_args()
 
     # if len(args) != 1:
     if args.testdir is None:
-        print("stacscheck " + VERSION)
-        sys.exit("You must give a directory of tests to run!")
+        print("Basic usage: stacscheck <testdir>")
+        print("To see all options: stacscheck --help")
+        sys.exit(1)
 
     if args.htmlout is not None and not jinja:
         print("stacscheck " + VERSION)
