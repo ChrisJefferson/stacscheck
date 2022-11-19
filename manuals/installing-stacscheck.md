@@ -1,30 +1,43 @@
 Installing stacscheck
 =====================
 
-Firstly, if you are on a lab machine, or host server, you don't need to install `stacscheck`, you should
-just be able to run it with `stacscheck`. Also, always make sure your practical runs on a lab machine or host
-server before submitting!
+If you are using a department mahine you don't need to install `stacscheck`, you should
+just be able to run it with `stacscheck`.
 
-If you want to install it yourself, on your own machine, read on. Note that `stacscheck` is not supported on windows.
-
-You can always get the latest version of `stacscheck` from 
-[https://studres.cs.st-andrews.ac.uk/Library/stacscheck/](https://studres.cs.st-andrews.ac.uk/Library/stacscheck/).
-You only need the script `stacscheck` from this location.
-
-After you download it, you need to (as with any program you download on linux or mac) run the tester with python, or
-mark `stacscheck` executable.
-
-The easier route is to run with python. Just type `python ~/Downloads/stacscheck` (assuming you downloaded into `~/Downloads`).
-This should run the tester, and now just type `python ~/Downloads/stacscheck` wherever you would previously just type `stacscheck`.
-
-
-Or, to avoid having to type `python` all the time, we can mark the program as executable. Here is how to do that, assuming
-again the program is in `~/Downloads`:
+To check if `stacscheck` is installed, just try running it, you should see some output like this:
 
 ```
-chmod +x ~/Downloads/stacscheck
+$ stacscheck
+<< fill in >>
 ```
 
-Now we can run it by typing `~/Downloads/stacscheck`. You can also move this into any directory you like.
+You might have a different version.
+
+If you want to install stacscheck on your own computer, skip to TODO installing on your own machine XX.
 
 
+
+If you want to run stacscheck on your own computer, the best idea is to get the same version as is running on lab machines.
+
+Also, always make sure your practical runs on a lab machine or host server before submitting!
+
+If you want to install it yourself, on your own machine, read on. Note that this requires some basic knowledge of the Unix command line (changing directory, copying files), which I'm not going to cover here.
+
+Firstly, `stacscheck` does not work on Windows without some extra work. The easiest option is to install the "Windows Subsystem for Linux" (known as WSL) -- look in the Windows App store for "Ubuntu". Once you've installed that, you will have a fully functional Linux, and can run `stacscheck` there. In fact, `stacscheck` was developed in WSL on Windows!
+
+`stacscheck` is a single script which you can copy to another computer. You can get releases from `www.github.com/ChrisJefferson/stacscheck`. On a computer which already has `stacscheck` installed type `which stacscheck` to find out where it is located -- you can just copy it from there!
+
+
+You will need to have `python3` installed on your machine to run `stacscheck`. Many OSes come with it installed. If `python3` doesn't work on the command line, first look into install `python3`. Your operating system's package manager will definately have `python3`! If you installed WSL on Windows, remember you want to install `python3` **inside the Linux install**, not as a standard Windows program.
+
+If you now have `stacscheck` and `python3`, you should be able to run:
+
+```
+$ python3 stacscheck
+<< to fill in >>
+```
+
+If you want to be able to just run `stacscheck`, you will have to:
+
+(a) Mark `stacscheck` as executable, by running `chmod +x stacscheck`.
+(b) Move the `stacscheck` executable to somewhere in your `PATH` -- but we aren't going to teach about that here!
