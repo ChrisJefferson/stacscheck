@@ -14,6 +14,7 @@ Welcome to Stacscheck's documentation!
    installing-stacscheck
    specification
    how-to-write-tests
+   philosophy
 
 Indices and tables
 ==================
