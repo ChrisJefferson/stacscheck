@@ -1,4 +1,5 @@
-## Practical Creation Tutorial
+Practical Creation Tutorial
+===========================
 
 In this step-by-step tutorial, we will create a new practical.
 
@@ -8,6 +9,9 @@ The practical we will implement will be the following:
     Create a Java class called ``Calculator``. ``Calculator`` should accept print the prompt: ``Enter numbers:``, then read numbers until it reads a `0`. When it reads a `0`, it should print the sum of all numbers which were read, then exit.
 
     If a non-number is ever read, the program should print `ERROR`, then exit.
+
+.. tip:: 
+    When specifying a practical, always think carefully about input and output formats -- particularly for beginniner programmers these can be the most difficult thing to implement!
 
 In this example we will write the stacscheck, and a model answer, together. You might already have a model answer, or be confident enough to write the stacscheck without a model answer (but that's not recommended, it's easy to make mistakes!)
 
@@ -61,13 +65,17 @@ Let's try that out!::
 
 Hmm... for a real beginner, that might be a confusing message.
 
-One way we can improve the message is by adding ``set -eux``. This enables 3 common features of bash which are often useful for build scripts:
+One way we can improve the message is by adding ``set -eux``.
 
-* ``e`` : Stop the script as soon as one line fails
-* ``u`` : Stop if we refer to a bash variable (starting ``$``) which doesn't exist
-* ``x`` : Print out commands as they are run.
+.. admonition:: scripting tip
 
-The particularly useful option here is ``x``, which gives us the following output, note the new line at the start of ``submission output``::
+    `set -eux` enables 3 common features of bash which are often useful for build scripts:
+
+    * ``e`` : Stop the script as soon as one line fails
+    * ``u`` : Stop if we refer to a bash variable (starting ``$``) which doesn't exist
+    * ``x`` : Print out commands as they are run.
+
+The most useful of these options here is ``x``. This changes the output so it prints out the executed commands in lines starting with `+`::
 
     Testing Intro To Java My First Practical
     - Looking for submission in a directory called 'src': found in current directory
@@ -125,4 +133,53 @@ We need an output file. This file should be called ``onenum.out`` (to pair up wi
 
     1
 
-Do we need to worry about newlines here? No, because ``stacscheck`` ignores new lines at the end of the output.
+Do we need to worry about newlines here? No, because ``stacscheck`` ignores new lines at the end of the output. Now let's run our test and see what output we get::
+
+    Testing Intro To Java My First Practical
+    - Looking for submission in a directory called 'src': found in current directory
+    * BUILD TEST - build_all : pass
+    * COMPARISON TEST - basic/prog_run-onenum.out : fail
+    --- expected output ---
+    1
+    --- no output from submission ---
+
+    1 out of 2 tests passed
+
+As we would expect, the submission outputs nothing, as our program currently outputs nothing!
+
+Let's implement a basic version of the practical in `Calculator.java`::
+
+    import java.util.Scanner;
+    class Calculator
+    {
+        public static void main(String args[])
+        { 
+            System.out.println("Enter numbers:");
+            Scanner in = new Scanner(System.in);
+            int sum = 0;
+            int val = in.nextInt();
+            while(val != 0) {
+                sum += val;
+                val = in.nextInt();
+            }
+            System.out.println("" + sum);
+        }
+    }
+
+Now the test passes!::
+
+    Testing Intro To Java My First Practical
+    - Looking for submission in a directory called 'src': found in current directory
+    * BUILD TEST - build_all : pass
+    * COMPARISON TEST - basic/prog_run-onenum.out : pass
+    2 out of 2 tests passed
+
+We should probably add some more tests. We will throw in some more that test adding up a few numbers and make sure we test negative numbers.::
+
+    Testing Intro To Java My First Practical
+    - Looking for submission in a directory called 'src': found in current directory
+    * BUILD TEST - build_all : pass
+    * COMPARISON TEST - basic/prog_run-manynum.out : pass
+    * COMPARISON TEST - basic/prog_run-negnum.out : pass
+    * COMPARISON TEST - basic/prog_run-onenum.out : pass
+

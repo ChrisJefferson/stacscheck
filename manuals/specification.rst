@@ -1,3 +1,6 @@
+specification
+=============
+
 This section assumes you already know how to use ``stacscheck``, and
 want to either understand how ``stacscheck`` tests are designed.
 

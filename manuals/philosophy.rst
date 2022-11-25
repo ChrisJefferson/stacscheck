@@ -1,5 +1,5 @@
 The Philosophy of Stacscheck
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+============================
 
 Stacscheck is designed to automate testing in the lightest way possible. There were four founding principles -- although I am not claiming these have all been met!
 

@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+======================================
 Welcome to Stacscheck's documentation!
 ======================================
 
@@ -14,6 +15,7 @@ Welcome to Stacscheck's documentation!
    installing-stacscheck
    specification
    how-to-write-tests
+   creating-practical-example
    philosophy
 
 Indices and tables

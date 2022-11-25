@@ -1,5 +1,5 @@
 Advice for writing tests
-------------------------
+========================
 
 This section contains some advice for writing tests. Some of this advice
 will be language specific. Also, quite a lot of this advice will be
@@ -9,7 +9,7 @@ I am going to assume before reading this you have already read the
 section on how a stacscheck test is designed.
 
 General advice
-==============
+--------------
 
 -  ``stacscheck`` always runs tests with ``bash``, so you don’t have to
    start tests with ``#!/usr/bin/env bash`` – but you can if you like.
@@ -48,7 +48,7 @@ General advice
    handled correctly.
 
 Build tests
-~~~~~~~~~~~
+-----------
 
 Build tests tend to be short. Some examples include:
 
@@ -106,7 +106,7 @@ Where ``[[ -f prog ]]`` checks if there is now a file called ``prog``.
 Note you need all the spaces here, ``[[-f prog]]`` won’t work!
 
 Writing a ‘prog’ script
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 A ``prog`` script is one of the most common types of tests.
 
