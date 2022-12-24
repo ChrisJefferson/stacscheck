@@ -1,0 +1,28 @@
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    name: ${{ matrix.test }} - ${{ matrix.os }} - ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        test: [standard]
+        python: [3.7, 3.11]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Set up Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+      
+      - name: "Install packages"
+        run: pip install -r requirements.txt
+
+      - name: "Run tests"
+        run: cd tests && ./run_tests.sh
