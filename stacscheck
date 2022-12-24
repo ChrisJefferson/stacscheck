@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-VERSION = "3.2.1"
-
 # MIT License
 
 # Copyright (c) 2016 - 2022 University of St Andrews
@@ -41,15 +39,17 @@ import tempfile
 import zipfile
 import tarfile
 
+VERSION = "3.2.1"
+
 # Stacscheck
 
 # Try importing jinja2, but don't complain if it isn't there
 try:
     import jinja2
 except ImportError:
-    jinja = False
+    JINJA2_IMPORT = False
 else:
-    jinja = True
+    JINJA2_IMPORT = True
 
 # The HTML output
 JINJAPAGE = """
@@ -228,14 +228,11 @@ SUBMISSIONBASE = None
 # Store parent directory containing practical.config
 PARENTBASE = None
 
-# Functions to convert to UTF-8 and print the string
-unicode = str
 
-
-def toUTF8Replace(bytes):
-    if isinstance(bytes, str):
-        return bytes
-    return str(bytes, "utf8", errors="replace")
+def toUTF8Replace(bytelist):
+    if isinstance(bytelist, str):
+        return bytelist
+    return str(bytelist, "utf8", errors="replace")
 
 
 def output_str(arg):
@@ -295,8 +292,8 @@ def print_file_contents(
                 continue
 
             output_str(line.rstrip() + "\n")
-    except IOError as e:
-        warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
+    except IOError as error:
+        warn_print("Error reading '" + str(file_loc) + "': " + error.strerror)
 
 
 # Takes a single string with newlines, and returns a list of lines
@@ -381,8 +378,8 @@ def try_parse_config_file(basedir):
     #     sys.exit(1)
     try:
         config.read(filename)
-    except IOError as e:
-        print("I/O error reading practical.config: " + e.strerror)
+    except IOError as error:
+        print("I/O error reading practical.config: " + error.strerror)
         sys.exit(1)
     except:
         warn_print("practical.config is malformed")
@@ -478,7 +475,8 @@ def find_code_directory(start_dir=None):
         info_print("Cannot find it....")
         if not TRYHARDER:
             raise EnvironmentError(
-                "No submission found. Try running with --archive <filename> if submission is compressed."
+                "No submission found. Try running with --archive <filename> "
+                "if submission is compressed."
             )
         else:
             info_print(
@@ -766,8 +764,8 @@ def run_program_popen(program, stdin, extra_env):
         retdict["returnval"] = proc.returncode
 
         return retdict
-    except OSError as e:
-        warn_print(program[0] + " is broken: " + e.strerror)
+    except OSError as error:
+        warn_print(program[0] + " is broken: " + error.strerror)
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
 
@@ -797,8 +795,8 @@ def files_in_dir_matching_regex(directory, regex):
             for f in names
             if os.path.isfile(os.path.join(directory, f))
         ]
-    except OSError as e:
-        warn_print("Error reading '" + directory + "': " + e.strerror)
+    except OSError as error:
+        warn_print("Error reading '" + directory + "': " + error.strerror)
         return []
 
     return files
@@ -921,8 +919,8 @@ def run_tests_recursive(testdir):
 
         for d in subdirs:
             run_tests_recursive(d)
-    except OSError as e:
-        warn_print(str(e))
+    except OSError as error:
+        warn_print(str(error))
 
 
 def extract_to_temp(sub_found, temp_dir):
@@ -934,9 +932,6 @@ def extract_to_temp(sub_found, temp_dir):
 
 
 def extract_file_with_submission(archive_name, temp_dir):
-    files_with_srcdir = []
-    objects_with_srcdir = []
-
     file_object = None
     content_list = None
 
@@ -964,21 +959,20 @@ def extract_file_with_submission(archive_name, temp_dir):
         content_list = file_object.getnames()
     else:
         print(
-            "- File {} is not a recognised type of archive (only zip and tar files are supported)".format(
-                ARCHIVE
-            )
+            f"- File {ARCHIVE} is not a recognised type of archive "
+            "(only zip and tar files are supported)"
         )
         sys.exit(1)
 
     # If submission folder is inside (or looks like it), extract. Otherwise move on
     submission_name = CONFIG["srcdir"] + "/"
-    foundMatch = False
+    found_match = False
 
     for content in content_list:
         if submission_name in content:
-            foundMatch = True
+            found_match = True
             break
-    if foundMatch == False:
+    if not found_match:
         file_object.close()
         print(
             "- Couldn't find a directory called "
@@ -989,7 +983,7 @@ def extract_file_with_submission(archive_name, temp_dir):
         sys.exit(1)
 
     # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
-    print("- Extracting {} to temp folder".format(archive_name))
+    print(f"- Extracting {archive_name} to temp folder")
     extract_to_temp(file_object, temp_dir)
     file_object.close()
 
@@ -1044,10 +1038,11 @@ def run():
         print("To see all options: stacscheck --help")
         sys.exit(1)
 
-    if args.htmlout is not None and not jinja:
+    if args.htmlout is not None and not JINJA2_IMPORT:
         print("stacscheck " + VERSION)
         sys.exit(
-            "Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?"
+            "Can't output html without the 'jinja2' library. Exiting.\n"
+            "You could try 'pip install jinja2'?"
         )
 
     VERBOSE = args.verbose
@@ -1086,7 +1081,6 @@ def run():
             run_tests_recursive(PARENTBASE)
         # Try running with compressed file specified with --archive
         else:
-            current_path = os.path.abspath(os.getcwd())
             # Extract files and run tests
             with tempfile.TemporaryDirectory() as temp_dir:
                 extract_file_with_submission(ARCHIVE, temp_dir)
@@ -1096,8 +1090,8 @@ def run():
         if len(testStore) == 0:
             # Use args.testdir as it is shorter
             print("ERROR: No tests found in '" + args.testdir + "'")
-    except EnvironmentError as e:
-        print("Error during testing: " + str(e))
+    except EnvironmentError as error:
+        print("Error during testing: " + str(error))
 
     finalmessage = (
         str(len([t for t in testStore if t["pass"]]))
@@ -1125,8 +1119,8 @@ def run():
                 )
                 # html.write(toUTF8Replace(htmloutput).encode("utf8"))
                 html.write(htmloutput.encode("utf8"))
-    except EnvironmentError as e:
-        print("Error outputting HTML: " + str(e))
+    except EnvironmentError as error:
+        print("Error outputting HTML: " + str(error))
 
     try:
         if args.jsonout is not None:
@@ -1146,12 +1140,12 @@ def run():
                 )
                 jsonfile.write(jsonoutput)
                 jsonfile.write("\n")
-    except EnvironmentError as e:
-        print("Error outputting json: " + str(e))
+    except EnvironmentError as error:
+        print("Error outputting json: " + str(error))
 
 
 if __name__ == "__main__":
     try:
         run()
-    except EnvironmentError as e:
-        print("A fatal error has occurred: " + str(e))
+    except EnvironmentError as caught_error:
+        print("A fatal error has occurred: " + str(caught_error))

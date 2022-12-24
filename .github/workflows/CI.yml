@@ -21,8 +21,7 @@ jobs:
           python-version: ${{ matrix.python }}
       
       - name: "Install packages"
-        run: pip install -r requirements.txt
-        run: pip install pylint black
+        run: pip install -r requirements.txt && pip install pylint black
 
       - name: "Run tests"
         run: cd tests && ./run_tests.sh
