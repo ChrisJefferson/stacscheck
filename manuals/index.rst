@@ -1,11 +1,21 @@
-.. Stacscheck documentation master file, created by
-   sphinx-quickstart on Sun Nov 20 15:16:38 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+===============
+Stacscheck Docs
+===============
 
-======================================
-Welcome to Stacscheck's documentation!
-======================================
+Welcome to ``stacscheck``, the ST Andrews Computer Science CHECKer. ``stacscheck`` is
+to be a simple, generic checker for command-line Unix programs.
+
+This manual covers all of ``stacscheck``, from simple usage to creating new tests, so you shouldn't
+plan on reading the whole manual from start to end -- only read the sections you need!
+
+What to read
+------------
+
+* If you just want to get started using ``stacscheck``, then read the :ref:`Quickstart Guide <quickstart>`.
+
+* If you need help installing ``stacscheck``, then read `Installing Stacscheck <installing>`.
+
+If you are using a machine where ``Most users of ``stacscheck`` should need only limited
 
 .. toctree::
    :maxdepth: 2

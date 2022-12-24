@@ -1,22 +1,21 @@
-Practical Creation Tutorial
-===========================
+Step-By-Step Practical Creation Tutorial
+========================================
 
 In this step-by-step tutorial, we will create a new practical.
+The practical we implement will be based on the following simple specification:
 
-The practical we will implement will be the following:
+    Create a Java class called ``Calculator``. ``Calculator`` should print the prompt: ``Enter numbers:``, then read numbers until it reads a `0`. When it reads a `0`, it should print the sum of all numbers which were read, then exit.
 
-
-    Create a Java class called ``Calculator``. ``Calculator`` should accept print the prompt: ``Enter numbers:``, then read numbers until it reads a `0`. When it reads a `0`, it should print the sum of all numbers which were read, then exit.
-
-    If a non-number is ever read, the program should print `ERROR`, then exit.
+    If a non-number is given, the program should print `ERROR` and exit.
 
 .. tip:: 
-    When specifying a practical, always think carefully about input and output formats -- particularly for beginniner programmers these can be the most difficult thing to implement!
+    When specifying a practical, think about input and output formats -- particularly for beginner programmers, these can be the most challenging thing to implement!
 
-In this example we will write the stacscheck, and a model answer, together. You might already have a model answer, or be confident enough to write the stacscheck without a model answer (but that's not recommended, it's easy to make mistakes!)
+In this example, we will write the `stacscheck`, and a model answer for the practical. For your own practical you might already have a model answer. It is
+generally a bad idea to write the `stacscheck` specification without a model answer, as it's easy to make subtle mistakes!
 
 
-The first thing every stacscheck test needs is a ``practical.config``, so let's make two directories. One to store our model answer in, called `src` and one to store the stacscheck tests, called `tests`. Then, create a file called `practical.config` inside `tests` which contains:
+We start by creating two directories: One to store our model answer in, called `src`, and one to store the `stacscheck` specification, called `tests`. Every `stacscheck` specification needs a ``practical.config``, so let's create a file called `practical.config` inside `tests` which contains:
 
 ::
 
@@ -25,7 +24,7 @@ The first thing every stacscheck test needs is a ``practical.config``, so let's 
    course = Intro To Java
    srcdir = src
 
-Then, in the directory containing both `src` and `test` try running ``stacscheck``::
+Then, in the directory containing both `src` and `test` try running `stacscheck`::
 
     $ stacscheck tests
     Testing Intro To Java My First Practical
@@ -33,18 +32,18 @@ Then, in the directory containing both `src` and `test` try running ``stacscheck
     ERROR: No tests found in 'tests'
     0 out of 0 tests passed
 
-Success! Well, successfully found no tests, but we are at least on our way. This shows one of the reasons we require ``srcdir``, it means you can run ``stacscheck`` from the directory containing your code, or a directory higher up, or even a directory inside your project and ``stacscheck`` will try to find the root of the project.
+Success! Well, we successfully ran no tests, but we are at least on our way. This output shows the reason to require ``srcdir`` -- it means you can run `stacscheck` from the directory containing your code, or a directory higher up, or even a directory inside your code and `stacscheck` will find the root of the project. Also, when code is submitted for testing, perhaps along with a report, the exact directory structure doesn't matter as long as somewhere in the submission, there is a directory called `srcdir`.
 
 Building the code
 ~~~~~~~~~~~~~~~~~
 
-Now let's actually write a test. First of all, we should build some Java. That's not too hard, we can just write a file called ``build_all.sh`` which contains::
+Now let's write a test. First of all, we should build any submitted Java. That's not too hard; we write a file called ``build_all.sh`` which contains::
 
     javac Calculator.java
 
-The important parts of the name are that it ends `sh` (which shows it is a shell script), and that it starts ``build``. ``stacscheck`` assumes that if a build script fails, then it should not run any other tests.
+The essential parts of the name are that it ends `sh` (which shows it is a script `stacscheck` should run) and starts ``build`` (which means it is a *build script*). `stacscheck` assumes that if a build script fails, then it should not run any other tests.
 
-One thing worth considering while writing tests is providing freedoms. Might someone want to write their Calculator in multiple Java files? Perhaps a better build script would be::
+One thing worth considering while writing tests is which freedoms should be provided. Do we want someone to write their Calculator in multiple Java files? If so, a better build script would be::
 
     javac *.java
 
@@ -133,7 +132,7 @@ We need an output file. This file should be called ``onenum.out`` (to pair up wi
 
     1
 
-Do we need to worry about newlines here? No, because ``stacscheck`` ignores new lines at the end of the output. Now let's run our test and see what output we get::
+Do we need to worry about newlines here? No, because `stacscheck` ignores new lines at the end of the output. Now let's run our test and see what output we get::
 
     Testing Intro To Java My First Practical
     - Looking for submission in a directory called 'src': found in current directory
