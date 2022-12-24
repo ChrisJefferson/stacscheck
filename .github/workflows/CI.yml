@@ -19,10 +19,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
-          cache: 'pip'
       
       - name: "Install packages"
         run: pip install -r requirements.txt
+        run: pip install pylint black
 
       - name: "Run tests"
         run: cd tests && ./run_tests.sh
+
+      - name: "Check formatting"
+        run: black --check stacscheck
