@@ -54,7 +54,7 @@ else:
     jinja = True
 
 # The HTML output
-JINJAPAGE = u"""
+JINJAPAGE = """
 <!DOCTYPE html>
 <html lang="en">
 <style>
@@ -232,27 +232,36 @@ PARENTBASE = None
 
 # Functions to convert to UTF-8 and print the string
 unicode = str
+
+
 def toUTF8Replace(bytes):
     if isinstance(bytes, str):
         return bytes
     return str(bytes, "utf8", errors="replace")
 
+
 def output_str(arg):
-    print(toUTF8Replace(arg), end='')
+    print(toUTF8Replace(arg), end="")
+
 
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
+
 
 def info_print_nonewline(string):
     global INFO_PRINTED
     output_str(string)
     INFO_PRINTED.append(string)
 
+
 def info_print(string):
     info_print_nonewline(string + "\n")
 
+
 # Simple function to print out more verbose information if -v is passed
 VERBOSE = True
+
+
 def verbose_print(arg):
     if VERBOSE:
         output_str(arg + "\n")
@@ -263,15 +272,19 @@ def verbose_print(arg):
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
     info_print("The problem is: " + str(arg) + ".")
-#    info_print("Possible reasons:")
-#    info_print("  - Your copy of stacscheck is out of date.")
-#    info_print("  - The directory of tests is missing some files, or is broken.")
+    #    info_print("Possible reasons:")
+    #    info_print("  - Your copy of stacscheck is out of date.")
+    #    info_print("  - The directory of tests is missing some files, or is broken.")
     info_print("This may be caused by a broken test directory, or")
     info_print("the test directory may have been copied incorrectly.")
+
+
 def print_file_contents(
-        file_loc,
-        ignore_prefixes=["#!"], #Do not modify the list in the method, otherwise troubles may occur
-        ignore_empty_lines=True
+    file_loc,
+    ignore_prefixes=[
+        "#!"
+    ],  # Do not modify the list in the method, otherwise troubles may occur
+    ignore_empty_lines=True,
 ):
     try:
         for line in open(file_loc, "rb"):
@@ -287,11 +300,12 @@ def print_file_contents(
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
+
 # Takes a single string with newlines, and returns a list of lines
 # We strip all whitespace, then add a "\n" on the end
 # This is to deal with differences in invisible whitespaces
 def strip_string(string):
-    return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != '']
+    return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != ""]
 
 
 # Take a possibly huge output from a program, and reduce it's size so it fits
@@ -310,7 +324,9 @@ def reduce_huge_output(userlines, comparelines):
     userlines = copy.deepcopy(userlines)
     # If the number of lines is massive, bring it slightly more under control.
     if len(userlines) > len(comparelines) + maxpad:
-        userlines = userlines[:len(comparelines) + maxpad] + [u"... (output truncated)\n"]
+        userlines = userlines[: len(comparelines) + maxpad] + [
+            "... (output truncated)\n"
+        ]
 
     # Now check if any line is stupidly long
     for i in range(len(userlines)):
@@ -321,7 +337,7 @@ def reduce_huge_output(userlines, comparelines):
 
         keeplen = max(comparelen + maxpad, maxline)
         if len(userlines[i]) > keeplen:
-            userlines[i] = userlines[i][:keeplen] + u" ... (line truncated)\n"
+            userlines[i] = userlines[i][:keeplen] + " ... (line truncated)\n"
 
     return userlines
 
@@ -332,7 +348,7 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
-CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
+CONFIG = {"course": "", "practical": "", "timeout": "60"}
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
@@ -355,7 +371,9 @@ def try_parse_config_file(basedir):
 
     # Check that something was found, or quit
     if not os.path.isfile(filename):
-        warn_print("no practical.config file found in directory or 10 parent directories")
+        warn_print(
+            "no practical.config file found in directory or 10 parent directories"
+        )
         sys.exit(1)
 
     # filename = os.path.join(basedir, "practical.config")
@@ -372,59 +390,62 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed")
         sys.exit(1)
 
-    if not 'info' in config.sections():
+    if not "info" in config.sections():
         warn_print("practical.config does not have an '[info]' section")
         sys.exit(1)
 
     practical_version = None
     # Check version early, for useful error messages
-    if 'version' in config.options('info'):
-        practical_version = config.get('info', 'version')
-    elif 'version' in config.sections() and 'required' in config.options('version'):
-        practical_version = config.get('version', 'required')
+    if "version" in config.options("info"):
+        practical_version = config.get("info", "version")
+    elif "version" in config.sections() and "required" in config.options("version"):
+        practical_version = config.get("version", "required")
 
     if practical_version is not None:
-        if [int(x) for x in practical_version.split(".")] > [int(x) for x in VERSION.split(".")]:
+        if [int(x) for x in practical_version.split(".")] > [
+            int(x) for x in VERSION.split(".")
+        ]:
             print("- ERROR -")
             print("This practical requires stacscheck version " + practical_version)
             print("But this is stacscheck " + VERSION)
             sys.exit(1)
 
-
     for section in config.sections():
-        if not section in ['info', 'version']:
+        if not section in ["info", "version"]:
             warn_print("practical.config has an unexpected section: ", section)
             sys.exit(1)
-    
-    if not 'info' in config.sections():
+
+    if not "info" in config.sections():
         warn_print("practical.config does not have an [info] section")
         sys.exit(1)
 
-    valid_options = ['course', 'practical', 'srcdir', 'timeout', 'version']
+    valid_options = ["course", "practical", "srcdir", "timeout", "version"]
 
-    for option in config.options('info'):
+    for option in config.options("info"):
         if not (option in valid_options):
             warn_print("Don't understand option '" + option + "'")
             sys.exit(1)
-        CONFIG[option] = config.get('info', option)
+        CONFIG[option] = config.get("info", option)
 
-    if 'version' in config.sections():
-        for option in config.options('version'):
-            if not(option in ['required']):
-                warn_print("Don't understand [version] in practical.config: '" + version +"'")
+    if "version" in config.sections():
+        for option in config.options("version"):
+            if not (option in ["required"]):
+                warn_print(
+                    "Don't understand [version] in practical.config: '" + version + "'"
+                )
                 sys.exit(1)
-            if 'version' in CONFIG:
+            if "version" in CONFIG:
                 warn_print("'version' defined twice in practical.config")
                 sys.exit(1)
-            CONFIG['version'] = config.get('version', option)
-
+            CONFIG["version"] = config.get("version", option)
 
     for section in config.sections():
-        if not(section in ['info', 'version']):
+        if not (section in ["info", "version"]):
             warn_print("practical.config contains invalid section: ", section)
             sys.exit(1)
 
     return parentdir
+
 
 # Walk directory tree under 'rootdir', finding all directories with 'name'.
 def find_all_directories_with_name(name, rootdir):
@@ -434,6 +455,7 @@ def find_all_directories_with_name(name, rootdir):
             if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)):
                 dirlist.append(os.path.join(root, dirname))
     return sorted(dirlist)
+
 
 # Find the directory the code is stored in, using 'srcdir' from CONFIG.
 # If 'srcdir' is not defined, assume current directory, else search for a directory called
@@ -447,17 +469,23 @@ def find_code_directory(start_dir=None):
     else:
         current_dir = os.path.realpath(os.getcwd())
 
-    in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
-    recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
+    in_srcdir = os.path.basename(current_dir) == CONFIG["srcdir"]
+    recursive_srcdir = find_all_directories_with_name(CONFIG["srcdir"], current_dir)
     # print("--- Trying to find code directory in " + str(start_dir))
-    info_print_nonewline("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
+    info_print_nonewline(
+        "- Looking for submission in a directory called '" + CONFIG["srcdir"] + "': "
+    )
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
         if not TRYHARDER:
-            raise EnvironmentError("No submission found. Try running with --archive <filename> if submission is compressed.")
+            raise EnvironmentError(
+                "No submission found. Try running with --archive <filename> if submission is compressed."
+            )
         else:
-            info_print("Going to try hard, and guess the current directory. I'm probably wrong.")
+            info_print(
+                "Going to try hard, and guess the current directory. I'm probably wrong."
+            )
             return None
 
     if in_srcdir and len(recursive_srcdir) == 0:
@@ -466,25 +494,36 @@ def find_code_directory(start_dir=None):
 
     if len(recursive_srcdir) == 1 and not in_srcdir:
         reldir = os.path.relpath(recursive_srcdir[0], current_dir)
-        if reldir == CONFIG['srcdir']:
+        if reldir == CONFIG["srcdir"]:
             info_print("found in current directory")
         else:
-            info_print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
+            info_print(
+                "found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'"
+            )
         return recursive_srcdir[0]
 
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
-        info_print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
+        info_print(
+            "\n- Warning: in a directory called '"
+            + CONFIG["srcdir"]
+            + "', with subdirectories also with the same name."
+        )
         info_print("- Guessing your submission is in the current directory.")
         info_print("- If that's wrong, go into the correct directory.")
         return None
 
     # There is multiple recursive_srcdir, and we are not in directory of the right name
-    info_print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
+    info_print(
+        "- Warning, there are multiple subdirectories called '"
+        + CONFIG["srcdir"]
+        + "'."
+    )
     for d in recursive_srcdir:
         info_print(" - found " + d)
     info_print("Please go into the correct directory.")
     sys.exit(1)
+
 
 def maybe_print_test_input(test):
     if VERBOSE and not test["pass"]:
@@ -492,31 +531,39 @@ def maybe_print_test_input(test):
         print_file_contents(file_loc=test["path"])
         if "input" in test and test["input"] is not None:
             print("--- with input ---")
-            print_file_contents(file_loc=test["input"], ignore_prefixes=[], ignore_empty_lines=False)
+            print_file_contents(
+                file_loc=test["input"], ignore_prefixes=[], ignore_empty_lines=False
+            )
+
 
 def print_test_or_info_output(test):
     maybe_print_test_input(test)
 
-    stdout = strip_string(test.get("stdout", "")) #.rstrip().encode("utf8", errors="replace"))
-    stderr = strip_string(test.get("stderr", "")) #.rstrip().encode("utf8", errors="replace"))
+    stdout = strip_string(
+        test.get("stdout", "")
+    )  # .rstrip().encode("utf8", errors="replace"))
+    stderr = strip_string(
+        test.get("stderr", "")
+    )  # .rstrip().encode("utf8", errors="replace"))
 
     # Always print all student's output if this is an 'info', or --verbose is enabled
-    if not(VERBOSE or test.get("alwaysoutput", False)):
+    if not (VERBOSE or test.get("alwaysoutput", False)):
         stdout = reduce_huge_output(stdout, [])
         stderr = reduce_huge_output(stderr, [])
 
     if test.get("stderr", False) and test.get("stdout", False):
         output_str("--- submission output ---\n")
-        output_str(u"".join(stdout))
+        output_str("".join(stdout))
         output_str("--- submission stderr output ---\n")
-        output_str(u"".join(stderr))
+        output_str("".join(stderr))
         output_str("---\n\n")
     elif test.get("stderr", False) or test.get("stdout", False):
         output_str("--- submission output ---\n")
-        output_str(u"".join(stdout) + u"".join(stderr))
+        output_str("".join(stdout) + "".join(stderr))
         output_str("---\n\n")
     else:
         output_str("--- no output from submission---\n\n")
+
 
 # Record that a test was run, printing as appropriate
 def register_returnval_test(test):
@@ -535,7 +582,7 @@ def register_returnval_test(test):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
-    with open(comparefile, 'rb') as stream:
+    with open(comparefile, "rb") as stream:
         comparelines = toUTF8Replace(stream.read())
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
@@ -559,22 +606,20 @@ def register_diff_test(test, comparefile):
         # Create text for expected & real output
         textdiff = []
         if len(comparelines) > 0:
-            textdiff.extend([u"--- expected output ---\n"] + comparelines)
+            textdiff.extend(["--- expected output ---\n"] + comparelines)
         else:
-            textdiff.extend([u"--- no output expected ---\n"])
+            textdiff.extend(["--- no output expected ---\n"])
 
         if len(userlines) > 0:
-            textdiff.extend([u"--- submission output ---\n"] + userlines + [u"---\n"])
+            textdiff.extend(["--- submission output ---\n"] + userlines + ["---\n"])
         else:
-            textdiff.extend([u"--- no output from submission ---\n"])
+            textdiff.extend(["--- no output from submission ---\n"])
 
         # Print to stdout
         test["textdiff"] = textdiff
-        textout = u"".join(test["textdiff"])
+        textout = "".join(test["textdiff"])
         assert isinstance(textout, str)
         output_str(textout + "\n")
-
-
 
         # Check things are 'str's
 
@@ -582,7 +627,9 @@ def register_diff_test(test, comparefile):
             assert isinstance(l, str)
 
     # Create table for html
-    test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
+    test["htmldiff"] = difflib.HtmlDiff().make_table(
+        userlines, comparelines, "Submission", "Reference"
+    )
     assert isinstance(test["htmldiff"], str)
 
     testStore.append(test)
@@ -593,15 +640,17 @@ def register_diff_test(test, comparefile):
 # describes the test. First drop extension, then remove PARENTBASE
 def nice_name(name):
     noextension = os.path.splitext(name)[0]
-    dropdir = noextension[len(PARENTBASE):]
+    dropdir = noextension[len(PARENTBASE) :]
     return dropdir.lstrip("/")
+
 
 # Check if one directory is contained within another
 def in_directory(basedir, childdir):
-    #make both absolute    
-    basedir = os.path.join(os.path.realpath(basedir),'')
-    childdir = os.path.join(os.path.realpath(childdir), '')
+    # make both absolute
+    basedir = os.path.join(os.path.realpath(basedir), "")
+    childdir = os.path.join(os.path.realpath(childdir), "")
     return os.path.commonprefix([basedir, childdir]) == basedir
+
 
 # Read from a stream, recording result in a record
 # Caps the total amount read to ~1MB
@@ -610,13 +659,13 @@ def in_directory(basedir, childdir):
 # spawned programs spawn child which we cannot stop, so we have
 # to abandon the running programs even if they are still producing output
 def read_stream(outdict, name, stream, stopreading):
-    stream_limit = 1024*1024
+    stream_limit = 1024 * 1024
     outdict[name] = bytearray()
     while True:
         try:
             chunk = stream.read(stream_limit - len(outdict[name]))
             # End of file reached
-            if chunk == b'' or (stopreading[0]):
+            if chunk == b"" or (stopreading[0]):
                 return
 
             # Add chunk
@@ -625,7 +674,7 @@ def read_stream(outdict, name, stream, stopreading):
             if len(outdict[name]) == stream_limit:
                 outdict[name] += b"\n ... Output truncated\n"
                 # Throw away rest of stream
-                while stream.read(1024) != b'' and not stopreading[0]:
+                while stream.read(1024) != b"" and not stopreading[0]:
                     pass
                 return
         except IOError:
@@ -642,18 +691,30 @@ def run_program_popen(program, stdin, extra_env):
             env_copy[key] = extra_env[key]
 
     try:
-        proc = subprocess.Popen(program, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, close_fds=True, shell=False,
-                                cwd=SUBMISSIONBASE, env=env_copy, preexec_fn=os.setsid)
+        proc = subprocess.Popen(
+            program,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            close_fds=True,
+            shell=False,
+            cwd=SUBMISSIONBASE,
+            env=env_copy,
+            preexec_fn=os.setsid,
+        )
 
         starttime = time.time()
 
         retdict = dict()
 
-        thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr, stopreading))
+        thread_err = Thread(
+            target=read_stream, args=(retdict, "stderr", proc.stderr, stopreading)
+        )
         thread_err.daemon = True
         thread_err.start()
-        thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout, stopreading))
+        thread_out = Thread(
+            target=read_stream, args=(retdict, "stdout", proc.stdout, stopreading)
+        )
         thread_out.daemon = True
         thread_out.start()
 
@@ -669,12 +730,14 @@ def run_program_popen(program, stdin, extra_env):
         # Either we have filled stdin, or we are putting nothing in it
         proc.stdin.close()
 
-        while (proc.poll() is None) and (time.time() - starttime < float(CONFIG['timeout'])):
+        while (proc.poll() is None) and (
+            time.time() - starttime < float(CONFIG["timeout"])
+        ):
             time.sleep(0.1)
 
         timeouthit = False
-        if (proc.poll() is None):
-            output_str("!! " + CONFIG['timeout'] + " second timeout reached\n")
+        if proc.poll() is None:
+            output_str("!! " + CONFIG["timeout"] + " second timeout reached\n")
             timeouthit = True
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.terminate()
@@ -693,14 +756,14 @@ def run_program_popen(program, stdin, extra_env):
             stopreading[0] = True
             thread_err.join(5)
             thread_out.join(5)
-            retdict["stderr"] += b"\n ... Process (or its children) did not cleanly exit"
+            retdict[
+                "stderr"
+            ] += b"\n ... Process (or its children) did not cleanly exit"
 
-        
         retdict["stderr"] = toUTF8Replace(bytes(retdict["stderr"]))
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
         retdict["stdout"] = toUTF8Replace(bytes(retdict["stdout"]))
-
 
         retdict["returnval"] = proc.returncode
 
@@ -709,6 +772,7 @@ def run_program_popen(program, stdin, extra_env):
         warn_print(program[0] + " is broken: " + e.strerror)
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
+
 # Run a program, given as a list [prog, arg1, arg2], with
 # an optional file to read as stdin, and optional extra environment variables
 def run_program(program, stdin, extra_env):
@@ -716,27 +780,36 @@ def run_program(program, stdin, extra_env):
         extra_env["SCRATCHDIR"] = scratchdir
         extra_env["TESTROOTDIR"] = PARENTBASE
         return run_program_popen(program, stdin, extra_env)
-    
+
+
 def run_bash_script(script, stdin, extra_env):
     return run_program(["bash", script], stdin, extra_env)
+
 
 # Find files in 'directory' matching 'regex'
 def files_in_dir_matching_regex(directory, regex):
     try:
-        names = [f for f in sorted(os.listdir(directory))
-                if re.match(regex, f) and not f.startswith('.')]
-        files = [os.path.join(directory, f) for f in names
-                if os.path.isfile(os.path.join(directory, f))]
+        names = [
+            f
+            for f in sorted(os.listdir(directory))
+            if re.match(regex, f) and not f.startswith(".")
+        ]
+        files = [
+            os.path.join(directory, f)
+            for f in names
+            if os.path.isfile(os.path.join(directory, f))
+        ]
     except OSError as e:
         warn_print("Error reading '" + directory + "': " + e.strerror)
         return []
 
     return files
 
+
 # Accept a directory name relative to
 def run_tests_recursive(testdir):
     # First check for a build*.sh
-    extra_env = {"TESTDIR" : testdir}
+    extra_env = {"TESTDIR": testdir}
 
     # In this case run all tests
     inside_TESTBASE = in_directory(TESTBASE, testdir)
@@ -748,7 +821,7 @@ def run_tests_recursive(testdir):
         return
 
     # BUILDSCRIPTS
-    buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
+    buildscripts = files_in_dir_matching_regex(testdir, r"build.*\.sh")
 
     for buildsh in buildscripts:
         name = nice_name(buildsh)
@@ -770,7 +843,7 @@ def run_tests_recursive(testdir):
 
     if inside_TESTBASE:
         # TESTSCRIPTS
-        testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
+        testscripts = files_in_dir_matching_regex(testdir, r"test.*\.sh")
 
         for test in testscripts:
             name = nice_name(test)
@@ -786,7 +859,7 @@ def run_tests_recursive(testdir):
             register_returnval_test(result)
 
         # INFOSCRIPTS
-        infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
+        infoscripts = files_in_dir_matching_regex(testdir, r"info.*\.sh")
 
         for info in infoscripts:
             name = nice_name(info)
@@ -803,9 +876,9 @@ def run_tests_recursive(testdir):
             register_returnval_test(result)
 
         # PROGSCRIPTS
-        progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')
+        progscripts = files_in_dir_matching_regex(testdir, r"prog.*\.sh")
 
-        outtextfiles = files_in_dir_matching_regex(testdir, r'.*\.out')
+        outtextfiles = files_in_dir_matching_regex(testdir, r".*\.out")
 
         # If there isn't exactly one .out file per .sh, warn
         if (len(outtextfiles) == 0) != (len(progscripts) == 0):
@@ -827,8 +900,8 @@ def run_tests_recursive(testdir):
                 result["type"] = "Prog"
 
                 # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
-                if (result["input"] != None):
-                    with open(result["input"], 'rb') as stream:
+                if result["input"] != None:
+                    with open(result["input"], "rb") as stream:
                         inputlines = toUTF8Replace(stream.read())
 
                     inputlines = strip_string(inputlines)
@@ -838,17 +911,21 @@ def run_tests_recursive(testdir):
 
                 # Add diff for html to result
                 register_diff_test(result, out)
-        
+
     # Always search in subdirectories
     # Run tests for subdirectories
     try:
-        subdirs = [os.path.join(testdir, d) for d in sorted(os.listdir(testdir))
-                if os.path.isdir(os.path.join(testdir, d))]
+        subdirs = [
+            os.path.join(testdir, d)
+            for d in sorted(os.listdir(testdir))
+            if os.path.isdir(os.path.join(testdir, d))
+        ]
 
         for d in subdirs:
             run_tests_recursive(d)
     except OSError as e:
         warn_print(str(e))
+
 
 def extract_to_temp(sub_found, temp_dir):
     sub_found.extractall(path=temp_dir)
@@ -856,6 +933,7 @@ def extract_to_temp(sub_found, temp_dir):
 
     # Note: this works because both tarfile and zipfile libraries have these functions. If
     # something else is added that doesn't have these functions it will need changing.
+
 
 def extract_file_with_submission(archive_name, temp_dir):
     files_with_srcdir = []
@@ -865,33 +943,37 @@ def extract_file_with_submission(archive_name, temp_dir):
     content_list = None
 
     current_path = os.path.abspath(os.getcwd())
-    
+
     # Check that the file specified with --archive exists in cwd
     if not os.path.exists(os.path.join(current_path, ARCHIVE)):
-        print("- File not found: " + archive_name);
+        print("- File not found: " + archive_name)
         sys.exit(1)
     # Make object and get list of contents
-    if '.zip' in archive_name:
-        file_object = zipfile.ZipFile(archive_name, mode='r')
+    if ".zip" in archive_name:
+        file_object = zipfile.ZipFile(archive_name, mode="r")
         content_list = file_object.namelist()
-    elif '.tar.xz' in archive_name:
-        file_object = tarfile.open(name=archive_name, mode='r:xz')
+    elif ".tar.xz" in archive_name:
+        file_object = tarfile.open(name=archive_name, mode="r:xz")
         content_list = file_object.getnames()
-    elif '.tar.gz' in archive_name:
-        file_object = tarfile.open(name=archive_name, mode='r:gz')
+    elif ".tar.gz" in archive_name:
+        file_object = tarfile.open(name=archive_name, mode="r:gz")
         content_list = file_object.getnames()
-    elif '.tar.bz2' in archive_name:
-        file_object = tarfile.open(name=archive_name, mode='r:bz2')
+    elif ".tar.bz2" in archive_name:
+        file_object = tarfile.open(name=archive_name, mode="r:bz2")
         content_list = file_object.getnames()
-    elif '.tar' in archive_name:
-        file_object = tarfile.open(name=archive_name, mode='r')
+    elif ".tar" in archive_name:
+        file_object = tarfile.open(name=archive_name, mode="r")
         content_list = file_object.getnames()
     else:
-        print("- File {} is not a recognised type of archive (only zip and tar files are supported)".format(ARCHIVE))
+        print(
+            "- File {} is not a recognised type of archive (only zip and tar files are supported)".format(
+                ARCHIVE
+            )
+        )
         sys.exit(1)
 
     # If submission folder is inside (or looks like it), extract. Otherwise move on
-    submission_name = CONFIG['srcdir'] + "/"
+    submission_name = CONFIG["srcdir"] + "/"
     foundMatch = False
 
     for content in content_list:
@@ -900,7 +982,12 @@ def extract_file_with_submission(archive_name, temp_dir):
             break
     if foundMatch == False:
         file_object.close()
-        print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the archive " + archive_name)
+        print(
+            "- Couldn't find a directory called "
+            + CONFIG["srcdir"]
+            + " in the archive "
+            + archive_name
+        )
         sys.exit(1)
 
     # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
@@ -914,25 +1001,40 @@ def extract_file_with_submission(archive_name, temp_dir):
 def run():
     global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
-    parser = argparse.ArgumentParser(prog="stacscheck",
-                                     description="Automatic code checker")
-    parser.add_argument("--id", dest="subid", default="<unknown>",
-                      help="Give identifier for submission")
-    parser.add_argument("--html", dest="htmlout",
-                      help="Produce HTML overview", metavar="FILE")                 
+    parser = argparse.ArgumentParser(
+        prog="stacscheck", description="Automatic code checker"
+    )
+    parser.add_argument(
+        "--id", dest="subid", default="<unknown>", help="Give identifier for submission"
+    )
+    parser.add_argument(
+        "--html", dest="htmlout", help="Produce HTML overview", metavar="FILE"
+    )
     # This isn't documented, because the output format isn't (yet) stable.
     # You can use this, but don't complain if the format changes in future.
-    parser.add_argument("--json", dest="jsonout",
-                      help=SUPPRESS_HELP, metavar="FILE")
-    parser.add_argument("--tryharder", dest="tryharder", default=False,
-                      action="store_true", help=SUPPRESS_HELP)
-    parser.add_argument("-v", "--verbose",
-                      action="store_true", dest="verbose", default=False,
-                      help="Output more information during testing")
+    parser.add_argument("--json", dest="jsonout", help=SUPPRESS_HELP, metavar="FILE")
+    parser.add_argument(
+        "--tryharder",
+        dest="tryharder",
+        default=False,
+        action="store_true",
+        help=SUPPRESS_HELP,
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="Output more information during testing",
+    )
     parser.add_argument("--version", action="version", version=VERSION)
-    parser.add_argument("--archive", dest="archive",
-                      help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name")
-    parser.add_argument("testdir", nargs='?')
+    parser.add_argument(
+        "--archive",
+        dest="archive",
+        help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name",
+    )
+    parser.add_argument("testdir", nargs="?")
 
     args = parser.parse_args()
 
@@ -944,7 +1046,9 @@ def run():
 
     if args.htmlout is not None and not jinja:
         print("stacscheck " + VERSION)
-        sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
+        sys.exit(
+            "Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?"
+        )
 
     VERBOSE = args.verbose
     TRYHARDER = args.tryharder
@@ -968,12 +1072,12 @@ def run():
     # If config file isn't found, try looking up. store where you find it
     PARENTBASE = try_parse_config_file(TESTBASE)
 
-    if not 'srcdir' in CONFIG:
+    if not "srcdir" in CONFIG:
         print("A srcdir needs to be specified in practical.config.")
         sys.exit(1)
 
-    if CONFIG['course'] != '' or CONFIG['practical'] != '':
-        print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])
+    if CONFIG["course"] != "" or CONFIG["practical"] != "":
+        print("Testing " + CONFIG["course"] + " " + CONFIG["practical"])
 
     try:
         # If a .zip/.tar/other name was specified, skip normal searching
@@ -995,25 +1099,30 @@ def run():
     except EnvironmentError as e:
         print("Error during testing: " + str(e))
 
-    finalmessage = str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed"
+    finalmessage = (
+        str(len([t for t in testStore if t["pass"]]))
+        + " out of "
+        + str(len(testStore))
+        + " tests passed"
+    )
     print(finalmessage)
 
     if anyBuildTestFailed:
         print("Building is failing, so some tests were skipped")
-
 
     try:
         if args.htmlout is not None:
             env = jinja2.Environment(autoescape=True)
             template = env.from_string(JINJAPAGE)
             with open(args.htmlout, "wb") as html:
-                htmloutput = template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
-                                        SubmissionID=args.subid,
-                                        Tests=testStore,
-                                        Finalmessage=finalmessage,
-                                        AnyBuildTestFailed=anyBuildTestFailed,
-                                        InfoText=INFO_PRINTED
-                                        )
+                htmloutput = template.render(
+                    Practical=CONFIG["course"] + " " + CONFIG["practical"],
+                    SubmissionID=args.subid,
+                    Tests=testStore,
+                    Finalmessage=finalmessage,
+                    AnyBuildTestFailed=anyBuildTestFailed,
+                    InfoText=INFO_PRINTED,
+                )
                 # html.write(toUTF8Replace(htmloutput).encode("utf8"))
                 html.write(htmloutput.encode("utf8"))
     except EnvironmentError as e:
@@ -1022,16 +1131,24 @@ def run():
     try:
         if args.jsonout is not None:
             with open(args.jsonout, "w") as jsonfile:
-                jsonoutput = json.dumps({ "practical" : CONFIG['practical'],
-                                            "course" : CONFIG['course'],
-                                            "subid" : args.subid,
-                                            "tests" : testStore,
-                                            "infotext" : INFO_PRINTED},
-                                            indent = 2, separators=(',', ': '), ensure_ascii=True, sort_keys=True)
+                jsonoutput = json.dumps(
+                    {
+                        "practical": CONFIG["practical"],
+                        "course": CONFIG["course"],
+                        "subid": args.subid,
+                        "tests": testStore,
+                        "infotext": INFO_PRINTED,
+                    },
+                    indent=2,
+                    separators=(",", ": "),
+                    ensure_ascii=True,
+                    sort_keys=True,
+                )
                 jsonfile.write(jsonoutput)
                 jsonfile.write("\n")
     except EnvironmentError as e:
         print("Error outputting json: " + str(e))
+
 
 if __name__ == "__main__":
     try:
