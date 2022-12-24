@@ -35,11 +35,9 @@ import json
 import copy
 from threading import Thread
 import difflib
-from optparse import OptionParser, SUPPRESS_HELP
 import argparse
 import configparser
 import tempfile
-import shutil
 import zipfile
 import tarfile
 
@@ -1012,13 +1010,15 @@ def run():
     )
     # This isn't documented, because the output format isn't (yet) stable.
     # You can use this, but don't complain if the format changes in future.
-    parser.add_argument("--json", dest="jsonout", help=SUPPRESS_HELP, metavar="FILE")
+    parser.add_argument(
+        "--json", dest="jsonout", help=argparse.SUPPRESS, metavar="FILE"
+    )
     parser.add_argument(
         "--tryharder",
         dest="tryharder",
         default=False,
         action="store_true",
-        help=SUPPRESS_HELP,
+        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "-v",
