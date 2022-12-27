@@ -216,6 +216,10 @@ JINJAPAGE = """
 
 """
 
+#######################################################################
+## Global variables
+#######################################################################
+
 # Store the base test directory
 TESTBASE = None
 
@@ -228,24 +232,13 @@ SUBMISSIONBASE = None
 # Store parent directory containing practical.config
 PARENTBASE = None
 
-
-def toUTF8Replace(bytelist):
-    if isinstance(bytelist, str):
-        return bytelist
-    return str(bytelist, "utf8", errors="replace")
-
-
-def output_str(arg):
-    print(toUTF8Replace(arg), end="")
-
-
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
 
 def info_print_nonewline(string):
     global INFO_PRINTED
-    output_str(string)
+    print(string, end="")
     INFO_PRINTED.append(string)
 
 
@@ -259,8 +252,8 @@ VERBOSE = True
 
 def verbose_print(arg):
     if VERBOSE:
-        output_str(arg + "\n")
-        output_str("\n")
+        print(arg)
+        print()
 
 
 # Check function for problems in practical
@@ -274,16 +267,10 @@ def warn_print(arg):
     info_print("the test directory may have been copied incorrectly.")
 
 
-def print_file_contents(
-    file_loc,
-    ignore_prefixes=[
-        "#!"
-    ],  # Do not modify the list in the method, otherwise troubles may occur
-    ignore_empty_lines=True,
-):
+def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
     try:
         for line in open(file_loc, "rb"):
-            line = toUTF8Replace(line)
+            line = str(line, "utf8", errors="replace")
 
             if ignore_empty_lines and line.strip() == "":
                 continue
@@ -291,7 +278,7 @@ def print_file_contents(
             if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
                 continue
 
-            output_str(line.rstrip() + "\n")
+            print(line.rstrip())
     except IOError as error:
         warn_print("Error reading '" + str(file_loc) + "': " + error.strerror)
 
@@ -524,12 +511,12 @@ def find_code_directory(start_dir=None):
 def maybe_print_test_input(test):
     if VERBOSE and not test["pass"]:
         print("--- ran script ---")
-        print_file_contents(file_loc=test["path"])
+        print_file_contents(
+            file_loc=test["path"], ignore_prefixes=["#!"], ignore_empty_lines=True
+        )
         if "input" in test and test["input"] is not None:
             print("--- with input ---")
-            print_file_contents(
-                file_loc=test["input"], ignore_prefixes=[], ignore_empty_lines=False
-            )
+            print_file_contents(file_loc=test["input"], ignore_prefixes=[])
 
 
 def print_test_or_info_output(test):
@@ -548,17 +535,17 @@ def print_test_or_info_output(test):
         stderr = reduce_huge_output(stderr, [])
 
     if test.get("stderr", False) and test.get("stdout", False):
-        output_str("--- submission output ---\n")
-        output_str("".join(stdout))
-        output_str("--- submission stderr output ---\n")
-        output_str("".join(stderr))
-        output_str("---\n\n")
+        print("--- submission output ---")
+        print("".join(stdout), end="")
+        print("--- submission stderr output ---")
+        print("".join(stderr), end="")
+        print("---\n")
     elif test.get("stderr", False) or test.get("stdout", False):
-        output_str("--- submission output ---\n")
-        output_str("".join(stdout) + "".join(stderr))
-        output_str("---\n\n")
+        print("--- submission output ---")
+        print("".join(stdout) + "".join(stderr), end="")
+        print("---\n")
     else:
-        output_str("--- no output from submission---\n\n")
+        print("--- no output from submission---\n")
 
 
 # Record that a test was run, printing as appropriate
@@ -579,7 +566,7 @@ def register_returnval_test(test):
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
     with open(comparefile, "rb") as stream:
-        comparelines = toUTF8Replace(stream.read())
+        comparelines = str(stream.read(), "utf8", errors="replace")
     comparelines = strip_string(comparelines)
     userlines = strip_string(test["stdout"] + test["stderr"])
 
@@ -615,7 +602,7 @@ def register_diff_test(test, comparefile):
         test["textdiff"] = textdiff
         textout = "".join(test["textdiff"])
         assert isinstance(textout, str)
-        output_str(textout + "\n")
+        print(textout)
 
         # Check things are 'str's
 
@@ -733,7 +720,7 @@ def run_program_popen(program, stdin, extra_env):
 
         timeouthit = False
         if proc.poll() is None:
-            output_str("!! " + CONFIG["timeout"] + " second timeout reached\n")
+            print("!! " + CONFIG["timeout"] + " second timeout reached")
             timeouthit = True
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.terminate()
@@ -756,10 +743,10 @@ def run_program_popen(program, stdin, extra_env):
                 "stderr"
             ] += b"\n ... Process (or its children) did not cleanly exit"
 
-        retdict["stderr"] = toUTF8Replace(bytes(retdict["stderr"]))
+        retdict["stderr"] = str(bytes(retdict["stderr"]), "utf8", errors="replace")
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
-        retdict["stdout"] = toUTF8Replace(bytes(retdict["stdout"]))
+        retdict["stdout"] = str(bytes(retdict["stdout"]), "utf8", errors="replace")
 
         retdict["returnval"] = proc.returncode
 
@@ -821,7 +808,7 @@ def run_tests_recursive(testdir):
 
     for buildsh in buildscripts:
         name = nice_name(buildsh)
-        output_str("* BUILD TEST - " + name + " : ")
+        print("* BUILD TEST - " + name + " : ", end="")
         buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
         buildshret["path"] = buildsh
@@ -843,7 +830,7 @@ def run_tests_recursive(testdir):
 
         for test in testscripts:
             name = nice_name(test)
-            output_str("* TEST - " + name + " : ")
+            print("* TEST - " + name + " : ", end="")
             result = run_bash_script(test, None, extra_env)
             result["name"] = name
             result["path"] = test
@@ -859,7 +846,7 @@ def run_tests_recursive(testdir):
 
         for info in infoscripts:
             name = nice_name(info)
-            output_str("* INFO - " + name + " : ")
+            print("* INFO - " + name + " : ", end="")
             result = run_bash_script(info, None, extra_env)
             result["name"] = name
             result["path"] = info
@@ -888,7 +875,7 @@ def run_tests_recursive(testdir):
                 if not os.path.isfile(infile):
                     infile = None
                 name = nice_name(progsh) + "-" + os.path.basename(out)
-                output_str("* COMPARISON TEST - " + name + " : ")
+                print("* COMPARISON TEST - " + name + " : ", end="")
                 result = run_bash_script(progsh, infile, extra_env)
                 result["name"] = name
                 result["input"] = infile
@@ -898,7 +885,7 @@ def run_tests_recursive(testdir):
                 # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
                 if result["input"] != None:
                     with open(result["input"], "rb") as stream:
-                        inputlines = toUTF8Replace(stream.read())
+                        inputlines = str(stream.read(), "utf8", errors="replace")
 
                     inputlines = strip_string(inputlines)
                     result["inputlines"] = inputlines
