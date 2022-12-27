@@ -1,0 +1,6 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'simpletest': Already in it!
+* COMPARISON TEST - catter/progcat-blanks.out : pass
+* COMPARISON TEST - catter/progcat-blanks2.out : pass
+* COMPARISON TEST - catter/progcat-empty.out : pass
+3 out of 3 tests passed
