@@ -7,7 +7,7 @@ CURRENTDIR=$(pwd)
 CHECKPROG=$(pwd)/../stacscheck
 
 if command -v coverage &> /dev/null; then
-   CHECKPROG="coverage run --append --data-file=../../coverage.dat ${CHECKPROG}"
+   CHECKPROG="coverage run --parallel --data-file=$(pwd)/coverage/coverage.dat ${CHECKPROG}"
 fi;
 
 VERSION=$($CHECKPROG --version)

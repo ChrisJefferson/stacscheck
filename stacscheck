@@ -394,7 +394,7 @@ def try_parse_config_file(basedir):
 
     for section in config.sections():
         if not section in ["info", "version"]:
-            warn_print("practical.config has an unexpected section: ", section)
+            warn_print("practical.config has an unexpected section: [" + section + "]")
             sys.exit(1)
 
     if not "info" in config.sections():

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-rm -f coverage.dat
+# Clear away any existing coverage files
+rm -f .coverage
+rm -f coverage
+mkdir coverage
 
 mkdir tests/checkout-baddir/testdir/abc
 chmod -rwx tests/checkout-baddir/testdir/abc
