@@ -1,0 +1,22 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'simpletest-badperm3': ",
+    "Already in it!\n",
+    "\n- ERROR - There is a problem in the test directory.\n",
+    "The problem is: File is not readable: DIR/tests/simpletest-badperm3/testdir/catter/blanks.in.\n",
+    "This may be caused by a broken test directory, or\n",
+    "the test directory may have been copied incorrectly.\n",
+    "\n- ERROR - There is a problem in the test directory.\n",
+    "The problem is: bash is broken: Permission denied.\n",
+    "This may be caused by a broken test directory, or\n",
+    "the test directory may have been copied incorrectly.\n",
+    "\n- ERROR - There is a problem in the test directory.\n",
+    "The problem is: [Errno 13] Permission denied: 'DIR/tests/simpletest-badperm3/testdir/catter/blanks.in'.\n",
+    "This may be caused by a broken test directory, or\n",
+    "the test directory may have been copied incorrectly.\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": []
+}

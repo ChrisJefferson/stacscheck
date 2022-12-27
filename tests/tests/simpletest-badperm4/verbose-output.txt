@@ -1,0 +1,14 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'simpletest-badperm4': Already in it!
+* COMPARISON TEST - catter/progcat-blanks.out : 
+- ERROR - There is a problem in the test directory.
+The problem is: File is not readable: DIR/tests/simpletest-badperm4/testdir/catter/blanks.out.
+This may be caused by a broken test directory, or
+the test directory may have been copied incorrectly.
+
+- ERROR - There is a problem in the test directory.
+The problem is: [Errno 13] Permission denied: 'DIR/tests/simpletest-badperm4/testdir/catter/blanks.out'.
+This may be caused by a broken test directory, or
+the test directory may have been copied incorrectly.
+ERROR: No tests found in 'testdir'
+0 out of 0 tests passed

@@ -268,6 +268,8 @@ def warn_print(arg):
 
 
 def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
+    check_file_exists_and_readable(file_loc)
+
     try:
         for line in open(file_loc, "rb"):
             line = str(line, "utf8", errors="replace")
@@ -288,6 +290,18 @@ def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
 # This is to deal with differences in invisible whitespaces
 def strip_string(string):
     return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != ""]
+
+
+# These next two functions exist just to provide nice error messages
+def check_file_exists(file_path):
+    if not os.access(file_path, os.F_OK):
+        warn_print("File is missing: {}".format(file_path))
+
+
+def check_file_exists_and_readable(file_path):
+    check_file_exists(file_path)
+    if not os.access(file_path, os.R_OK):
+        warn_print("File is not readable: {}".format(file_path))
 
 
 # Take a possibly huge output from a program, and reduce it's size so it fits
@@ -565,6 +579,7 @@ def register_returnval_test(test):
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
+    check_file_exists_and_readable(comparefile)
     with open(comparefile, "rb") as stream:
         comparelines = str(stream.read(), "utf8", errors="replace")
     comparelines = strip_string(comparelines)
@@ -673,6 +688,9 @@ def run_program_popen(program, stdin, extra_env):
         for key in extra_env:
             env_copy[key] = extra_env[key]
 
+    if stdin is not None:
+        check_file_exists_and_readable(stdin)
+
     try:
         proc = subprocess.Popen(
             program,
@@ -766,6 +784,7 @@ def run_program(program, stdin, extra_env):
 
 
 def run_bash_script(script, stdin, extra_env):
+    check_file_exists_and_readable(script)
     return run_program(["bash", script], stdin, extra_env)
 
 
