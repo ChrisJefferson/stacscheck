@@ -28,7 +28,16 @@ function filtfile {
 
 set -eu
 
-echo $(ls -d tests/*/) | xargs -P16 -n1 ./run_single_test.sh
+ls -d tests/*/ | (
+    # On CI we can't run in parallel as it causes timeouts
+    if command -v parallel &> /dev/null && [ -z ${CI+x} ]; then
+        echo Using parallel
+        parallel --willcite ./run_single_test.sh
+    else
+        echo Using xargs
+        xargs -n1 ./run_single_test.sh
+    fi
+)
 
 if command -v coverage &> /dev/null; then
    coverage combine coverage/*
