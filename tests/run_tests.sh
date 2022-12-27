@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -f coverage.dat
+
 mkdir tests/checkout-baddir/testdir/abc
 chmod -rwx tests/checkout-baddir/testdir/abc
 

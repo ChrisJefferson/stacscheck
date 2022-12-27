@@ -3,7 +3,12 @@
 set -o errexit
 
 CURRENTDIR=$(pwd)
+
 CHECKPROG=$(pwd)/../stacscheck
+
+if command -v coverage &> /dev/null; then
+   CHECKPROG="coverage run --append --data-file=../../coverage.dat ${CHECKPROG}"
+fi;
 
 VERSION=$($CHECKPROG --version)
 
