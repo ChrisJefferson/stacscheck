@@ -701,7 +701,7 @@ def run_program_popen(program, stdin, extra_env):
             shell=False,
             cwd=SUBMISSIONBASE,
             env=env_copy,
-            preexec_fn=os.setsid,
+            start_new_session=True,
         )
 
         starttime = time.time()
