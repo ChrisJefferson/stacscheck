@@ -1,3 +1,5 @@
+.. _tutorial:
+
 Step-By-Step Practical Creation Tutorial
 ========================================
 

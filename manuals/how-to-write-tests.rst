@@ -1,6 +1,6 @@
 .. _advice:
 
-Advice for writing tests
+Guide to writing tests
 ========================
 
 This section contains some advice for writing tests. Some of this advice
@@ -61,7 +61,8 @@ Build tests
 
 Build tests tend to be short. Some examples include:
 
-\*\* Basic Java Building \*\*
+Basic Java Building
+~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -83,7 +84,9 @@ the power to search all directories (after turning it on with
    shopt -s globstar
    javac **/*.java
 
-\*\* Basic C building \*\*
+Basic C building
+~~~~~~~~~~~~~~~~
+
 
 C programs are often built with ``make``:
 
@@ -91,7 +94,8 @@ C programs are often built with ``make``:
 
    make target1
 
-\*\* Generic building \*\*
+Generic building
+~~~~~~~~~~~~~~~~
 
 Once students are more confident with scripting, you can always let them
 write their own build script! then just make a test which looks like
@@ -100,7 +104,7 @@ write their own build script! then just make a test which looks like
 
    ./build.sh
 
-Which will run ``./build.sh`` from their source directory.
+Which will run ``./build.sh`` from the submission source directory.
 
 If you want to test the program has been successfully built, you can run
 something like this:

@@ -24,7 +24,7 @@ check the submission instructions for any practicals!
 `stacscheck` there. In fact, `stacscheck` was developed in WSL on Windows!
 
 
-`stacscheck` has only a single requirement -- ``python3``. Many systems come with ``python3`` installed, so first try just running `python3`` and see if it works. If it doesn't, try looking at the instructions on the `Python Wiki <https://wiki.python.org/moin/BeginnersGuide/Download>`_ . Remember that if you installed WSL on Windows, you want to follow the instructions for Ubuntu, not Windows!
+`stacscheck` has only a single requirement -- ``python3``. Many systems come with ``python3`` installed, so first try  running `python3` and see if it works. If it doesn't, try looking at the instructions on the `Python Wiki <https://wiki.python.org/moin/BeginnersGuide/Download>`_ . Remember that if you installed WSL on Windows, you want to follow the instructions for Ubuntu, not Windows!
 
 Once you have installed `python3`, the easiest way to install `stacscheck` is pip::
    

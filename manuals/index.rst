@@ -3,19 +3,21 @@ Stacscheck Docs
 ===============
 
 Welcome to ``stacscheck``, the ST Andrews Computer Science CHECKer. ``stacscheck`` is
-to be a simple, generic checker for command-line Unix programs.
+a simple, generic checker for practical submissions. With ``stacscheck``, you can input your answers to a practical and receive immediate feedback on the correctness of your solutions.
 
-This manual covers all of ``stacscheck``, from simple usage to creating new tests, so you shouldn't
-plan on reading the whole manual from start to end -- only read the sections you need!
+This manual provides comprehensive information on how to use `stacscheck`, from simple usage to how to create new tests. You do not need to read the entire manual from start to finish; instead, feel free to only read the sections that are relevant to your needs.
 
 What to read
 ------------
 
 * If you just want to get started using ``stacscheck``, then read the :ref:`Quickstart Guide <quickstart>`.
 
-* If you need help installing ``stacscheck``, then read `Installing Stacscheck <installing>`.
+* If you need help installing ``stacscheck``, then read :ref:`Installing Stacscheck <installing>` -- the Quickstart Guide will help you check if you already have Stacscheck installed.
 
-If you are using a machine where ``Most users of ``stacscheck`` should need only limited
+* If you having trouble understanding what a `stacscheck` test is doing, then reading :ref:`The Structure of a Stacscheck Test <structure>` will help you understand how `stacscheck` tests are structured.
+
+* The next two sections, :ref:`Guide to writing tests <advice>` and :ref:`Step-By-Step Practical Creation Tutorial <tutorial>`, give further details about exactly how to create new tests for `stacscheck`.
+
 
 .. toctree::
    :maxdepth: 2

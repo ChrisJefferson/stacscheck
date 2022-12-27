@@ -1,3 +1,5 @@
+.. _structure:
+
 The Structure of a Stacsheck Test
 =================================
 
