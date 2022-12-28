@@ -13,15 +13,17 @@ disown
 
 * COMPARISON TEST - stderrstdout/progcat-test.out : fail
 --- ran script ---
-(while true
-do
+{
+while true; do
   echo "hi"
-done) &
+done
+} &
 disown
-(while true
-do
+{
+while true; do
   echo "bad" >&2
-done) &
+done
+} &
 disown
 --- expected output ---
 line 1

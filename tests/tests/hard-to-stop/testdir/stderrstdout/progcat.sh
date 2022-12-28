@@ -1,12 +1,15 @@
 #!/bin/bash
 
-(while true
-do
+{
+while true; do
   echo "hi"
-done) &
+done
+} &
 disown
-(while true
-do
+{
+while true; do
   echo "bad" >&2
-done) &
+done
+} &
 disown
+
