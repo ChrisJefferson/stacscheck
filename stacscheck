@@ -235,6 +235,21 @@ PARENTBASE = None
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
+# If verbose output is required (set by -v)
+VERBOSE = True
+
+# Store the results of all tests
+TEST_STORE = []
+
+# Store if any build step failed
+ANY_BUILD_TEST_FAILED = False
+
+# Practical configuration
+CONFIG = {"course": "", "practical": "", "timeout": "60"}
+
+# Name of archive (if one is passed on the command line)
+ARCHIVE = None
+
 
 def info_print_nonewline(string):
     global INFO_PRINTED
@@ -244,10 +259,6 @@ def info_print_nonewline(string):
 
 def info_print(string):
     info_print_nonewline(string + "\n")
-
-
-# Simple function to print out more verbose information if -v is passed
-VERBOSE = True
 
 
 def verbose_print(arg):
@@ -260,14 +271,18 @@ def verbose_print(arg):
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
     info_print("The problem is: " + str(arg) + ".")
-    #    info_print("Possible reasons:")
-    #    info_print("  - Your copy of stacscheck is out of date.")
-    #    info_print("  - The directory of tests is missing some files, or is broken.")
     info_print("This may be caused by a broken test directory, or")
     info_print("the test directory may have been copied incorrectly.")
 
 
 def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
+    """Print out contents of a file, handling UTF8
+
+    Args:
+        file_loc: Name of file to print
+        ignore_prefixes: List of line prefixes to skip. Defaults to ().
+        ignore_empty_lines: Should blank lines be skipped. Defaults to False.
+    """
     check_file_exists_and_readable(file_loc)
 
     try:
@@ -289,6 +304,13 @@ def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
 # We strip all whitespace, then add a "\n" on the end
 # This is to deal with differences in invisible whitespaces
 def strip_string(string):
+    """Takes a single string with newlines, and returns a list of lines
+    with whitespace stripped from the end of lines. This is to remove changes
+    which are not "visible".
+
+    Args:
+        string: Input string
+    """
     return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != ""]
 
 
@@ -304,11 +326,17 @@ def check_file_exists_and_readable(file_path):
         warn_print(f"File is not readable: {file_path}")
 
 
-# Take a possibly huge output from a program, and reduce it's size so it fits
-# reasonably on screen.
-# userlines: The output of the user's program
-# comparelines: Expected output (or an empty list if there is no expected output)
 def reduce_huge_output(userlines, comparelines):
+    """Take a possibly huge output from a program, and reduce it's size to a more
+    reasonable size.
+
+    Args:
+        userlines: The output of the user's program
+        comparelines: Expected output (or an empty list if there is no expected output)
+
+    Returns:
+        Reduced user's output
+    """
     if VERBOSE:
         maxpad = 500
         maxline = 5000
@@ -337,14 +365,6 @@ def reduce_huge_output(userlines, comparelines):
 
     return userlines
 
-
-# Store the results of all tests
-testStore = []
-
-# Store if any build step failed
-anyBuildTestFailed = False
-
-CONFIG = {"course": "", "practical": "", "timeout": "60"}
 
 #### Beginning of functions
 def try_parse_config_file(basedir):
@@ -565,7 +585,7 @@ def register_returnval_test(test):
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
 
-    testStore.append(test)
+    TEST_STORE.append(test)
 
 
 # Register the result of a test whith a known output
@@ -621,7 +641,7 @@ def register_diff_test(test, comparefile):
     )
     assert isinstance(test["htmldiff"], str)
 
-    testStore.append(test)
+    TEST_STORE.append(test)
 
 
 #################### FILE UTILITIES ######################
@@ -830,8 +850,8 @@ def run_tests_recursive(testdir):
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
             verbose_print("Exiting early due to failed " + buildsh)
-            global anyBuildTestFailed
-            anyBuildTestFailed = True
+            global ANY_BUILD_TEST_FAILED
+            ANY_BUILD_TEST_FAILED = True
             return
 
     if inside_TESTBASE:
@@ -1084,21 +1104,21 @@ def run():
                 SUBMISSIONBASE = find_code_directory(temp_dir)
                 run_tests_recursive(PARENTBASE)
 
-        if len(testStore) == 0:
+        if len(TEST_STORE) == 0:
             # Use args.testdir as it is shorter
             print("ERROR: No tests found in '" + args.testdir + "'")
     except EnvironmentError as error:
         print("Error during testing: " + str(error))
 
     finalmessage = (
-        str(len([t for t in testStore if t["pass"]]))
+        str(len([t for t in TEST_STORE if t["pass"]]))
         + " out of "
-        + str(len(testStore))
+        + str(len(TEST_STORE))
         + " tests passed"
     )
     print(finalmessage)
 
-    if anyBuildTestFailed:
+    if ANY_BUILD_TEST_FAILED:
         print("Building is failing, so some tests were skipped")
 
     try:
@@ -1109,9 +1129,9 @@ def run():
                 htmloutput = template.render(
                     Practical=CONFIG["course"] + " " + CONFIG["practical"],
                     SubmissionID=args.subid,
-                    Tests=testStore,
+                    Tests=TEST_STORE,
                     Finalmessage=finalmessage,
-                    AnyBuildTestFailed=anyBuildTestFailed,
+                    AnyBuildTestFailed=ANY_BUILD_TEST_FAILED,
                     InfoText=INFO_PRINTED,
                 )
                 # html.write(toUTF8Replace(htmloutput).encode("utf8"))
@@ -1127,7 +1147,7 @@ def run():
                         "practical": CONFIG["practical"],
                         "course": CONFIG["course"],
                         "subid": args.subid,
-                        "tests": testStore,
+                        "tests": TEST_STORE,
                         "infotext": INFO_PRINTED,
                     },
                     indent=2,
