@@ -295,13 +295,13 @@ def strip_string(string):
 # These next two functions exist just to provide nice error messages
 def check_file_exists(file_path):
     if not os.access(file_path, os.F_OK):
-        warn_print("File is missing: {}".format(file_path))
+        warn_print(f"File is missing: {file_path}")
 
 
 def check_file_exists_and_readable(file_path):
     check_file_exists(file_path)
     if not os.access(file_path, os.R_OK):
-        warn_print("File is not readable: {}".format(file_path))
+        warn_print(f"File is not readable: {file_path}")
 
 
 # Take a possibly huge output from a program, and reduce it's size so it fits
@@ -386,7 +386,7 @@ def try_parse_config_file(basedir):
         warn_print("practical.config is malformed")
         sys.exit(1)
 
-    if not "info" in config.sections():
+    if "info" not in config.sections():
         warn_print("practical.config does not have an '[info]' section")
         sys.exit(1)
 
@@ -414,14 +414,14 @@ def try_parse_config_file(basedir):
     valid_options = ["course", "practical", "srcdir", "timeout", "version"]
 
     for option in config.options("info"):
-        if not (option in valid_options):
+        if option not in valid_options:
             warn_print("Don't understand option '" + option + "'")
             sys.exit(1)
         CONFIG[option] = config.get("info", option)
 
     if "version" in config.sections():
         for option in config.options("version"):
-            if not (option in ["required"]):
+            if option not in ["required"]:
                 warn_print(
                     "Don't understand [version] in practical.config: [" + option + "]"
                 )
@@ -451,7 +451,7 @@ def find_code_directory(start_dir=None):
     # if not 'srcdir' in CONFIG:  # ACELGA
     #     return None
     # If there's a starting directory, start searching from there. Otherwise use cwd
-    if not start_dir == None:
+    if not start_dir is None:
         current_dir = start_dir
     else:
         current_dir = os.path.realpath(os.getcwd())
@@ -893,7 +893,7 @@ def run_tests_recursive(testdir):
                 result["type"] = "Prog"
 
                 # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
-                if result["input"] != None:
+                if result["input"] is not None:
                     with open(result["input"], "rb") as stream:
                         inputlines = str(stream.read(), "utf8", errors="replace")
 
@@ -1064,7 +1064,7 @@ def run():
     # If config file isn't found, try looking up. store where you find it
     PARENTBASE = try_parse_config_file(TESTBASE)
 
-    if not "srcdir" in CONFIG:
+    if "srcdir" not in CONFIG:
         print("A srcdir needs to be specified in practical.config.")
         sys.exit(1)
 
