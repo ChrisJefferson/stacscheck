@@ -411,10 +411,6 @@ def try_parse_config_file(basedir):
             warn_print("practical.config has an unexpected section: [" + section + "]")
             sys.exit(1)
 
-    if not "info" in config.sections():
-        warn_print("practical.config does not have an [info] section")
-        sys.exit(1)
-
     valid_options = ["course", "practical", "srcdir", "timeout", "version"]
 
     for option in config.options("info"):
@@ -427,18 +423,13 @@ def try_parse_config_file(basedir):
         for option in config.options("version"):
             if not (option in ["required"]):
                 warn_print(
-                    "Don't understand [version] in practical.config: '" + version + "'"
+                    "Don't understand [version] in practical.config: [" + option + "]"
                 )
                 sys.exit(1)
             if "version" in CONFIG:
                 warn_print("'version' defined twice in practical.config")
                 sys.exit(1)
             CONFIG["version"] = config.get("version", option)
-
-    for section in config.sections():
-        if not (section in ["info", "version"]):
-            warn_print("practical.config contains invalid section: ", section)
-            sys.exit(1)
 
     return parentdir
 

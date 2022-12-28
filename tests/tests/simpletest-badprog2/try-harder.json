@@ -1,0 +1,14 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'simpletest-badprog2': ",
+    "Already in it!\n",
+    "\n- ERROR - There is a problem in the test directory.\n",
+    "The problem is: Found *.out files without prog*.sh in DIR/tests/simpletest-badprog2/testdir/catter.\n",
+    "This may be caused by a broken test directory, or\n",
+    "the test directory may have been copied incorrectly.\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": []
+}

@@ -1,0 +1,9 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'simpletest-badprog2': Already in it!
+
+- ERROR - There is a problem in the test directory.
+The problem is: Found *.out files without prog*.sh in DIR/tests/simpletest-badprog2/testdir/catter.
+This may be caused by a broken test directory, or
+the test directory may have been copied incorrectly.
+ERROR: No tests found in 'testdir'
+0 out of 0 tests passed
