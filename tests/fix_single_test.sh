@@ -16,6 +16,8 @@ function filtfile {
 CHECKPROG=$(pwd)/../stacscheck
 mkdir -p /tmp/$1/$1/
 
+rm -f $1/try-harder.* $1/output.* $1/verbose-*.txt
+
 echo Testing $1
 ( cd $1 && ./go.sh "$CHECKPROG" | perl -pe ${FILT} | perl -pe ${FILT2}) > $1/output.txt
 ( cd $1 && ./go.sh "$CHECKPROG" --verbose | perl -pe ${FILT} | perl -pe ${FILT2} ) > $1/verbose-output.txt

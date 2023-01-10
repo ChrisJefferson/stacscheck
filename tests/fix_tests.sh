@@ -21,6 +21,6 @@ function filtfile {
     perl -pe ${FILT} $1 | perl -pe ${FILT2}
 }
 
-echo $(ls -d tests/*/) | parallel -d' ' ./fix_single_test.sh
+ls -d tests/*/ | parallel ./fix_single_test.sh
 
 (cd tests && rm -f $BADFILES)
