@@ -325,7 +325,15 @@ def strip_string(string):
     return [l.rstrip() + "\n" for l in string.split("\n") if l.rstrip() != ""]
 
 
+#######################################################################
+## Generic file access
+#######################################################################
+# These functions provide helper functions related to files and
+# directories
+
+
 # These next two functions exist just to provide nice error messages
+# when a file is missing, or not readable
 def check_file_exists(file_path):
     if not os.access(file_path, os.F_OK):
         OUTPUT.warn_print(f"File is missing: {file_path}")
@@ -335,6 +343,34 @@ def check_file_exists_and_readable(file_path):
     check_file_exists(file_path)
     if not os.access(file_path, os.R_OK):
         OUTPUT.warn_print(f"File is not readable: {file_path}")
+
+
+# Walk directory tree under 'rootdir', finding all directories with 'name'.
+def find_all_directories_with_name(name, rootdir):
+    dirlist = []
+    for root, subfolders, _ in os.walk(rootdir):
+        for dirname in subfolders:
+            # __MACOSX is a magic directory often created by Mac OS X. Skip it
+            if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)):
+                dirlist.append(os.path.join(root, dirname))
+    return sorted(dirlist)
+
+
+# Given a filename of a test, get a nicer, shorter name which
+# describes the test. First drop extension, then remove base (if present)
+def nice_name(name, base):
+    noextension = os.path.splitext(name)[0]
+    if noextension.startswith(base):
+        noextension = noextension[len(base) :]
+    return noextension.lstrip("/")
+
+
+# Check if one directory is contained within another
+def in_directory(basedir, childdir):
+    # make both absolute
+    basedir = os.path.join(os.path.realpath(basedir), "")
+    childdir = os.path.join(os.path.realpath(childdir), "")
+    return os.path.commonprefix([basedir, childdir]) == basedir
 
 
 def reduce_huge_output(userlines, comparelines):
@@ -455,16 +491,6 @@ def try_parse_config_file(basedir):
             CONFIG["version"] = config.get("version", option)
 
     return parentdir
-
-
-# Walk directory tree under 'rootdir', finding all directories with 'name'.
-def find_all_directories_with_name(name, rootdir):
-    dirlist = []
-    for root, subfolders, _ in os.walk(rootdir):
-        for dirname in subfolders:
-            if dirname == name and ("/__MACOSX" not in os.path.join(root, dirname)):
-                dirlist.append(os.path.join(root, dirname))
-    return sorted(dirlist)
 
 
 # Find the directory the code is stored in, using 'srcdir' from CONFIG.
@@ -647,23 +673,6 @@ def register_diff_test(test, comparefile):
     TEST_STORE.append(test)
 
 
-#################### FILE UTILITIES ######################
-# Given a filename of a test, get a nicer, shorter name which
-# describes the test. First drop extension, then remove PARENTBASE
-def nice_name(name):
-    noextension = os.path.splitext(name)[0]
-    dropdir = noextension[len(PARENTBASE) :]
-    return dropdir.lstrip("/")
-
-
-# Check if one directory is contained within another
-def in_directory(basedir, childdir):
-    # make both absolute
-    basedir = os.path.join(os.path.realpath(basedir), "")
-    childdir = os.path.join(os.path.realpath(childdir), "")
-    return os.path.commonprefix([basedir, childdir]) == basedir
-
-
 # Read from a stream, recording result in a record
 # Caps the total amount read to ~1MB
 # 'stopreading' is a list of length 1 (so changes can be passed in)
@@ -840,7 +849,7 @@ def run_tests_recursive(testdir):
     buildscripts = files_in_dir_matching_regex(testdir, r"build.*\.sh")
 
     for buildsh in buildscripts:
-        name = nice_name(buildsh)
+        name = nice_name(buildsh, PARENTBASE)
         print("* BUILD TEST - " + name + " : ", end="")
         buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
@@ -862,7 +871,7 @@ def run_tests_recursive(testdir):
         testscripts = files_in_dir_matching_regex(testdir, r"test.*\.sh")
 
         for test in testscripts:
-            name = nice_name(test)
+            name = nice_name(test, PARENTBASE)
             print("* TEST - " + name + " : ", end="")
             result = run_bash_script(test, None, extra_env)
             result["name"] = name
@@ -878,7 +887,7 @@ def run_tests_recursive(testdir):
         infoscripts = files_in_dir_matching_regex(testdir, r"info.*\.sh")
 
         for info in infoscripts:
-            name = nice_name(info)
+            name = nice_name(info, PARENTBASE)
             print("* INFO - " + name + " : ", end="")
             result = run_bash_script(info, None, extra_env)
             result["name"] = name
@@ -907,7 +916,7 @@ def run_tests_recursive(testdir):
                 infile = out[:-4] + ".in"
                 if not os.path.isfile(infile):
                     infile = None
-                name = nice_name(progsh) + "-" + os.path.basename(out)
+                name = nice_name(progsh, PARENTBASE) + "-" + os.path.basename(out)
                 print("* COMPARISON TEST - " + name + " : ", end="")
                 result = run_bash_script(progsh, infile, extra_env)
                 result["name"] = name
