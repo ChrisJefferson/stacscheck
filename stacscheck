@@ -241,9 +241,6 @@ ANY_BUILD_TEST_FAILED = False
 # Practical configuration
 CONFIG = {"course": "", "practical": "", "timeout": "60"}
 
-# Name of archive (if one is passed on the command line)
-ARCHIVE = None
-
 
 class Outputter:
     def __init__(self, verbose):
@@ -269,15 +266,18 @@ class Outputter:
             print()
 
     # Check function for problems in practical
-    def warn_print(self, arg):
-        self.info_print("\n- ERROR - There is a problem in the test directory.")
-        self.info_print("The problem is: " + str(arg) + ".")
-        self.info_print("This may be caused by a broken test directory, or")
-        self.info_print("the test directory may have been copied incorrectly.")
+    def warn_print(self, arg, blame_test=True):
+        if blame_test:
+            self.info_print("\n- ERROR - There is a problem in the test directory.")
+            self.info_print("The problem is: " + str(arg) + ".")
+            self.info_print("This may be caused by a broken test directory, or")
+            self.info_print("the test directory may have been copied incorrectly.")
+        else:
+            self.info_print("\n- ERROR - " + str(arg))
 
     # Check function for problems in practical
-    def fatal_error(self, arg):
-        self.warn_print(arg)
+    def fatal_error(self, arg, blame_test=True):
+        self.warn_print(arg, blame_test)
         sys.exit(1)
 
     def print_file_contents(
@@ -334,15 +334,15 @@ def strip_string(string):
 
 # These next two functions exist just to provide nice error messages
 # when a file is missing, or not readable
-def check_file_exists(file_path):
+def check_file_exists(file_path, blame_test=True):
     if not os.access(file_path, os.F_OK):
-        OUTPUT.warn_print(f"File is missing: {file_path}")
+        OUTPUT.fatal_error(f"File is missing: {file_path}", blame_test)
 
 
-def check_file_exists_and_readable(file_path):
-    check_file_exists(file_path)
+def check_file_exists_and_readable(file_path, blame_test=True):
+    check_file_exists(file_path, blame_test)
     if not os.access(file_path, os.R_OK):
-        OUTPUT.warn_print(f"File is not readable: {file_path}")
+        OUTPUT.fatal_error(f"File is not readable: {file_path}", blame_test)
 
 
 # Walk directory tree under 'rootdir', finding all directories with 'name'.
@@ -964,12 +964,9 @@ def extract_file_with_submission(archive_name, temp_dir):
     file_object = None
     content_list = None
 
-    current_path = os.path.abspath(os.getcwd())
+    # Note this check function will exit if the file is not readable
+    check_file_exists_and_readable(archive_name, blame_test=False)
 
-    # Check that the file specified with --archive exists in cwd
-    if not os.path.exists(os.path.join(current_path, ARCHIVE)):
-        print("- File not found: " + archive_name)
-        sys.exit(1)
     # Make object and get list of contents
     if ".zip" in archive_name:
         file_object = zipfile.ZipFile(archive_name, mode="r")
@@ -988,7 +985,7 @@ def extract_file_with_submission(archive_name, temp_dir):
         content_list = file_object.getnames()
     else:
         print(
-            f"- File {ARCHIVE} is not a recognised type of archive "
+            f"- File {archive_name} is not a recognised type of archive "
             "(only zip and tar files are supported)"
         )
         sys.exit(1)
@@ -1020,7 +1017,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 ##################################################################
 # Main program
 def run():
-    global OUTPUT, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
+    global OUTPUT, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(
         prog="stacscheck", description="Automatic code checker"
@@ -1076,7 +1073,6 @@ def run():
 
     OUTPUT = Outputter(args.verbose)
     TRYHARDER = args.tryharder
-    ARCHIVE = args.archive
 
     if not os.path.exists(args.testdir):
         print("stacscheck " + VERSION)
@@ -1112,7 +1108,7 @@ def run():
         else:
             # Extract files and run tests
             with tempfile.TemporaryDirectory() as temp_dir:
-                extract_file_with_submission(ARCHIVE, temp_dir)
+                extract_file_with_submission(args.archive, temp_dir)
                 SUBMISSIONBASE = find_code_directory(temp_dir)
                 run_tests_recursive(PARENTBASE)
 

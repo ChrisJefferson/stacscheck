@@ -5,10 +5,3 @@ Testing CS1234 Practical 1
 The problem is: File is not readable: DIR/tests/simpletest-badperm4/testdir/catter/blanks.out.
 This may be caused by a broken test directory, or
 the test directory may have been copied incorrectly.
-
-- ERROR - There is a problem in the test directory.
-The problem is: [Errno 13] Permission denied: 'DIR/tests/simpletest-badperm4/testdir/catter/blanks.out'.
-This may be caused by a broken test directory, or
-the test directory may have been copied incorrectly.
-ERROR: No tests found in 'testdir'
-0 out of 0 tests passed
