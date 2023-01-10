@@ -337,12 +337,9 @@ def reduce_huge_output(userlines, comparelines):
     Returns:
         Reduced user's output
     """
-    if VERBOSE:
-        maxpad = 500
-        maxline = 5000
-    else:
-        maxpad = 25
-        maxline = 256
+
+    maxpad = 25
+    maxline = 256
 
     # Don't break the original
     userlines = copy.deepcopy(userlines)
