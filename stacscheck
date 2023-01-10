@@ -275,6 +275,11 @@ class Outputter:
         self.info_print("This may be caused by a broken test directory, or")
         self.info_print("the test directory may have been copied incorrectly.")
 
+    # Check function for problems in practical
+    def fatal_error(self, arg):
+        self.warn_print(arg)
+        sys.exit(1)
+
     def print_file_contents(
         self, file_loc, ignore_prefixes=(), ignore_empty_lines=False
     ):
@@ -385,15 +390,15 @@ def try_parse_config_file(basedir):
         split_path = os.path.split(parentdir)
         parentdir = split_path[0]
         if parentdir == "/":
-            OUTPUT.warn_print("reached root directory without finding practical.config")
-            sys.exit(1)
+            OUTPUT.fatal_error(
+                "reached root directory without finding practical.config"
+            )
 
     # Check that something was found, or quit
     if not os.path.isfile(filename):
-        OUTPUT.warn_print(
+        OUTPUT.fatal_error(
             "no practical.config file found in directory or 10 parent directories"
         )
-        sys.exit(1)
 
     # filename = os.path.join(basedir, "practical.config")
     # if not os.path.isfile(filename):
@@ -403,15 +408,12 @@ def try_parse_config_file(basedir):
     try:
         config.read(filename)
     except IOError as error:
-        print("I/O error reading practical.config: " + error.strerror)
-        sys.exit(1)
+        OUTPUT.fatal_error("I/O error reading practical.config: " + error.strerror)
     except:
-        OUTPUT.warn_print("practical.config is malformed")
-        sys.exit(1)
+        OUTPUT.fatal_error("practical.config is malformed")
 
     if "info" not in config.sections():
-        OUTPUT.warn_print("practical.config does not have an '[info]' section")
-        sys.exit(1)
+        OUTPUT.fatal_error("practical.config does not have an '[info]' section")
 
     practical_version = None
     # Check version early, for useful error messages
@@ -431,29 +433,25 @@ def try_parse_config_file(basedir):
 
     for section in config.sections():
         if not section in ["info", "version"]:
-            OUTPUT.warn_print(
+            OUTPUT.fatal_error(
                 "practical.config has an unexpected section: [" + section + "]"
             )
-            sys.exit(1)
 
     valid_options = ["course", "practical", "srcdir", "timeout", "version"]
 
     for option in config.options("info"):
         if option not in valid_options:
-            OUTPUT.warn_print("Don't understand option '" + option + "'")
-            sys.exit(1)
+            OUTPUT.fatal_error("Don't understand option '" + option + "'")
         CONFIG[option] = config.get("info", option)
 
     if "version" in config.sections():
         for option in config.options("version"):
             if option not in ["required"]:
-                OUTPUT.warn_print(
+                OUTPUT.fatal_error(
                     "Don't understand [version] in practical.config: [" + option + "]"
                 )
-                sys.exit(1)
             if "version" in CONFIG:
-                OUTPUT.warn_print("'version' defined twice in practical.config")
-                sys.exit(1)
+                OUTPUT.fatal_error("'version' defined twice in practical.config")
             CONFIG["version"] = config.get("version", option)
 
     return parentdir
