@@ -232,12 +232,6 @@ SUBMISSIONBASE = None
 # Store parent directory containing practical.config
 PARENTBASE = None
 
-# Print info and store in INFO_PRINTED (to keep for html, json, ...)
-INFO_PRINTED = []
-
-# If verbose output is required (set by -v)
-VERBOSE = True
-
 # Store the results of all tests
 TEST_STORE = []
 
@@ -251,54 +245,66 @@ CONFIG = {"course": "", "practical": "", "timeout": "60"}
 ARCHIVE = None
 
 
-def info_print_nonewline(string):
-    global INFO_PRINTED
-    print(string, end="")
-    INFO_PRINTED.append(string)
+class Outputter:
+    def __init__(self, verbose):
+        self.verbose = verbose
+        self.info_printed = []
+
+    def is_verbose(self):
+        return self.verbose
+
+    def get_info_printed(self):
+        return self.info_printed
+
+    def info_print_nonewline(self, string):
+        print(string, end="")
+        self.info_printed.append(string)
+
+    def info_print(self, string):
+        self.info_print_nonewline(string + "\n")
+
+    def verbose_print(self, arg):
+        if self.verbose:
+            print(arg)
+            print()
+
+    # Check function for problems in practical
+    def warn_print(self, arg):
+        self.info_print("\n- ERROR - There is a problem in the test directory.")
+        self.info_print("The problem is: " + str(arg) + ".")
+        self.info_print("This may be caused by a broken test directory, or")
+        self.info_print("the test directory may have been copied incorrectly.")
+
+    def print_file_contents(
+        self, file_loc, ignore_prefixes=(), ignore_empty_lines=False
+    ):
+        """Print out contents of a file, handling UTF8
+
+        Args:
+            file_loc: Name of file to print
+            ignore_prefixes: List of line prefixes to skip. Defaults to ().
+            ignore_empty_lines: Should blank lines be skipped. Defaults to False.
+        """
+        check_file_exists_and_readable(file_loc)
+
+        try:
+            for line in open(file_loc, "rb"):
+                line = str(line, "utf8", errors="replace")
+
+                if ignore_empty_lines and line.strip() == "":
+                    continue
+
+                if any(
+                    line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes
+                ):
+                    continue
+
+                print(line.rstrip())
+        except IOError as error:
+            self.warn_print("Error reading '" + str(file_loc) + "': " + error.strerror)
 
 
-def info_print(string):
-    info_print_nonewline(string + "\n")
-
-
-def verbose_print(arg):
-    if VERBOSE:
-        print(arg)
-        print()
-
-
-# Check function for problems in practical
-def warn_print(arg):
-    info_print("\n- ERROR - There is a problem in the test directory.")
-    info_print("The problem is: " + str(arg) + ".")
-    info_print("This may be caused by a broken test directory, or")
-    info_print("the test directory may have been copied incorrectly.")
-
-
-def print_file_contents(file_loc, ignore_prefixes=(), ignore_empty_lines=False):
-    """Print out contents of a file, handling UTF8
-
-    Args:
-        file_loc: Name of file to print
-        ignore_prefixes: List of line prefixes to skip. Defaults to ().
-        ignore_empty_lines: Should blank lines be skipped. Defaults to False.
-    """
-    check_file_exists_and_readable(file_loc)
-
-    try:
-        for line in open(file_loc, "rb"):
-            line = str(line, "utf8", errors="replace")
-
-            if ignore_empty_lines and line.strip() == "":
-                continue
-
-            if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
-                continue
-
-            print(line.rstrip())
-    except IOError as error:
-        warn_print("Error reading '" + str(file_loc) + "': " + error.strerror)
-
+OUTPUT = None
 
 # Takes a single string with newlines, and returns a list of lines
 # We strip all whitespace, then add a "\n" on the end
@@ -317,13 +323,13 @@ def strip_string(string):
 # These next two functions exist just to provide nice error messages
 def check_file_exists(file_path):
     if not os.access(file_path, os.F_OK):
-        warn_print(f"File is missing: {file_path}")
+        OUTPUT.warn_print(f"File is missing: {file_path}")
 
 
 def check_file_exists_and_readable(file_path):
     check_file_exists(file_path)
     if not os.access(file_path, os.R_OK):
-        warn_print(f"File is not readable: {file_path}")
+        OUTPUT.warn_print(f"File is not readable: {file_path}")
 
 
 def reduce_huge_output(userlines, comparelines):
@@ -379,12 +385,12 @@ def try_parse_config_file(basedir):
         split_path = os.path.split(parentdir)
         parentdir = split_path[0]
         if parentdir == "/":
-            warn_print("reached root directory without finding practical.config")
+            OUTPUT.warn_print("reached root directory without finding practical.config")
             sys.exit(1)
 
     # Check that something was found, or quit
     if not os.path.isfile(filename):
-        warn_print(
+        OUTPUT.warn_print(
             "no practical.config file found in directory or 10 parent directories"
         )
         sys.exit(1)
@@ -400,11 +406,11 @@ def try_parse_config_file(basedir):
         print("I/O error reading practical.config: " + error.strerror)
         sys.exit(1)
     except:
-        warn_print("practical.config is malformed")
+        OUTPUT.warn_print("practical.config is malformed")
         sys.exit(1)
 
     if "info" not in config.sections():
-        warn_print("practical.config does not have an '[info]' section")
+        OUTPUT.warn_print("practical.config does not have an '[info]' section")
         sys.exit(1)
 
     practical_version = None
@@ -425,26 +431,28 @@ def try_parse_config_file(basedir):
 
     for section in config.sections():
         if not section in ["info", "version"]:
-            warn_print("practical.config has an unexpected section: [" + section + "]")
+            OUTPUT.warn_print(
+                "practical.config has an unexpected section: [" + section + "]"
+            )
             sys.exit(1)
 
     valid_options = ["course", "practical", "srcdir", "timeout", "version"]
 
     for option in config.options("info"):
         if option not in valid_options:
-            warn_print("Don't understand option '" + option + "'")
+            OUTPUT.warn_print("Don't understand option '" + option + "'")
             sys.exit(1)
         CONFIG[option] = config.get("info", option)
 
     if "version" in config.sections():
         for option in config.options("version"):
             if option not in ["required"]:
-                warn_print(
+                OUTPUT.warn_print(
                     "Don't understand [version] in practical.config: [" + option + "]"
                 )
                 sys.exit(1)
             if "version" in CONFIG:
-                warn_print("'version' defined twice in practical.config")
+                OUTPUT.warn_print("'version' defined twice in practical.config")
                 sys.exit(1)
             CONFIG["version"] = config.get("version", option)
 
@@ -476,69 +484,69 @@ def find_code_directory(start_dir=None):
     in_srcdir = os.path.basename(current_dir) == CONFIG["srcdir"]
     recursive_srcdir = find_all_directories_with_name(CONFIG["srcdir"], current_dir)
     # print("--- Trying to find code directory in " + str(start_dir))
-    info_print_nonewline(
+    OUTPUT.info_print_nonewline(
         "- Looking for submission in a directory called '" + CONFIG["srcdir"] + "': "
     )
 
     if not in_srcdir and len(recursive_srcdir) == 0:
-        info_print("Cannot find it....")
+        OUTPUT.info_print("Cannot find it....")
         if not TRYHARDER:
             raise EnvironmentError(
                 "No submission found. Try running with --archive <filename> "
                 "if submission is compressed."
             )
         else:
-            info_print(
+            OUTPUT.info_print(
                 "Going to try hard, and guess the current directory. I'm probably wrong."
             )
             return None
 
     if in_srcdir and len(recursive_srcdir) == 0:
-        info_print("Already in it!")
+        OUTPUT.info_print("Already in it!")
         return None
 
     if len(recursive_srcdir) == 1 and not in_srcdir:
         reldir = os.path.relpath(recursive_srcdir[0], current_dir)
         if reldir == CONFIG["srcdir"]:
-            info_print("found in current directory")
+            OUTPUT.info_print("found in current directory")
         else:
-            info_print(
+            OUTPUT.info_print(
                 "found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'"
             )
         return recursive_srcdir[0]
 
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
-        info_print(
+        OUTPUT.info_print(
             "\n- Warning: in a directory called '"
             + CONFIG["srcdir"]
             + "', with subdirectories also with the same name."
         )
-        info_print("- Guessing your submission is in the current directory.")
-        info_print("- If that's wrong, go into the correct directory.")
+        OUTPUT.info_print("- Guessing your submission is in the current directory.")
+        OUTPUT.info_print("- If that's wrong, go into the correct directory.")
         return None
 
     # There is multiple recursive_srcdir, and we are not in directory of the right name
-    info_print(
+    OUTPUT.info_print(
         "- Warning, there are multiple subdirectories called '"
         + CONFIG["srcdir"]
         + "'."
     )
     for d in recursive_srcdir:
-        info_print(" - found " + d)
-    info_print("Please go into the correct directory.")
+        OUTPUT.info_print(" - found " + d)
+    OUTPUT.info_print("Please go into the correct directory.")
     sys.exit(1)
 
 
 def maybe_print_test_input(test):
-    if VERBOSE and not test["pass"]:
+    if OUTPUT.is_verbose() and not test["pass"]:
         print("--- ran script ---")
-        print_file_contents(
+        OUTPUT.print_file_contents(
             file_loc=test["path"], ignore_prefixes=["#!"], ignore_empty_lines=True
         )
         if "input" in test and test["input"] is not None:
             print("--- with input ---")
-            print_file_contents(file_loc=test["input"], ignore_prefixes=[])
+            OUTPUT.print_file_contents(file_loc=test["input"], ignore_prefixes=[])
 
 
 def print_test_or_info_output(test):
@@ -552,7 +560,7 @@ def print_test_or_info_output(test):
     )  # .rstrip().encode("utf8", errors="replace"))
 
     # Always print all student's output if this is an 'info', or --verbose is enabled
-    if not (VERBOSE or test.get("alwaysoutput", False)):
+    if not (OUTPUT.is_verbose() or test.get("alwaysoutput", False)):
         stdout = reduce_huge_output(stdout, [])
         stderr = reduce_huge_output(stderr, [])
 
@@ -778,7 +786,7 @@ def run_program_popen(program, stdin, extra_env):
 
         return retdict
     except OSError as error:
-        warn_print(program[0] + " is broken: " + error.strerror)
+        OUTPUT.warn_print(program[0] + " is broken: " + error.strerror)
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
 
@@ -810,7 +818,7 @@ def files_in_dir_matching_regex(directory, regex):
             if os.path.isfile(os.path.join(directory, f))
         ]
     except OSError as error:
-        warn_print("Error reading '" + directory + "': " + error.strerror)
+        OUTPUT.warn_print("Error reading '" + directory + "': " + error.strerror)
         return []
 
     return files
@@ -846,7 +854,7 @@ def run_tests_recursive(testdir):
 
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
-            verbose_print("Exiting early due to failed " + buildsh)
+            OUTPUT.verbose_print("Exiting early due to failed " + buildsh)
             global ANY_BUILD_TEST_FAILED
             ANY_BUILD_TEST_FAILED = True
             return
@@ -893,9 +901,9 @@ def run_tests_recursive(testdir):
         # If there isn't exactly one .out file per .sh, warn
         if (len(outtextfiles) == 0) != (len(progscripts) == 0):
             if len(outtextfiles) == 0:
-                warn_print("Found prog*.sh without *.out files in " + testdir)
+                OUTPUT.warn_print("Found prog*.sh without *.out files in " + testdir)
             else:
-                warn_print("Found *.out files without prog*.sh in " + testdir)
+                OUTPUT.warn_print("Found *.out files without prog*.sh in " + testdir)
         for progsh in progscripts:
             for out in outtextfiles:
                 infile = out[:-4] + ".in"
@@ -934,7 +942,7 @@ def run_tests_recursive(testdir):
         for d in subdirs:
             run_tests_recursive(d)
     except OSError as error:
-        warn_print(str(error))
+        OUTPUT.warn_print(str(error))
 
 
 def extract_to_temp(sub_found, temp_dir):
@@ -1005,7 +1013,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
+    global OUTPUT, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(
         prog="stacscheck", description="Automatic code checker"
@@ -1059,7 +1067,7 @@ def run():
             "You could try 'pip install jinja2'?"
         )
 
-    VERBOSE = args.verbose
+    OUTPUT = Outputter(args.verbose)
     TRYHARDER = args.tryharder
     ARCHIVE = args.archive
 
@@ -1129,7 +1137,7 @@ def run():
                     Tests=TEST_STORE,
                     Finalmessage=finalmessage,
                     AnyBuildTestFailed=ANY_BUILD_TEST_FAILED,
-                    InfoText=INFO_PRINTED,
+                    InfoText=OUTPUT.get_info_printed(),
                 )
                 # html.write(toUTF8Replace(htmloutput).encode("utf8"))
                 html.write(htmloutput.encode("utf8"))
@@ -1145,7 +1153,7 @@ def run():
                         "course": CONFIG["course"],
                         "subid": args.subid,
                         "tests": TEST_STORE,
-                        "infotext": INFO_PRINTED,
+                        "infotext": OUTPUT.get_info_printed(),
                     },
                     indent=2,
                     separators=(",", ": "),
