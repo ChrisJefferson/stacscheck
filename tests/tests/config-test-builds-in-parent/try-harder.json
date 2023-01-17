@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "build-A\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -29,6 +30,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "build-B\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -41,6 +43,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "build-C\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -53,6 +56,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "build-D\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -65,6 +69,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "base\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -77,6 +82,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "child-A\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -90,6 +96,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "info-A.sh\n",
+      "timeout": false,
       "type": "Info"
     },
     {
@@ -102,6 +109,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "childB\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -115,6 +123,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "info-B.sh\n",
+      "timeout": false,
       "type": "Info"
     }
   ]

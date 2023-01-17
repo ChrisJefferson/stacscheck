@@ -22,6 +22,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "basedir\n",
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "basedir\n"

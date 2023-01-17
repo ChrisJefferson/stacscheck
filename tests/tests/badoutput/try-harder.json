@@ -29,6 +29,7 @@
         "x\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "x\n"
@@ -56,6 +57,7 @@
         "y\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "y\n"

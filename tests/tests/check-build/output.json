@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "Build 1\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -29,6 +30,7 @@
       "returnval": 1,
       "stderr": "",
       "stdout": "Build 2\n",
+      "timeout": false,
       "type": "Build"
     }
   ]

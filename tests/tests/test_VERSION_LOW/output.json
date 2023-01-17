@@ -18,6 +18,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "Hello\n",
+      "timeout": false,
       "type": "Info"
     },
     {
@@ -31,6 +32,7 @@
       "returnval": 1,
       "stderr": "",
       "stdout": "",
+      "timeout": false,
       "type": "Info"
     }
   ]

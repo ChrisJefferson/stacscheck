@@ -17,6 +17,7 @@
       "returnval": -15,
       "stderr": "\n... Terminating due to timeout\n",
       "stdout": "",
+      "timeout": true,
       "type": "Build"
     }
   ]

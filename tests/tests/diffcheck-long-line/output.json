@@ -38,6 +38,7 @@
         "LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL ... (line truncated)\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "a\n",
@@ -78,6 +79,7 @@
         " ... Output truncated\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "a\n",
@@ -117,6 +119,7 @@
         "line 2\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "line 1\n",

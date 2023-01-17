@@ -15,4 +15,4 @@ fail
 
 * TEST - test4 : pass
 * TEST - test5 : pass
-3 out of 5 tests passed
+3 out of 5 tests passed, 2 tests timed out

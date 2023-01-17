@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "timeout": false,
       "type": "Build"
     }
   ]

@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "build1\n",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -29,6 +30,7 @@
       "returnval": 126,
       "stderr": "DIR/tests/zip-file/testdir/build2.sh: line 3: ./practical.sh: Permission denied\n",
       "stdout": "",
+      "timeout": false,
       "type": "Build"
     }
   ]

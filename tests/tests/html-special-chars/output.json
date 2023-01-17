@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "timeout": false,
       "type": "Build"
     },
     {
@@ -34,6 +35,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "<h1> I'm \"corn\" > green & < tall <\\h1>\n",
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "<h1> I'm \"corn\" > green & < tall <\\h1>\n"

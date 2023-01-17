@@ -17,6 +17,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "Line 3 too long, it should be 80 characters or less, it is 81 \n\"123456789012345678901234567890123456789012345678901234567890123456789012345678901\"\nLine 5 too long, it should be 80 characters or less, it is 83 \n\"12345678901234567890123456789012345678901234567890123456789012345678901234567890123\"\n",
+      "timeout": false,
       "type": "Test"
     },
     {
@@ -29,6 +30,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "",
+      "timeout": false,
       "type": "Test"
     }
   ]

@@ -17,6 +17,7 @@
       "returnval": 1,
       "stderr": "",
       "stdout": "I am a file\n\n",
+      "timeout": false,
       "type": "Test"
     },
     {
@@ -30,6 +31,7 @@
       "returnval": 1,
       "stderr": "",
       "stdout": "I am a file\n\nfailing\n",
+      "timeout": false,
       "type": "Info"
     },
     {
@@ -43,6 +45,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "I am a file\n\npassing\n",
+      "timeout": false,
       "type": "Info"
     },
     {
@@ -62,6 +65,7 @@
         "I am a file\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "I am a file\n"
@@ -77,6 +81,7 @@
       "returnval": 1,
       "stderr": "",
       "stdout": "I am a file in a sub-directory\n\n",
+      "timeout": false,
       "type": "Build"
     }
   ]

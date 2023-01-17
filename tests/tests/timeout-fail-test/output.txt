@@ -6,5 +6,5 @@ fail
 ... Terminating due to timeout
 ---
 
-0 out of 1 tests passed
+0 out of 1 tests passed, 1 tests timed out
 Building is failing, so some tests were skipped

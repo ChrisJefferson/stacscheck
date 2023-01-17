@@ -18,6 +18,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "\n",
+      "timeout": false,
       "type": "Prog",
       "userlines": []
     },
@@ -42,6 +43,7 @@
       "returnval": 0,
       "stderr": "",
       "stdout": "1 2\n",
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "1 2\n"

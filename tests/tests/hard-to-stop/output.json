@@ -24,6 +24,7 @@
         " ... Process (or its children) did not cleanly exit\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         " ... Process (or its children) did not cleanly exit\n"
@@ -81,6 +82,7 @@
         "... (output truncated)\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "hi\n",

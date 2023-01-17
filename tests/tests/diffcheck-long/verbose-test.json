@@ -63,6 +63,7 @@
         "... (output truncated)\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "a\n",
@@ -152,6 +153,7 @@
         "... (output truncated)\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "a\n",
@@ -240,6 +242,7 @@
         "... (output truncated)\n",
         "---\n"
       ],
+      "timeout": false,
       "type": "Prog",
       "userlines": [
         "line 1\n",

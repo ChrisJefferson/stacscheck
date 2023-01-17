@@ -767,6 +767,8 @@ def run_program_popen(program, stdin, extra_env):
             proc.terminate()
             proc.kill()
 
+        retdict["timeout"] = timeouthit
+
         # Give 5 seconds for the output streams to finish absorbing output
         # This will only be used if required
         thread_err.join(5)
@@ -1124,6 +1126,11 @@ def run():
         + str(len(TEST_STORE))
         + " tests passed"
     )
+
+    timeouts = len([t for t in TEST_STORE if t["timeout"]])
+    if timeouts > 0:
+        finalmessage += f", {timeouts} tests timed out"
+
     print(finalmessage)
 
     if ANY_BUILD_TEST_FAILED:
