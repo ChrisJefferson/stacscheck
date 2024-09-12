@@ -35,6 +35,22 @@ JINJAPAGE = """
     </style>
 <html lang="en">
 <head>
+    <style>
+        .GREEN {background-color:#2aa77d; color:#fff} /* green, white */
+        .YELLOW {background-color:#ffff77; color:#000} /* yellow, black */
+        .AMBER {background-color:#ffa54f; color:#fff} /* amber, white */
+        .RED {background-color:#e44c4b; color:#fff} /* red, white */
+        .WARN {background-color:#7d7d7d; color: #fff} /* gray, white */
+        
+        .GREEN a:link, .GREEN a:visited, .GREEN a:hover, .GREEN a:active, 
+        .AMBER a:link, .AMBER a:visited, .AMBER a:hover, .AMBER a:active, 
+        .RED a:link, .RED a:visited, .RED a:hover, .RED a:active,
+        .WARN a:link, .WARN a:visited, .WARN a:hover, .WARN a:active 
+        {color:#fff} /* green, white */
+        .YELLOW a:link, .YELLOW a:visited, .YELLOW a:hover, .YELLOW a:active 
+        {color:#000} /* yellow, black */
+
+    </style>
     <title>{{Practical}}</title>
 </head>
 <body>
@@ -48,13 +64,29 @@ JINJAPAGE = """
 
     {% for student in students %}
     <tr>
-    <td style="width:10px"> <a href="txt/{{student.subid}}.txt">{{ student.subid }}</a> </td>
+    <td style="width:18px"> {{ student.subid }} 
+    <a href="txt/{{student.subid}}.txt">txt</a> 
+    <a href="txt/{{student.subid}}.html">html</a> </td>
     {%- for name in testnames -%}
     {%- if name in student.dicttests -%}
         {%- if student.dicttests[name].pass -%}
-        <td bgcolor = "#BFB"><a href="html/{{student.subid}}.html#{{name}}">Y</a></td>
+        <td class=
+            {%- if "trafficlight" in student.dicttests[name]-%}
+                "{{student.dicttests[name].trafficlight}}">
+                <a href="html/{{student.subid}}.html#{{name}}">{{student.dicttests[name].trafficlight}}</a>
+            {%- else -%} 
+                "GREEN"> <a href="html/{{student.subid}}.html#{{name}}">Y</a>
+            {%- endif -%}
+        </a></td>
         {%- else -%}
-        <td bgcolor = "#FBB"><a href="html/{{student.subid}}.html#{{name}}">N</a></td>
+        <td class=
+            {%- if "trafficlight" in student.dicttests[name]-%}
+                "{{student.dicttests[name].trafficlight}}">
+                <a href="html/{{student.subid}}.html#{{name}}">{{student.dicttests[name].trafficlight}}</a>
+            {%- else -%} 
+                "RED"> <a href="html/{{student.subid}}.html#{{name}}">N</a>
+            {%- endif -%}
+        </a></td>
         {%- endif -%}
     {%- else -%}
         <td> </td>
@@ -105,9 +137,9 @@ def nameComp(file1, file2):
         return 0
     for i in range(min(len(s1),len(s2))):
         if s1[i] != s2[i]:
-            if len(s1) == i+1 and len(s2) > i+1:
+            if len(s1) <= i+1 and len(s2) > i+1:
                 return -1
-            if len(s1) > i+1 and len(s2) == i+1:
+            if len(s1) > i+1 and len(s2) <= i+1:
                 return 1
             if s1 < s2:
                 return -1

@@ -1,22 +1,21 @@
 How to run for a full list of students. First a quick overview, then a line-by-line example
 
-Step 1 - Decide where you are running. On a lab machine,
-on a VM (see optional section below),
-or just on your own machine.
+Step 1 - Decide where you are running. On a lab machine or just on your own machine.
 
-If you want a machine to run tests on, use 'falcon02'.
+Step 2 - Download all student submissions from MMS.
 
-Step 2 - Download all students from MMS.
+Step 3 - Run './generate-report -t <directory of tests> -z <zip downloaded from MMS> -j 4'
+	Alternatively, unzip the student submissions and run './generate-report -t <directory of tests> -d <unzip submissions downloaded from MMS> -j 4'
 
-Step 3 - Run './generate-report -t <directory of tests> -z <zip downloaded from MMS> -j4'
-
-(The -j4 runs 4 students in parallel)
+(The -j 4 runs 4 students in parallel)
 
 This will create a directory of output in a directory called 'output'.
 
-Look at the overview created in index.html. If you want to re-run single students, do:
+Look at the overview created in overview.html. If you want to re-run single students, do:
 
 './generate-report -t <directory of tests> <student1dir> <student2dir> ...'
+
+To get a list of all options just run './generate-report'
 
 
 cgroups
@@ -29,57 +28,3 @@ This only works on linux machines, where the user can run programs as root (sorr
 
 First run 'create_cgroup_dir.sh', which will ask for your password. Then use
 'generate-report' as normal, passing the '-c' option.
-
-Example
-=======
-
-# We should only have to these first steps once
-# First we'll get, and setup, the VM
-# You should be able to cut+paste all these lines
-hg clone https://sysc-public.hg.cs.st-andrews.ac.uk/vagrant-f24
-cd vagrant-f24
-vagrant up
-
-# Now copy stacscheck into this directory from staffres
-
-scp -r staffres.cs.st-andrews.ac.uk:/staffres/0-General/stacscheck stacscheckcpy
-
-# Now things we have to do for each practical!
-
-# Grab the files
-scp -r staffres.cs.st-andrews.ac.uk:/staffres/CS1002/Practicals/Practical1-Tests Practical1-Tests
-
-
-# Downloaded CS1002_Assignment1.zip from MMS, copy it into vagrant directory
-# Now enter the VM
-
-vagrant ssh
-
-# Now go and run the tests
-
-cp /vagrant/CS1002_Assignment.zip .
-
-# Uncompress the file
-dtrx -rn CS1002_Assignment.zip
-
-# Run the tests
-/vagrant/stacscheckcpy/running-all-students/all-students.sh Practical1-Tests CS1002_Assignment outputdir
-
-# Generate overview
-/vagrant/stacscheckcpy/running-all-students/student-overview Practical1-Tests outputdir/*.json > outputdir/overview.html
-
-
-
-
-
-
-Optional - Installing a lab-like virtual machine on your own laptop
-===================================================================
-
-Follow the instructions at:
-
-https://sysc.host.cs.st-andrews.ac.uk/vagrant/
-
-Any files you put into the 'vagrant' subdirectory of this repository will appear, readable and writable, in
-the '/vagrant' directory of the virtual machine.
-

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-VERSION = "3.2.1"
+VERSION = "3.3.0"
 
 # MIT License
 
-# Copyright (c) 2016 - 2022 University of St Andrews
+# Copyright (c) 2016 - 2024 University of St Andrews
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -66,26 +66,26 @@ JINJAPAGE = u"""
         word-wrap: break-word;
     }
     .code {font-family:Courier; border:medium; width: 2000px}
-    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    .diff_header {background-color:#3a3a3a; color: #ffffff} /* almost black, white */
     td.diff_header {text-align: center;}
-    .diff_next {background-color:#ff00dd; display: none}
-    .diff_add {background-color:#24906c}
-    .diff_chg {background-color:#ffff77; color:black}
-    .diff_sub {background-color:#E44C4B}
-    :target {
-    background: yellow;
-    }
+    .diff_next {background-color:#ff00dd; display: none} /* violet */
+    .diff_add {background-color:#24906c} /*eastern blue*/
+    .GREEN {background-color:#2aa77d} /* green */
+    .YELLOW, .diff_chg {background-color:#ffff77; color:#000} /* yellow, black */
+    .AMBER {background-color:#ffa54f} /* amber */
+    .RED, .diff_sub {background-color:#e44c4b} /* red */
+    .WARN {background-color:#7d7d7d; color: #ffffff} /* gray */
+    :target { background: yellow;  color:#000}
 
-    /* Make the whole thing have a dark background*/
-    body {background-color: #292929; width: 100%;}
+    /* Make the whole thing have a dark background and light text*/
+    body {background-color: #292929; color: #ffffff; width: 100%;}
     /* For test descriptions (PASS build-faro) and stacscheck info */
-    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    .test_desc {font-size: 22px; font-family: Arial; font-weight: normal;}
     /* For any normal code */
-    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    .infocode {font-size: 14px; font-family: Courier; margin-left: 20px}
     /* For compared code */
-    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
-        margin-left: 20px}
-    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    .compcode {font-size: 14px; font-family: Courier; margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
     .collapsible {display: none;}
 
@@ -125,21 +125,42 @@ JINJAPAGE = u"""
     </div>
     <table id="testtable">
     {% for test in Tests %}
-        <tr id="test{{ loop.index }}" bgcolor=
-        {% if test.pass %} "#2aa77d" {% else %} "#E44C4B" {% endif %} >
+        <tr id="test{{ loop.index }}" 
+        {% if "trafficlight" in test %} class="{{test.trafficlight}}"
+        {%- elif test.pass %} bgcolor="#2aa77d" 
+        {% else %} bgcolor="#E44C4B" 
+        {% endif %}>
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-{{loop.index}}')">
         expand
         </button>
         </td>
-        <td class="test_desc">{% if test.pass %} PASS {% else %} FAIL {% endif %}</td>
+        <td class="test_desc">
+        {% if "trafficlight" in test %} {{test.trafficlight}}
+        {%- elif test.pass %} PASS 
+        {% else %} FAIL 
+        {% endif %}</td>
         <td class="test_desc" id="{{ test.name }}"> {{ test.name }} </td>
         </tr>
         <div class="test-content" >
         <tr id="content-{{loop.index}}" class="collapsible">
         <td colspan="5" class="code">
 
-        {% if test.type != "Prog" %}
+
+        {% if test.type == "Multi" %}
+            <h2> Test info </h2>
+            <div display="inline" class="infocode">
+            {% for line in  test.stdout.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+            </div>
+            <div class="infocode">
+            {% for line in  test.stderr.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+            </div>
+
+        {% elif test.type != "Prog" %}
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
             {% for line in  test.stdout.splitlines() %}
@@ -528,6 +549,19 @@ def register_returnval_test(test):
 
     testStore.append(test)
 
+# Record that a test was run, printing as appropriate
+def register_multival_test(test):
+    print(test["trafficlight"])
+    if test["returnval"] == 0:
+        test["pass"] = True
+    else:
+        test["pass"] = False
+
+    if not test["pass"] or test.get("alwaysoutput", False):
+        print_test_or_info_output(test)
+
+    testStore.append(test)
+    
 
 # Register the result of a test whith a known output
 def register_diff_test(test, comparefile):
@@ -778,6 +812,29 @@ def run_tests_recursive(testdir):
             result["inputlines"] = ["No .in input file (search manually)."]
 
             register_returnval_test(result)
+
+        # MULTISCRIPTS
+        multiscripts = files_in_dir_matching_regex(testdir, r'multi.*\.sh')
+
+        for multi in multiscripts:
+            multiresult = run_bash_script(multi, None, extra_env)
+            multicount = 1
+            try:
+                for result in json.loads(multiresult["stdout"]):
+                    name = nice_name(multi) + "-" + '{:0=2}'.format(multicount) + "-" + result["name"].replace(',', '').replace(' ', '-')
+                    multicount = multicount + 1
+                    output_str("* MULTI-PART-TEST - " + name + " : ")      
+                    result["name"] = name
+                    result["path"] = multi
+                    result["type"] = "Multi"
+                    # result["alwaysoutput"] = True
+
+                    # State there is no fixed input file
+                    result["inputlines"] = ["No .in input file (search manually)."]
+                    
+                    register_multival_test(result)
+            except Exception as e:
+                warn_print(str(e))
 
         # PROGSCRIPTS
         progscripts = files_in_dir_matching_regex(testdir, r'prog.*\.sh')

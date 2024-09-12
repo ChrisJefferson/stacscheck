@@ -1,3 +1,11 @@
+3.2.1 -> 3.3.0
+==============
+
+* Fixed some HTML output issues
+* Added new test type 'MULTI' that accepts a Json array containing Json Objects for each test result
+* Added 'trafficlight' result type (not just pass/fail) for MULTI test type 
+* Updated student_overview and HTML for multi & trafficlight.
+
 3.0.0 -> 3.1.0
 ==============
 
