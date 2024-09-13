@@ -10,26 +10,26 @@
         word-wrap: break-word;
     }
     .code {font-family:Courier; border:medium; width: 2000px}
-    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    .diff_header {background-color:#3a3a3a; color: #ffffff} /* almost black, white */
     td.diff_header {text-align: center;}
-    .diff_next {background-color:#ff00dd; display: none}
-    .diff_add {background-color:#24906c}
-    .diff_chg {background-color:#ffff77; color:black}
-    .diff_sub {background-color:#E44C4B}
-    :target {
-    background: yellow;
-    }
+    .diff_next {background-color:#ff00dd; display: none} /* violet */
+    .diff_add {background-color:#24906c} /*eastern blue*/
+    .GREEN {background-color:#2aa77d} /* green */
+    .YELLOW, .diff_chg {background-color:#ffff77; color:#000} /* yellow, black */
+    .AMBER {background-color:#ffa54f} /* amber */
+    .RED, .diff_sub {background-color:#e44c4b} /* red */
+    .WARN {background-color:#7d7d7d; color: #ffffff} /* gray */
+    :target { background: yellow;  color:#000}
 
-    /* Make the whole thing have a dark background*/
-    body {background-color: #292929; width: 100%;}
+    /* Make the whole thing have a dark background and light text*/
+    body {background-color: #292929; color: #ffffff; width: 100%;}
     /* For test descriptions (PASS build-faro) and stacscheck info */
-    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    .test_desc {font-size: 22px; font-family: Arial; font-weight: normal;}
     /* For any normal code */
-    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    .infocode {font-size: 14px; font-family: Courier; margin-left: 20px}
     /* For compared code */
-    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
-        margin-left: 20px}
-    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    .compcode {font-size: 14px; font-family: Courier; margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
     .collapsible {display: none;}
 
@@ -73,19 +73,23 @@
     </div>
     <table id="testtable">
     
-        <tr id="test1" bgcolor=
-         "#E44C4B"  >
+        <tr id="test1" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-1')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="build"> build </td>
         </tr>
         <div class="test-content" >
         <tr id="content-1" class="collapsible">
         <td colspan="5" class="code">
+
 
         
             <h2> Compiler info </h2>

@@ -24,6 +24,10 @@
     "This may be caused by a broken test directory, or\n",
     "the test directory may have been copied incorrectly.\n",
     "\n- ERROR - There is a problem in the test directory.\n",
+    "The problem is: Error reading 'DIR/tests/checkout-baddir/testdir/abc': Permission denied.\n",
+    "This may be caused by a broken test directory, or\n",
+    "the test directory may have been copied incorrectly.\n",
+    "\n- ERROR - There is a problem in the test directory.\n",
     "The problem is: [Errno 13] Permission denied: 'DIR/tests/checkout-baddir/testdir/abc'.\n",
     "This may be caused by a broken test directory, or\n",
     "the test directory may have been copied incorrectly.\n"
