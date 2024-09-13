@@ -10,26 +10,26 @@
         word-wrap: break-word;
     }
     .code {font-family:Courier; border:medium; width: 2000px}
-    .diff_header {background-color:#3a3a3a; color: #ffffff}
+    .diff_header {background-color:#3a3a3a; color: #ffffff} /* almost black, white */
     td.diff_header {text-align: center;}
-    .diff_next {background-color:#ff00dd; display: none}
-    .diff_add {background-color:#24906c}
-    .diff_chg {background-color:#ffff77; color:black}
-    .diff_sub {background-color:#E44C4B}
-    :target {
-    background: yellow;
-    }
+    .diff_next {background-color:#ff00dd; display: none} /* violet */
+    .diff_add {background-color:#24906c} /*eastern blue*/
+    .GREEN {background-color:#2aa77d} /* green */
+    .YELLOW, .diff_chg {background-color:#ffff77; color:#000} /* yellow, black */
+    .AMBER {background-color:#ffa54f} /* amber */
+    .RED, .diff_sub {background-color:#e44c4b} /* red */
+    .WARN {background-color:#7d7d7d; color: #ffffff} /* gray */
+    :target { background: yellow;  color:#000}
 
-    /* Make the whole thing have a dark background*/
-    body {background-color: #292929; width: 100%;}
+    /* Make the whole thing have a dark background and light text*/
+    body {background-color: #292929; color: #ffffff; width: 100%;}
     /* For test descriptions (PASS build-faro) and stacscheck info */
-    .test_desc {font-size: 22px; font-family: Arial; color: #ffffff; font-weight: normal;}
+    .test_desc {font-size: 22px; font-family: Arial; font-weight: normal;}
     /* For any normal code */
-    .infocode {font-size: 14px; font-family: Courier; color: #ffffff; margin-left: 20px}
+    .infocode {font-size: 14px; font-family: Courier; margin-left: 20px}
     /* For compared code */
-    .compcode {font-size: 14px; font-family: Courier; color: #ffffff;
-        margin-left: 20px}
-    h2 {font-size: 18px; font-family: Arial; color: #ffffff; font-weight: bold; margin-left: 20px}
+    .compcode {font-size: 14px; font-family: Courier; margin-left: 20px}
+    h2 {font-size: 18px; font-family: Arial; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
     .collapsible {display: none;}
 
@@ -73,20 +73,24 @@
     </div>
     <table id="testtable">
     
-        <tr id="test1" bgcolor=
-         "#2aa77d"  >
+        <tr id="test1" 
+         bgcolor="#2aa77d" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-1')">
         expand
         </button>
         </td>
-        <td class="test_desc"> PASS </td>
+        <td class="test_desc">
+         PASS 
+        </td>
         <td class="test_desc" id="build-pass"> build-pass </td>
         </tr>
         <div class="test-content" >
         <tr id="content-1" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -118,20 +122,24 @@
         </tr>
         </div>
     
-        <tr id="test2" bgcolor=
-         "#E44C4B"  >
+        <tr id="test2" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-2')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="testcat-fail-two"> testcat-fail-two </td>
         </tr>
         <div class="test-content" >
         <tr id="content-2" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -179,20 +187,24 @@
         </tr>
         </div>
     
-        <tr id="test3" bgcolor=
-         "#E44C4B"  >
+        <tr id="test3" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-3')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="testcat-fail"> testcat-fail </td>
         </tr>
         <div class="test-content" >
         <tr id="content-3" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -224,20 +236,24 @@
         </tr>
         </div>
     
-        <tr id="test4" bgcolor=
-         "#2aa77d"  >
+        <tr id="test4" 
+         bgcolor="#2aa77d" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-4')">
         expand
         </button>
         </td>
-        <td class="test_desc"> PASS </td>
+        <td class="test_desc">
+         PASS 
+        </td>
         <td class="test_desc" id="testcat-pass"> testcat-pass </td>
         </tr>
         <div class="test-content" >
         <tr id="content-4" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -269,20 +285,24 @@
         </tr>
         </div>
     
-        <tr id="test5" bgcolor=
-         "#E44C4B"  >
+        <tr id="test5" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-5')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="infocat-fail-two"> infocat-fail-two </td>
         </tr>
         <div class="test-content" >
         <tr id="content-5" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -330,20 +350,24 @@
         </tr>
         </div>
     
-        <tr id="test6" bgcolor=
-         "#E44C4B"  >
+        <tr id="test6" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-6')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="infocat-fail"> infocat-fail </td>
         </tr>
         <div class="test-content" >
         <tr id="content-6" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -375,20 +399,24 @@
         </tr>
         </div>
     
-        <tr id="test7" bgcolor=
-         "#2aa77d"  >
+        <tr id="test7" 
+         bgcolor="#2aa77d" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-7')">
         expand
         </button>
         </td>
-        <td class="test_desc"> PASS </td>
+        <td class="test_desc">
+         PASS 
+        </td>
         <td class="test_desc" id="infocat-pass"> infocat-pass </td>
         </tr>
         <div class="test-content" >
         <tr id="content-7" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -420,20 +448,24 @@
         </tr>
         </div>
     
-        <tr id="test8" bgcolor=
-         "#E44C4B"  >
+        <tr id="test8" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-8')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="subdir/build-fail"> subdir/build-fail </td>
         </tr>
         <div class="test-content" >
         <tr id="content-8" class="collapsible">
         <td colspan="5" class="code">
 
+
         
             <h2> Compiler info </h2>
             <div display="inline" class="infocode">
@@ -465,19 +497,23 @@
         </tr>
         </div>
     
-        <tr id="test9" bgcolor=
-         "#E44C4B"  >
+        <tr id="test9" 
+         bgcolor="#E44C4B" 
+        >
         <td class="buttonholder">
         <button class="collapsebutton" onclick="docollapse('content-9')">
         expand
         </button>
         </td>
-        <td class="test_desc"> FAIL </td>
+        <td class="test_desc">
+         FAIL 
+        </td>
         <td class="test_desc" id="subdir2/build-fail-two"> subdir2/build-fail-two </td>
         </tr>
         <div class="test-content" >
         <tr id="content-9" class="collapsible">
         <td colspan="5" class="code">
+
 
         
             <h2> Compiler info </h2>
