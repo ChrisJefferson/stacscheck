@@ -517,6 +517,11 @@ def print_test_or_info_output(test):
     stdout = strip_string(test.get("stdout", "")) #.rstrip().encode("utf8", errors="replace"))
     stderr = strip_string(test.get("stderr", "")) #.rstrip().encode("utf8", errors="replace"))
 
+
+    if not SHOW_WARNINGS:
+        stdout = [line for line in stdout if "[WARN]" not in line]
+        stderr = [line for line in stderr if "[WARN]" not in line]
+
     # Always print all student's output if this is an 'info', or --verbose is enabled
     if not(VERBOSE or test.get("alwaysoutput", False)):
         stdout = reduce_huge_output(stdout, [])
@@ -946,7 +951,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
+    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE, SHOW_WARNINGS
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument("--id", dest="subid", default="<unknown>",
@@ -965,6 +970,7 @@ def run():
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--archive", dest="archive",
                       help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name")
+    parser.add_argument("--no_warn", action="store_true", help="Disable warnings")
     parser.add_argument("testdir")
 
     args = parser.parse_args()
@@ -981,6 +987,7 @@ def run():
     VERBOSE = args.verbose
     TRYHARDER = args.tryharder
     ARCHIVE = args.archive
+    SHOW_WARNINGS = not args.no_warn
 
     if not os.path.exists(args.testdir):
         print("stacscheck " + VERSION)
