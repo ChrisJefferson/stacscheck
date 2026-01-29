@@ -16,6 +16,7 @@
       "pass": true,
       "path": "DIR/tests/test_VERSION_EQUAL/testdir/info1.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Hello\n",
       "type": "Info"
@@ -29,6 +30,7 @@
       "pass": false,
       "path": "DIR/tests/test_VERSION_EQUAL/testdir/info2.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Info"

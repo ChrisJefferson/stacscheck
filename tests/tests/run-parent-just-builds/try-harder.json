@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/run-parent-just-builds/parent3/build3.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -27,6 +28,7 @@
       "pass": true,
       "path": "DIR/tests/run-parent-just-builds/parent3/parent2/build2.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -39,6 +41,7 @@
       "pass": true,
       "path": "DIR/tests/run-parent-just-builds/parent3/parent2/parent1/build1.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"

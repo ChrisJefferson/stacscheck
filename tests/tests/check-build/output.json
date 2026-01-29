@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/check-build/testdir/build1.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Build 1\n",
       "type": "Build"
@@ -27,6 +28,7 @@
       "pass": false,
       "path": "DIR/tests/check-build/testdir/build2.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Build 2\n",
       "type": "Build"

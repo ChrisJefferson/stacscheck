@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/build-A.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "build-A\n",
       "type": "Build"
@@ -27,6 +28,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/build-B.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "build-B\n",
       "type": "Build"
@@ -39,6 +41,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/build-C.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "build-C\n",
       "type": "Build"
@@ -51,6 +54,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/build-D.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "build-D\n",
       "type": "Build"
@@ -63,6 +67,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "base\n",
       "type": "Build"
@@ -75,6 +80,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childA/build-ChildA.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "child-A\n",
       "type": "Build"
@@ -88,6 +94,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childA/info-A.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "info-A.sh\n",
       "type": "Info"
@@ -100,6 +107,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childB/build-ChildB.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "childB\n",
       "type": "Build"
@@ -113,6 +121,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-builds-in-parent/parent5/parent4/parent3/parent2/parent1/childB/info-B.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "info-B.sh\n",
       "type": "Info"

@@ -1,0 +1,24 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'explain-passing-test': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-pass",
+      "pass": true,
+      "path": "DIR/tests/explain-passing-test/testdir/test-pass.sh",
+      "returnval": 0,
+      "script_explain": "This test checks that the program exits successfully.\nThis explanation should appear in HTML but not in terminal output.",
+      "stderr": "",
+      "stdout": "",
+      "type": "Test"
+    }
+  ]
+}

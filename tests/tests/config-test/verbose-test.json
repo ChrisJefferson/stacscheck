@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/config-test/testdir/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"

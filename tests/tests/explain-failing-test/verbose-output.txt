@@ -1,0 +1,16 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'explain-failing-test': Already in it!
+* TEST - test-fail : fail
+--- ran script ---
+echo "This test failed"
+exit 1
+--- submission output ---
+This test failed
+---
+
+--- explanation ---
+This test checks that the program handles errors correctly.
+Make sure your code returns exit code 0 on success.
+---
+
+0 out of 1 tests passed

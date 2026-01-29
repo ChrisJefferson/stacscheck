@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test1.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Build 1\n",
       "type": "Test"
@@ -27,6 +28,7 @@
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test2.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Build 2\n",
       "type": "Test"
@@ -39,6 +41,7 @@
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test3.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Build 3\n",
       "type": "Test"
@@ -51,6 +54,7 @@
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test4.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "Build 4\n",
       "stdout": "",
       "type": "Test"
@@ -63,6 +67,7 @@
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test5.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "Build 5-stderr\n",
       "stdout": "",
       "type": "Test"
@@ -75,6 +80,7 @@
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test6.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "Build 6-stderr\n",
       "stdout": "Build 6-stdout\n",
       "type": "Test"
@@ -87,6 +93,7 @@
       "pass": true,
       "path": "DIR/tests/stdoutstderr/testdir/test7.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "Build 7-stderr\n",
       "stdout": "Build 7-stdout\n",
       "type": "Test"
@@ -99,6 +106,7 @@
       "pass": false,
       "path": "DIR/tests/stdoutstderr/testdir/test8.sh",
       "returnval": 1,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Test"

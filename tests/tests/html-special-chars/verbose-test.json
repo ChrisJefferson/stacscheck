@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/html-special-chars/testdir/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -29,9 +30,11 @@
         "<h1> I'm \"corn\" > green & < tall <\\h1>\n"
       ],
       "name": "prog-chars-test1.out",
+      "output_explain": null,
       "pass": true,
       "path": "DIR/tests/html-special-chars/testdir/prog-chars.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "<h1> I'm \"corn\" > green & < tall <\\h1>\n",
       "type": "Prog",

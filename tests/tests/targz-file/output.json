@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/targz-file/testdir/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "a\n",
       "type": "Build"

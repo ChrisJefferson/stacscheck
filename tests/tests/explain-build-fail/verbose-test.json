@@ -1,0 +1,24 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'explain-build-fail': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build-compile",
+      "pass": false,
+      "path": "DIR/tests/explain-build-fail/testdir/build-compile.sh",
+      "returnval": 1,
+      "script_explain": "Build explanation: Make sure your code compiles without errors.",
+      "stderr": "",
+      "stdout": "Build failed\n",
+      "type": "Build"
+    }
+  ]
+}

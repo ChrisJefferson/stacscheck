@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/macosx_dir/testdir/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "correct\n",
       "type": "Build"
