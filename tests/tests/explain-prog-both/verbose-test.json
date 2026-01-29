@@ -18,6 +18,7 @@
       "output_explain": "This is the output-specific explanation.",
       "pass": false,
       "path": "DIR/tests/explain-prog-both/testdir/prog-run.sh",
+      "prefix": "* COMPARISON TEST - prog-run-example.out : ",
       "returnval": 0,
       "script_explain": "This is the script-level explanation.",
       "stderr": "",

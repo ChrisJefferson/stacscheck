@@ -15,6 +15,7 @@
       "name": "build",
       "pass": true,
       "path": "DIR/tests/config-test-no-src/testdir/build.sh",
+      "prefix": "* BUILD TEST - build : ",
       "returnval": 0,
       "script_explain": null,
       "stderr": "",

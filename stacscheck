@@ -288,6 +288,13 @@ def info_print(string):
 
 # Simple function to print out more verbose information if -v is passed
 VERBOSE = True
+# Quiet mode: don't print info about passing tests
+QUIET = False
+# Fail fast: stop on first test failure
+FAILFAST = False
+# Track if any test (not build) has failed
+anyTestFailed = False
+
 def verbose_print(arg):
     if VERBOSE:
         output_str(arg + "\n")
@@ -605,11 +612,17 @@ def print_explain_content(test):
 # Record that a test was run, printing as appropriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
-        print("pass")
         test["pass"] = True
+        # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
+        if not QUIET or test.get("alwaysoutput", False):
+            print("pass")
     else:
-        print("fail")
         test["pass"] = False
+        # In quiet mode, print the prefix now since we didn't print it earlier
+        # (unless it's an alwaysoutput test, which already printed prefix)
+        if QUIET and "prefix" in test and not test.get("alwaysoutput", False):
+            output_str(test["prefix"])
+        print("fail")
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
@@ -617,16 +630,26 @@ def register_returnval_test(test):
     # Print explanation content on failure (terminal only)
     if not test["pass"]:
         print_explain_content(test)
+
+    # Track if any test failed (for fail-fast)
+    global anyTestFailed
+    if not test["pass"]:
+        anyTestFailed = True
 
     testStore.append(test)
 
 # Record that a test was run, printing as appropriate
 def register_multival_test(test):
-    print(test["trafficlight"])
     if test["returnval"] == 0:
         test["pass"] = True
+        if not QUIET:
+            print(test["trafficlight"])
     else:
         test["pass"] = False
+        # In quiet mode, print the prefix now since we didn't print it earlier
+        if QUIET and "prefix" in test:
+            output_str(test["prefix"])
+        print(test["trafficlight"])
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
@@ -634,6 +657,11 @@ def register_multival_test(test):
     # Print explanation content on failure (terminal only)
     if not test["pass"]:
         print_explain_content(test)
+
+    # Track if any test failed (for fail-fast)
+    global anyTestFailed
+    if not test["pass"]:
+        anyTestFailed = True
 
     testStore.append(test)
     
@@ -652,13 +680,17 @@ def register_diff_test(test, comparefile):
 
     # If test passed just print pass
     if comparelines == userlines:
-        print("pass")
         test["pass"] = True
+        if not QUIET:
+            print("pass")
 
     # If test failed print expected & real output (& possibly extras)
     else:
-        print("fail")
         test["pass"] = False
+        # In quiet mode, print the prefix now since we didn't print it earlier
+        if QUIET and "prefix" in test:
+            output_str(test["prefix"])
+        print("fail")
         # If verbose, print input to stdout
         maybe_print_test_input(test)
         # Create text for expected & real output
@@ -693,6 +725,11 @@ def register_diff_test(test, comparefile):
     # Print explanation content on failure (terminal only)
     if not test["pass"]:
         print_explain_content(test)
+
+    # Track if any test failed (for fail-fast)
+    global anyTestFailed
+    if not test["pass"]:
+        anyTestFailed = True
 
     testStore.append(test)
 
@@ -846,11 +883,14 @@ def run_tests_recursive(testdir):
 
     for buildsh in buildscripts:
         name = nice_name(buildsh)
-        output_str("* BUILD TEST - " + name + " : ")
+        prefix = "* BUILD TEST - " + name + " : "
+        if not QUIET:
+            output_str(prefix)
         buildshret = run_bash_script(buildsh, None, extra_env)
         buildshret["name"] = name
         buildshret["path"] = buildsh
         buildshret["type"] = "Build"
+        buildshret["prefix"] = prefix
 
         # State there is no fixed input file
         buildshret["inputlines"] = ["No .in input file (search manually)."]
@@ -871,12 +911,17 @@ def run_tests_recursive(testdir):
         testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
 
         for test in testscripts:
+            if FAILFAST and anyTestFailed:
+                return
             name = nice_name(test)
-            output_str("* TEST - " + name + " : ")
+            prefix = "* TEST - " + name + " : "
+            if not QUIET:
+                output_str(prefix)
             result = run_bash_script(test, None, extra_env)
             result["name"] = name
             result["path"] = test
             result["type"] = "Test"
+            result["prefix"] = prefix
 
             # State there is no fixed input file
             result["inputlines"] = ["No .in input file (search manually)."]
@@ -891,12 +936,17 @@ def run_tests_recursive(testdir):
         infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
 
         for info in infoscripts:
+            if FAILFAST and anyTestFailed:
+                return
             name = nice_name(info)
-            output_str("* INFO - " + name + " : ")
+            prefix = "* INFO - " + name + " : "
+            # INFO tests always show output, so always print prefix
+            output_str(prefix)
             result = run_bash_script(info, None, extra_env)
             result["name"] = name
             result["path"] = info
             result["type"] = "Info"
+            result["prefix"] = prefix
             result["alwaysoutput"] = True
 
             # State there is no fixed input file
@@ -912,18 +962,25 @@ def run_tests_recursive(testdir):
         multiscripts = files_in_dir_matching_regex(testdir, r'multi.*\.sh')
 
         for multi in multiscripts:
+            if FAILFAST and anyTestFailed:
+                return
             multiresult = run_bash_script(multi, None, extra_env)
             # Load explanation content for multi script (shared across all sub-tests)
             script_explain, _ = get_explain_content(multi)
             multicount = 1
             try:
                 for result in json.loads(multiresult["stdout"]):
+                    if FAILFAST and anyTestFailed:
+                        return
                     name = nice_name(multi) + "-" + '{:0=2}'.format(multicount) + "-" + result["name"].replace(',', '').replace(' ', '-')
                     multicount = multicount + 1
-                    output_str("* MULTI-PART-TEST - " + name + " : ")
+                    prefix = "* MULTI-PART-TEST - " + name + " : "
+                    if not QUIET:
+                        output_str(prefix)
                     result["name"] = name
                     result["path"] = multi
                     result["type"] = "Multi"
+                    result["prefix"] = prefix
                     # result["alwaysoutput"] = True
 
                     # State there is no fixed input file
@@ -949,16 +1006,21 @@ def run_tests_recursive(testdir):
                 warn_print("Found *.out files without prog*.sh in " + testdir)
         for progsh in progscripts:
             for out in outtextfiles:
+                if FAILFAST and anyTestFailed:
+                    return
                 infile = out[:-4] + ".in"
                 if not os.path.isfile(infile):
                     infile = None
                 name = nice_name(progsh) + "-" + os.path.basename(out)
-                output_str("* COMPARISON TEST - " + name + " : ")
+                prefix = "* COMPARISON TEST - " + name + " : "
+                if not QUIET:
+                    output_str(prefix)
                 result = run_bash_script(progsh, infile, extra_env)
                 result["name"] = name
                 result["input"] = infile
                 result["path"] = progsh
                 result["type"] = "Prog"
+                result["prefix"] = prefix
 
                 # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
                 if (result["input"] != None):
@@ -977,7 +1039,11 @@ def run_tests_recursive(testdir):
 
                 # Add diff for html to result
                 register_diff_test(result, out)
-        
+
+    # Check fail-fast before recursing into subdirectories
+    if FAILFAST and anyTestFailed:
+        return
+
     # Always search in subdirectories
     # Run tests for subdirectories
     try:
@@ -985,6 +1051,8 @@ def run_tests_recursive(testdir):
                 if os.path.isdir(os.path.join(testdir, d))]
 
         for d in subdirs:
+            if FAILFAST and anyTestFailed:
+                return
             run_tests_recursive(d)
     except OSError as e:
         warn_print(str(e))
@@ -1055,7 +1123,7 @@ def extract_file_with_submission(archive_name, temp_dir):
 ##################################################################
 # Main program
 def run():
-    global VERBOSE, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
+    global VERBOSE, QUIET, FAILFAST, TESTBASE, SUBMISSIONBASE, PARENTBASE, TRYHARDER, ARCHIVE
     # parser = argparse.ArgumentParser(usage="%prog [options] testdirectory")
     parser = argparse.ArgumentParser(prog="PROG")
     parser.add_argument("--id", dest="subid", default="<unknown>",
@@ -1071,6 +1139,12 @@ def run():
     parser.add_argument("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
                       help="Output more information during testing")
+    parser.add_argument("-q", "--quiet",
+                      action="store_true", dest="quiet", default=False,
+                      help="Don't print information about passing tests")
+    parser.add_argument("--fail-fast",
+                      action="store_true", dest="failfast", default=False,
+                      help="Stop running tests after the first failure")
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--archive", dest="archive",
                       help="Look for .zip/.tar/.tar.gz/.tar.xz submission with given name")
@@ -1088,6 +1162,8 @@ def run():
         sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
 
     VERBOSE = args.verbose
+    QUIET = args.quiet
+    FAILFAST = args.failfast
     TRYHARDER = args.tryharder
     ARCHIVE = args.archive
 
