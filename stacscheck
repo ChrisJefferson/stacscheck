@@ -63,7 +63,6 @@ JINJAPAGE = u"""
         table-layout: inherit;
         font-family:Courier;
         border: medium;
-        # width: 95vw;
         word-wrap: break-word;
     }
     .code {font-family:Courier; border:medium; width: 2000px}
@@ -93,22 +92,8 @@ JINJAPAGE = u"""
     .collapsible {display: none;}
 
     table { table-layout: fixed;}
-    # .diff {
-    #     display: table;
-    #     table-layout: inherit;
-    #     word-wrap: break-word;
-    #     background-color: coral;
-    # }
-
-    # .test-content {
-    #     # display: table-cell;
-    #     width: 100%;
-    #     colspan: 3;
-    # }
 
     td {white-space: normal;}
-
-    # testtable {width: 100%;}
 
     .buttonholder {width: 2%;}
 

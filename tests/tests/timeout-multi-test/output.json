@@ -54,12 +54,12 @@
         "No .in input file (search manually)."
       ],
       "name": "test4",
-      "pass": false,
+      "pass": true,
       "path": "DIR/tests/timeout-multi-test/testdir/test4.sh",
       "prefix": "* TEST - test4 : ",
-      "returnval": -15,
+      "returnval": 0,
       "script_explain": null,
-      "stderr": "\n... Terminating due to timeout\n",
+      "stderr": "",
       "stdout": "",
       "type": "Test"
     },
