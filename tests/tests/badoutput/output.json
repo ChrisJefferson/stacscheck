@@ -17,9 +17,11 @@
         "x\n"
       ],
       "name": "progcat-test1.out",
+      "output_explain": null,
       "pass": false,
       "path": "DIR/tests/badoutput/testdir/progcat.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "x\n",
       "textdiff": [
@@ -44,9 +46,11 @@
         "y\n"
       ],
       "name": "progcat-test2.out",
+      "output_explain": null,
       "pass": false,
       "path": "DIR/tests/badoutput/testdir/progcat.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "y\n",
       "textdiff": [

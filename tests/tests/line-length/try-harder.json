@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/line-length/testdir/test-length.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "Line 3 too long, it should be 80 characters or less, it is 81 \n\"123456789012345678901234567890123456789012345678901234567890123456789012345678901\"\nLine 5 too long, it should be 80 characters or less, it is 83 \n\"12345678901234567890123456789012345678901234567890123456789012345678901234567890123\"\n",
       "type": "Test"
@@ -27,6 +28,7 @@
       "pass": true,
       "path": "DIR/tests/line-length/testdir/test-no-arguments.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Test"

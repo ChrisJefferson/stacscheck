@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_a/build_a.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -27,6 +28,7 @@
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/build_b.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -41,9 +43,11 @@
         "jh > jc\n"
       ],
       "name": "parent1/child_b/prog_b-test1.out",
+      "output_explain": null,
       "pass": true,
       "path": "DIR/tests/config-parent-plus-subdirectories/parent2/parent1/child_b/prog_b.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "jh > jc\n",
       "type": "Prog",

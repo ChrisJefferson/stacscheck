@@ -1,0 +1,17 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'explain-prog-output': Already in it!
+* COMPARISON TEST - prog-run-example.out : fail
+--- ran script ---
+echo "wrong output"
+--- expected output ---
+correct output
+--- submission output ---
+wrong output
+---
+
+--- explanation ---
+This output-specific explanation only applies to example.out.
+The expected output should be "correct output".
+---
+
+0 out of 1 tests passed

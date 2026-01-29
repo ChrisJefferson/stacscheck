@@ -42,6 +42,7 @@ import tempfile
 import shutil
 import zipfile
 import tarfile
+import inspect
 
 # Stacscheck
 
@@ -85,6 +86,8 @@ JINJAPAGE = u"""
     .infocode {font-size: 14px; font-family: Courier; margin-left: 20px}
     /* For compared code */
     .compcode {font-size: 14px; font-family: Courier; margin-left: 20px}
+    /* For explanation text */
+    .explaincode {font-size: 14px; font-family: Arial; margin-left: 20px; padding: 10px; background-color: #3a3a5a; border-left: 3px solid #6a6aff; white-space: pre-wrap;}
     h2 {font-size: 18px; font-family: Arial; font-weight: bold; margin-left: 20px}
     /* Collapsible testing */
     .collapsible {display: none;}
@@ -213,6 +216,17 @@ JINJAPAGE = u"""
                 </div>
             {% endif %}
 
+        {% endif %}
+
+        {% if test.script_explain or test.output_explain %}
+            <h2> Explanation </h2>
+            <div class="explaincode">
+            {%- if test.script_explain %}{{ test.script_explain }}{% endif -%}
+            {%- if test.script_explain and test.output_explain %}
+
+{% endif -%}
+            {%- if test.output_explain %}{{ test.output_explain }}{% endif -%}
+            </div>
         {% endif %}
         <br> <br>
         </td>
@@ -535,6 +549,59 @@ def print_test_or_info_output(test):
     else:
         output_str("--- no output from submission---\n\n")
 
+def get_explain_path(test_path):
+    """Get the .explain file path for a given test script or output file."""
+    return os.path.splitext(test_path)[0] + ".explain"
+
+def get_explain_content(test_path, output_file=None):
+    """Get explanation content from .explain file(s).
+
+    Args:
+        test_path: Path to the test script (e.g., test-foo.sh, prog-run.sh)
+        output_file: Optional path to output file for prog tests (e.g., example.out)
+
+    Returns:
+        Tuple of (script_explain, output_explain) where each is the content string or None
+    """
+    script_explain = None
+    output_explain = None
+
+    # Check for script-level .explain file
+    script_explain_path = get_explain_path(test_path)
+    if os.path.isfile(script_explain_path):
+        try:
+            with open(script_explain_path, 'rb') as f:
+                script_explain = toUTF8Replace(f.read()).strip()
+        except IOError:
+            pass
+
+    # Check for output-specific .explain file (for prog tests)
+    if output_file is not None:
+        output_explain_path = get_explain_path(output_file)
+        if os.path.isfile(output_explain_path):
+            try:
+                with open(output_explain_path, 'rb') as f:
+                    output_explain = toUTF8Replace(f.read()).strip()
+            except IOError:
+                pass
+
+    return (script_explain, output_explain)
+
+def print_explain_content(test):
+    """Print explanation content if present (for terminal output on failure)."""
+    script_explain = test.get("script_explain")
+    output_explain = test.get("output_explain")
+
+    if script_explain or output_explain:
+        output_str("--- explanation ---\n")
+        if script_explain:
+            output_str(script_explain + "\n")
+        if output_explain:
+            if script_explain:
+                output_str("\n")  # Separate script and output explanations
+            output_str(output_explain + "\n")
+        output_str("---\n\n")
+
 # Record that a test was run, printing as appropriate
 def register_returnval_test(test):
     if test["returnval"] == 0:
@@ -546,6 +613,10 @@ def register_returnval_test(test):
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
+
+    # Print explanation content on failure (terminal only)
+    if not test["pass"]:
+        print_explain_content(test)
 
     testStore.append(test)
 
@@ -559,6 +630,10 @@ def register_multival_test(test):
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
+
+    # Print explanation content on failure (terminal only)
+    if not test["pass"]:
+        print_explain_content(test)
 
     testStore.append(test)
     
@@ -614,6 +689,10 @@ def register_diff_test(test, comparefile):
     # Create table for html
     test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
     assert isinstance(test["htmldiff"], str)
+
+    # Print explanation content on failure (terminal only)
+    if not test["pass"]:
+        print_explain_content(test)
 
     testStore.append(test)
 
@@ -776,6 +855,10 @@ def run_tests_recursive(testdir):
         # State there is no fixed input file
         buildshret["inputlines"] = ["No .in input file (search manually)."]
 
+        # Load explanation content
+        script_explain, _ = get_explain_content(buildsh)
+        buildshret["script_explain"] = script_explain
+
         register_returnval_test(buildshret)
         if buildshret["returnval"] != 0:
             verbose_print("Exiting early due to failed " + buildsh)
@@ -798,6 +881,10 @@ def run_tests_recursive(testdir):
             # State there is no fixed input file
             result["inputlines"] = ["No .in input file (search manually)."]
 
+            # Load explanation content
+            script_explain, _ = get_explain_content(test)
+            result["script_explain"] = script_explain
+
             register_returnval_test(result)
 
         # INFOSCRIPTS
@@ -815,6 +902,10 @@ def run_tests_recursive(testdir):
             # State there is no fixed input file
             result["inputlines"] = ["No .in input file (search manually)."]
 
+            # Load explanation content
+            script_explain, _ = get_explain_content(info)
+            result["script_explain"] = script_explain
+
             register_returnval_test(result)
 
         # MULTISCRIPTS
@@ -822,12 +913,14 @@ def run_tests_recursive(testdir):
 
         for multi in multiscripts:
             multiresult = run_bash_script(multi, None, extra_env)
+            # Load explanation content for multi script (shared across all sub-tests)
+            script_explain, _ = get_explain_content(multi)
             multicount = 1
             try:
                 for result in json.loads(multiresult["stdout"]):
                     name = nice_name(multi) + "-" + '{:0=2}'.format(multicount) + "-" + result["name"].replace(',', '').replace(' ', '-')
                     multicount = multicount + 1
-                    output_str("* MULTI-PART-TEST - " + name + " : ")      
+                    output_str("* MULTI-PART-TEST - " + name + " : ")
                     result["name"] = name
                     result["path"] = multi
                     result["type"] = "Multi"
@@ -835,7 +928,10 @@ def run_tests_recursive(testdir):
 
                     # State there is no fixed input file
                     result["inputlines"] = ["No .in input file (search manually)."]
-                    
+
+                    # Add explanation content
+                    result["script_explain"] = script_explain
+
                     register_multival_test(result)
             except Exception as e:
                 warn_print(str(e))
@@ -874,6 +970,11 @@ def run_tests_recursive(testdir):
                 else:
                     result["inputlines"] = None
 
+                # Load explanation content (script-level and/or output-specific)
+                script_explain, output_explain = get_explain_content(progsh, out)
+                result["script_explain"] = script_explain
+                result["output_explain"] = output_explain
+
                 # Add diff for html to result
                 register_diff_test(result, out)
         
@@ -889,7 +990,11 @@ def run_tests_recursive(testdir):
         warn_print(str(e))
 
 def extract_to_temp(sub_found, temp_dir):
-    sub_found.extractall(path=temp_dir)
+    # Support new argument
+    if 'filter' in inspect.signature(sub_found.extractall).parameters:
+        sub_found.extractall(path=temp_dir, filter='tar')
+    else:
+        sub_found.extractall(path=temp_dir)
     sub_found.close()
 
     # Note: this works because both tarfile and zipfile libraries have these functions. If

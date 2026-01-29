@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/config-in-tenth-parent/parent10/parent9/parent8/parent7/parent6/parent5/parent4/parent3/parent2/parent1/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"

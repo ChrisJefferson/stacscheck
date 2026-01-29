@@ -15,6 +15,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-src-2/testdir/build.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "",
       "type": "Build"
@@ -27,6 +28,7 @@
       "pass": true,
       "path": "DIR/tests/config-test-src-2/testdir/test.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "meow\n\n",
       "type": "Test"

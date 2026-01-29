@@ -23,9 +23,11 @@
         "7\n"
       ],
       "name": "progread-long.out",
+      "output_explain": null,
       "pass": true,
       "path": "DIR/tests/skip-hidden/testdir/progread.sh",
       "returnval": 0,
+      "script_explain": null,
       "stderr": "",
       "stdout": "1 2\n",
       "type": "Prog",

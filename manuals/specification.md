@@ -66,6 +66,25 @@ Finally, do this same look (looking for tests) for each subdirectory of the curr
 Files are always considered in alphabetical order of filename.
 
 
+Explanation files
+-----------------
+
+You can provide optional `.explain` files that give explanatory text for tests. These are useful for providing hints or context to students about why a test might fail.
+
+To create an explanation file, replace the `.sh` or `.out` extension with `.explain`:
+
+* `test-foo.sh` → `test-foo.explain`
+* `build-compile.sh` → `build-compile.explain`
+* `prog-run.sh` → `prog-run.explain` (script-level explanation, applies to all outputs)
+* `example.out` → `example.explain` (output-specific explanation for prog tests)
+
+The behaviour differs between terminal and HTML output:
+
+* **Terminal**: Explanation text is shown only when a test fails, after the failure output.
+* **HTML**: Explanation text is always shown, regardless of whether the test passed or failed.
+
+For program tests, you can have both a script-level `.explain` file (matching the `prog*.sh` file) and output-specific `.explain` files (matching the `*.out` files). If both exist, both are shown (script-level first).
+
 Environment variables
 ---------------------
 
