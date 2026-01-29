@@ -14,6 +14,7 @@
       "name": "parent5/parent4/parent3/parent2/parent1/build",
       "pass": true,
       "path": "DIR/tests/config-in-fifth-parent/parent5/parent4/parent3/parent2/parent1/build.sh",
+      "prefix": "* BUILD TEST - parent5/parent4/parent3/parent2/parent1/build : ",
       "returnval": 0,
       "script_explain": null,
       "stderr": "",

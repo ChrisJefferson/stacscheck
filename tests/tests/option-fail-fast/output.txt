@@ -1,0 +1,9 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'option-fail-fast': Already in it!
+* TEST - test-01-pass : pass
+* TEST - test-02-fail : fail
+--- submission output ---
+This test fails
+---
+
+1 out of 2 tests passed

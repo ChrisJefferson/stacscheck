@@ -1,0 +1,53 @@
+{
+  "course": "CS1234",
+  "infotext": [
+    "- Looking for submission in a directory called 'option-quiet': ",
+    "Already in it!\n"
+  ],
+  "practical": "Practical 1",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-01-pass",
+      "pass": true,
+      "path": "DIR/tests/option-quiet/testdir/test-01-pass.sh",
+      "prefix": "* TEST - test-01-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-02-fail",
+      "pass": false,
+      "path": "DIR/tests/option-quiet/testdir/test-02-fail.sh",
+      "prefix": "* TEST - test-02-fail : ",
+      "returnval": 1,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Test failed output\n",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-03-pass",
+      "pass": true,
+      "path": "DIR/tests/option-quiet/testdir/test-03-pass.sh",
+      "prefix": "* TEST - test-03-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "",
+      "type": "Test"
+    }
+  ]
+}

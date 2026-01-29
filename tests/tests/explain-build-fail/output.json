@@ -14,6 +14,7 @@
       "name": "build-compile",
       "pass": false,
       "path": "DIR/tests/explain-build-fail/testdir/build-compile.sh",
+      "prefix": "* BUILD TEST - build-compile : ",
       "returnval": 1,
       "script_explain": "Build explanation: Make sure your code compiles without errors.",
       "stderr": "",

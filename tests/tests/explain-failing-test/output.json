@@ -14,6 +14,7 @@
       "name": "test-fail",
       "pass": false,
       "path": "DIR/tests/explain-failing-test/testdir/test-fail.sh",
+      "prefix": "* TEST - test-fail : ",
       "returnval": 1,
       "script_explain": "This test checks that the program handles errors correctly.\nMake sure your code returns exit code 0 on success.",
       "stderr": "",

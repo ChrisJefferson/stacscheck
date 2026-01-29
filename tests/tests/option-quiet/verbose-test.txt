@@ -1,0 +1,11 @@
+Testing CS1234 Practical 1
+- Looking for submission in a directory called 'option-quiet': Already in it!
+* TEST - test-02-fail : fail
+--- ran script ---
+echo "Test failed output"
+exit 1
+--- submission output ---
+Test failed output
+---
+
+2 out of 3 tests passed

@@ -20,6 +20,7 @@
       "output_explain": null,
       "pass": true,
       "path": "DIR/tests/config-test-2-src-2/testdir/prog.sh",
+      "prefix": "* COMPARISON TEST - prog-default.out : ",
       "returnval": 0,
       "script_explain": null,
       "stderr": "",

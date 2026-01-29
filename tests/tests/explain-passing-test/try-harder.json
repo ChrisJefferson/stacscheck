@@ -14,6 +14,7 @@
       "name": "test-pass",
       "pass": true,
       "path": "DIR/tests/explain-passing-test/testdir/test-pass.sh",
+      "prefix": "* TEST - test-pass : ",
       "returnval": 0,
       "script_explain": "This test checks that the program exits successfully.\nThis explanation should appear in HTML but not in terminal output.",
       "stderr": "",
