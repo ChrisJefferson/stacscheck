@@ -1,6 +1,6 @@
 Testing CS1234 Practical 1
 - Looking for submission in a directory called 'badoutput': Already in it!
-* COMPARISON TEST - progcat-test1.out : fail
+* COMPARISON TEST - progcat-test1.out : fail ❌
 --- ran script ---
 cat
 --- with input ---
@@ -11,7 +11,7 @@ z
 x
 ---
 
-* COMPARISON TEST - progcat-test2.out : fail
+* COMPARISON TEST - progcat-test2.out : fail ❌
 --- ran script ---
 cat
 --- with input ---

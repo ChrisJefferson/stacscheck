@@ -1,6 +1,6 @@
 Testing CS1234 Practical 1
 - Looking for submission in a directory called 'diffcheck-long': Already in it!
-* COMPARISON TEST - catter/progcat-short.out : fail
+* COMPARISON TEST - catter/progcat-short.out : fail ❌
 --- ran script ---
 cat
 for i in $(seq 1000); do echo "Line "$i; done
@@ -1018,7 +1018,7 @@ Line 999
 Line 1000
 ---
 
-* COMPARISON TEST - catter2/progcat-short.out : fail
+* COMPARISON TEST - catter2/progcat-short.out : fail ❌
 --- ran script ---
 cat
 for i in $(seq 100000); do echo "Line "$i; done
@@ -97372,7 +97372,7 @@ Li
  ... Output truncated
 ---
 
-* COMPARISON TEST - stderrstdout/progcat-test.out : fail
+* COMPARISON TEST - stderrstdout/progcat-test.out : fail ❌
 --- ran script ---
 echo "line 1"
 >&2 echo "line 2"

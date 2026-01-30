@@ -1,6 +1,6 @@
 Testing CS1234 Practical 1
 - Looking for submission in a directory called 'diffcheck-long-line': Already in it!
-* COMPARISON TEST - catter/progcat-short.out : fail
+* COMPARISON TEST - catter/progcat-short.out : fail ❌
 --- expected output ---
 a
 b
@@ -12,7 +12,7 @@ c
 LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG9LONGLONG10LONGLONG11LONGLONG12LONGLONG13LONGLONG14LONGLONG15LONGLONG16LONGLONG17LONGLONG18LONGLONG19LONGLONG20LONGLONG21LONGLONG22LONGLONG23LONGLONG24LONGLONG25LONGLONG26LONGL ... (line truncated)
 ---
 
-* COMPARISON TEST - catter2/progcat-short.out : fail
+* COMPARISON TEST - catter2/progcat-short.out : fail ❌
 --- expected output ---
 a
 b
@@ -25,7 +25,7 @@ LONGLONG1LONGLONG2LONGLONG3LONGLONG4LONGLONG5LONGLONG6LONGLONG7LONGLONG8LONGLONG
  ... Output truncated
 ---
 
-* COMPARISON TEST - stderrstdout/progcat-test.out : fail
+* COMPARISON TEST - stderrstdout/progcat-test.out : fail ❌
 --- expected output ---
 line 1
 line 3
