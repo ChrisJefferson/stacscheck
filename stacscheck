@@ -45,13 +45,243 @@ import inspect
 
 # Stacscheck
 
-# Try importing jinja2, but don't complain if it isn't there
-try:
-    import jinja2
-except ImportError:
-    jinja = False
-else:
-    jinja = True
+# Minimal template engine (replaces jinja2 dependency)
+def render_template(template, context):
+    """Render a template string with the given context dict."""
+
+    def html_escape(s):
+        if s is None:
+            return ""
+        # Match jinja2's escaping (uses &#39; not &#x27; for apostrophe)
+        return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&#34;').replace("'", '&#39;')
+
+    def resolve_var(expr, local_ctx):
+        """Get raw value of expression (no escaping)."""
+        expr = expr.strip()
+        ctx = {**context, **local_ctx}
+
+        # Handle string literals
+        if (expr.startswith('"') and expr.endswith('"')) or \
+           (expr.startswith("'") and expr.endswith("'")):
+            return expr[1:-1]
+
+        # Navigate dotted path with method calls
+        parts = expr.split('.')
+        val = ctx.get(parts[0])
+        for part in parts[1:]:
+            if val is None:
+                break
+            if part.endswith('()'):
+                val = getattr(val, part[:-2], lambda: None)()
+            elif isinstance(val, dict):
+                val = val.get(part)
+            else:
+                val = getattr(val, part, None)
+        return val
+
+    def get_value(expr, local_ctx):
+        """Get escaped string value for output."""
+        expr = expr.strip()
+
+        # Handle 'x | safe' filter
+        if ' | safe' in expr:
+            expr = expr.replace(' | safe', '')
+            val = resolve_var(expr, local_ctx)
+            return str(val) if val is not None else ""
+
+        val = resolve_var(expr, local_ctx)
+        return html_escape(val)
+
+    def eval_condition(cond, local_ctx):
+        """Evaluate a condition like 'test.pass' or '"x" in test'."""
+        cond = cond.strip()
+
+        # Handle 'x and y'
+        if ' and ' in cond:
+            parts = cond.split(' and ', 1)
+            return eval_condition(parts[0], local_ctx) and eval_condition(parts[1], local_ctx)
+
+        # Handle 'x or y'
+        if ' or ' in cond:
+            parts = cond.split(' or ', 1)
+            return eval_condition(parts[0], local_ctx) or eval_condition(parts[1], local_ctx)
+
+        # Handle '"key" in dict'
+        if ' in ' in cond and ' not in ' not in cond:
+            key, _, obj = cond.partition(' in ')
+            key = key.strip().strip('"').strip("'")
+            obj_val = resolve_var(obj, local_ctx)
+            return key in obj_val if obj_val else False
+
+        # Handle 'x is not none'
+        if ' is not none' in cond.lower():
+            var = cond.split()[0]  # Get variable name before 'is'
+            return resolve_var(var, local_ctx) is not None
+
+        # Handle 'x != "value"'
+        if ' != ' in cond:
+            left, _, right = cond.partition(' != ')
+            return resolve_var(left, local_ctx) != resolve_var(right, local_ctx)
+
+        # Handle 'x == "value"'
+        if ' == ' in cond:
+            left, _, right = cond.partition(' == ')
+            return resolve_var(left, local_ctx) == resolve_var(right, local_ctx)
+
+        # Simple truthy check
+        return bool(resolve_var(cond, local_ctx))
+
+    def process(tmpl, local_ctx):
+        """Process template string, return rendered output."""
+        result = []
+        i = 0
+
+        while i < len(tmpl):
+            # Comment {# ... #}
+            if tmpl[i:i+2] == '{#':
+                end = tmpl.find('#}', i)
+                i = end + 2 if end != -1 else len(tmpl)
+                continue
+
+            # Variable {{ ... }}
+            if tmpl[i:i+2] == '{{':
+                strip_before = tmpl[i:i+3] == '{{-'
+                if strip_before and result:
+                    result[-1] = result[-1].rstrip()
+                start = i + 3 if strip_before else i + 2
+                end = tmpl.find('}}', start)
+                strip_after = tmpl[end-1] == '-'
+                expr = tmpl[start:end-1] if strip_after else tmpl[start:end]
+                result.append(get_value(expr, local_ctx))
+                i = end + 2
+                if strip_after:
+                    while i < len(tmpl) and tmpl[i] in ' \t\n':
+                        i += 1
+                continue
+
+            # Tag {% ... %}
+            if tmpl[i:i+2] == '{%':
+                strip_before = tmpl[i:i+3] == '{%-'
+                if strip_before and result:
+                    result[-1] = result[-1].rstrip()
+                start = i + 3 if strip_before else i + 2
+                end = tmpl.find('%}', start)
+                strip_after = tmpl[end-1] == '-'
+                tag = tmpl[start:end-1].strip() if strip_after else tmpl[start:end].strip()
+                i = end + 2
+                if strip_after:
+                    while i < len(tmpl) and tmpl[i] in ' \t\n':
+                        i += 1
+
+                # For loop
+                if tag.startswith('for '):
+                    match = tag[4:].split(' in ', 1)
+                    var_name, iterable_expr = match[0].strip(), match[1].strip()
+                    # Find matching endfor
+                    depth, body_end = 1, i
+                    while depth > 0 and body_end < len(tmpl):
+                        next_for = tmpl.find('{% for ', body_end)
+                        next_endfor = tmpl.find('{% endfor', body_end)
+                        if next_for == -1: next_for = len(tmpl)
+                        if next_endfor == -1: break
+                        if next_for < next_endfor:
+                            depth += 1
+                            body_end = next_for + 1
+                        else:
+                            depth -= 1
+                            if depth == 0:
+                                body = tmpl[i:next_endfor]
+                            body_end = next_endfor + 1
+
+                    # Get iterable value
+                    iterable = resolve_var(iterable_expr, local_ctx)
+
+                    for idx, item in enumerate(iterable or [], 1):
+                        loop_ctx = {**local_ctx, var_name: item, 'loop': {'index': idx}}
+                        result.append(process(body, loop_ctx))
+
+                    # Skip past endfor
+                    endfor_close = tmpl.find('%}', next_endfor)
+                    i = endfor_close + 2
+                    continue
+
+                # If/elif/else
+                if tag.startswith('if '):
+                    cond = tag[3:]
+
+                    def find_tag(s, tag_name, start):
+                        """Find {% tag or {%- tag, return position or -1."""
+                        p1 = s.find('{% ' + tag_name, start)
+                        p2 = s.find('{%- ' + tag_name, start)
+                        if p1 == -1: return p2
+                        if p2 == -1: return p1
+                        return min(p1, p2)
+
+                    def extract_tag_content(s, pos):
+                        """Extract content between {% and %}, handling - markers."""
+                        start = pos + 2
+                        if s[start:start+1] == '-':
+                            start += 1
+                        end = s.find('%}', start)
+                        return s[start:end].strip(), s.find('%}', pos) + 2
+
+                    # Find all branches and endif
+                    branches = []
+                    depth, pos = 1, i
+                    branch_start = i
+                    current_cond = cond
+
+                    while depth > 0 and pos < len(tmpl):
+                        next_if = find_tag(tmpl, 'if ', pos)
+                        next_elif = find_tag(tmpl, 'elif ', pos) if depth == 1 else -1
+                        next_else = find_tag(tmpl, 'else', pos) if depth == 1 else -1
+                        next_endif = find_tag(tmpl, 'endif', pos)
+
+                        if next_if == -1: next_if = len(tmpl)
+                        if next_elif == -1: next_elif = len(tmpl)
+                        if next_else == -1: next_else = len(tmpl)
+                        if next_endif == -1: break
+
+                        next_tag = min(next_if, next_elif, next_else, next_endif)
+
+                        if next_tag == next_if and next_if < len(tmpl):
+                            depth += 1
+                            pos = next_if + 1
+                        elif next_tag == next_elif:
+                            branches.append((current_cond, tmpl[branch_start:next_elif]))
+                            tag_content, branch_start = extract_tag_content(tmpl, next_elif)
+                            current_cond = tag_content[5:].strip()  # skip 'elif '
+                            pos = branch_start
+                        elif next_tag == next_else:
+                            branches.append((current_cond, tmpl[branch_start:next_else]))
+                            _, branch_start = extract_tag_content(tmpl, next_else)
+                            current_cond = True
+                            pos = branch_start
+                        else:  # endif
+                            depth -= 1
+                            if depth == 0:
+                                branches.append((current_cond, tmpl[branch_start:next_endif]))
+                                _, i = extract_tag_content(tmpl, next_endif)
+                            pos = next_endif + 1
+
+                    for branch_cond, branch_body in branches:
+                        if branch_cond is True or eval_condition(branch_cond, local_ctx):
+                            result.append(process(branch_body, local_ctx))
+                            break
+                    continue
+
+            # Plain text
+            next_tag = len(tmpl)
+            for marker in ['{{', '{%', '{#']:
+                pos = tmpl.find(marker, i)
+                if pos != -1 and pos < next_tag:
+                    next_tag = pos
+            result.append(tmpl[i:next_tag])
+            i = next_tag
+
+        return ''.join(result)
+
+    return process(template, {})
 
 # The HTML output
 JINJAPAGE = u"""
@@ -171,17 +401,6 @@ JINJAPAGE = u"""
                 </div>
             {% endif %}
             <h2> Output </h2>
-
-            {#
-            <h3> Expected </h3>
-            {% for exp in test.comparelines %}
-                {{ exp }}
-            {% endfor %}
-            <h3> Submission </h3>
-            {% for sub in test.userlines %}
-                {{ sub }}
-            {% endfor %}
-            #}
 
             <div class="compcode">
             {% if test.htmldiff %}
@@ -1132,10 +1351,6 @@ def run():
         print("stacscheck " + VERSION)
         sys.exit("You must give a directory of tests to run!")
 
-    if args.htmlout is not None and not jinja:
-        print("stacscheck " + VERSION)
-        sys.exit("Can't output html without the 'jinja2' library. Exiting.\nYou could try 'pip install jinja2'?")
-
     VERBOSE = args.verbose
     QUIET = args.quiet
     FAILFAST = args.failfast
@@ -1195,17 +1410,15 @@ def run():
 
     try:
         if args.htmlout is not None:
-            env = jinja2.Environment(autoescape=True)
-            template = env.from_string(JINJAPAGE)
             with open(args.htmlout, "wb") as html:
-                htmloutput = template.render(Practical=CONFIG['course'] + " " + CONFIG['practical'],
-                                        SubmissionID=args.subid,
-                                        Tests=testStore,
-                                        Finalmessage=finalmessage,
-                                        AnyBuildTestFailed=anyBuildTestFailed,
-                                        InfoText=INFO_PRINTED
-                                        )
-                # html.write(toUTF8Replace(htmloutput).encode("utf8"))
+                htmloutput = render_template(JINJAPAGE, {
+                    'Practical': CONFIG['course'] + " " + CONFIG['practical'],
+                    'SubmissionID': args.subid,
+                    'Tests': testStore,
+                    'Finalmessage': finalmessage,
+                    'AnyBuildTestFailed': anyBuildTestFailed,
+                    'InfoText': INFO_PRINTED
+                })
                 html.write(htmloutput.encode("utf8"))
     except EnvironmentError as e:
         print("Error outputting HTML: " + str(e))
