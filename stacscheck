@@ -505,7 +505,7 @@ def verbose_print(arg):
 # Check function for problems in practical
 def warn_print(arg):
     info_print("\n- ERROR - There is a problem in the test directory.")
-    info_print("The problem is: " + str(arg) + ".")
+    info_print(f"The problem is: {arg}.")
 #    info_print("Possible reasons:")
 #    info_print("  - Your copy of stacscheck is out of date.")
 #    info_print("  - The directory of tests is missing some files, or is broken.")
@@ -529,7 +529,7 @@ def print_file_contents(
 
                 output_str(line.rstrip() + "\n")
     except IOError as e:
-        warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
+        warn_print(f"Error reading '{file_loc}': {e.strerror}")
 
 # Takes a single string with newlines, and returns a list of lines
 # We strip all whitespace, then add a "\n" on the end
@@ -601,7 +601,7 @@ def try_parse_config_file(basedir):
     try:
         config.read(filename)
     except IOError as e:
-        print("I/O error reading practical.config: " + e.strerror)
+        print(f"I/O error reading practical.config: {e.strerror}")
         sys.exit(1)
     except configparser.Error:
         warn_print("practical.config is malformed")
@@ -621,28 +621,28 @@ def try_parse_config_file(basedir):
     if practical_version is not None:
         if [int(x) for x in practical_version.split(".")] > [int(x) for x in VERSION.split(".")]:
             print("- ERROR -")
-            print("This practical requires stacscheck version " + practical_version)
-            print("But this is stacscheck " + VERSION)
+            print(f"This practical requires stacscheck version {practical_version}")
+            print(f"But this is stacscheck {VERSION}")
             sys.exit(1)
 
 
     for section in config.sections():
         if section not in ['info', 'version']:
-            warn_print("practical.config has an unexpected section: " + section)
+            warn_print(f"practical.config has an unexpected section: {section}")
             sys.exit(1)
 
     valid_options = ['course', 'practical', 'srcdir', 'timeout', 'version']
 
     for option in config.options('info'):
         if option not in valid_options:
-            warn_print("Don't understand option '" + option + "'")
+            warn_print(f"Don't understand option '{option}'")
             sys.exit(1)
         CONFIG[option] = config.get('info', option)
 
     if 'version' in config.sections():
         for option in config.options('version'):
             if not(option in ['required']):
-                warn_print("Don't understand [version] in practical.config: '" + str(config.options('version')) +"'")
+                warn_print(f"Don't understand [version] in practical.config: '{config.options('version')}'")
                 sys.exit(1)
             if 'version' in CONFIG:
                 warn_print("'version' defined twice in practical.config")
@@ -673,7 +673,7 @@ def find_code_directory(start_dir=None):
     in_srcdir = (os.path.basename(current_dir) == CONFIG['srcdir'])
     recursive_srcdir = find_all_directories_with_name(CONFIG['srcdir'], current_dir)
     # print("--- Trying to find code directory in " + str(start_dir))
-    info_print_nonewline("- Looking for submission in a directory called '" + CONFIG['srcdir'] + "': ")
+    info_print_nonewline(f"- Looking for submission in a directory called '{CONFIG['srcdir']}': ")
 
     if not in_srcdir and len(recursive_srcdir) == 0:
         info_print("Cannot find it....")
@@ -692,20 +692,20 @@ def find_code_directory(start_dir=None):
         if reldir == CONFIG['srcdir']:
             info_print("found in current directory")
         else:
-            info_print("found at '" + os.path.relpath(recursive_srcdir[0], current_dir) + "'")
+            info_print(f"found at '{os.path.relpath(recursive_srcdir[0], current_dir)}'")
         return recursive_srcdir[0]
 
     # There is more than one place the source might be. Take a best guess.
     if len(recursive_srcdir) >= 1 and in_srcdir:
-        info_print("\n- Warning: in a directory called '" + CONFIG['srcdir'] + "', with subdirectories also with the same name.")
+        info_print(f"\n- Warning: in a directory called '{CONFIG['srcdir']}', with subdirectories also with the same name.")
         info_print("- Guessing your submission is in the current directory.")
         info_print("- If that's wrong, go into the correct directory.")
         return None
 
     # There is multiple recursive_srcdir, and we are not in directory of the right name
-    info_print("- Warning, there are multiple subdirectories called '" + CONFIG['srcdir'] + "'.")
+    info_print(f"- Warning, there are multiple subdirectories called '{CONFIG['srcdir']}'.")
     for d in recursive_srcdir:
-        info_print(" - found " + d)
+        info_print(f" - found {d}")
     info_print("Please go into the correct directory.")
     sys.exit(1)
 
@@ -977,7 +977,7 @@ def run_program_popen(program, stdin, extra_env):
 
         timeouthit = False
         if (proc.poll() is None):
-            output_str("!! " + CONFIG['timeout'] + " second timeout reached\n")
+            output_str(f"!! {CONFIG['timeout']} second timeout reached\n")
             timeouthit = True
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.terminate()
@@ -999,7 +999,7 @@ def run_program_popen(program, stdin, extra_env):
 
         return retdict
     except OSError as e:
-        warn_print(program[0] + " is broken: " + e.strerror)
+        warn_print(f"{program[0]} is broken: {e.strerror}")
         return {"returnval": 1, "stdout": "", "stderr": ""}
 
 # Run a program, given as a list [prog, arg1, arg2], with
@@ -1021,7 +1021,7 @@ def files_in_dir_matching_regex(directory, regex):
         files = [os.path.join(directory, f) for f in names
                 if os.path.isfile(os.path.join(directory, f))]
     except OSError as e:
-        warn_print("Error reading '" + directory + "': " + e.strerror)
+        warn_print(f"Error reading '{directory}': {e.strerror}")
         return []
 
     return files
@@ -1065,7 +1065,7 @@ def run_simple_script_tests(testdir, pattern, test_type, prefix_template, extra_
 
         # Build tests exit on failure
         if test_type == "Build" and result["returnval"] != 0:
-            verbose_print("Exiting early due to failed " + script)
+            verbose_print(f"Exiting early due to failed {script}")
             anyBuildTestFailed = True
             return False
 
@@ -1114,9 +1114,9 @@ def run_tests_recursive(testdir):
                 for result in json.loads(multiresult["stdout"]):
                     if FAILFAST and anyTestFailed:
                         return
-                    name = nice_name(multi) + "-" + '{:0=2}'.format(multicount) + "-" + result["name"].replace(',', '').replace(' ', '-')
+                    name = f"{nice_name(multi)}-{multicount:02d}-{result['name'].replace(',', '').replace(' ', '-')}"
                     multicount = multicount + 1
-                    prefix = "* MULTI-PART-TEST - " + name + " : "
+                    prefix = f"* MULTI-PART-TEST - {name} : "
                     if not QUIET:
                         output_str(prefix)
                     result["name"] = name
@@ -1142,9 +1142,9 @@ def run_tests_recursive(testdir):
         # If there isn't exactly one .out file per .sh, warn
         if (len(outtextfiles) == 0) != (len(progscripts) == 0):
             if len(outtextfiles) == 0:
-                warn_print("Found prog*.sh without *.out files in " + testdir)
+                warn_print(f"Found prog*.sh without *.out files in {testdir}")
             else:
-                warn_print("Found *.out files without prog*.sh in " + testdir)
+                warn_print(f"Found *.out files without prog*.sh in {testdir}")
         for progsh in progscripts:
             for out in outtextfiles:
                 if FAILFAST and anyTestFailed:
@@ -1152,8 +1152,8 @@ def run_tests_recursive(testdir):
                 infile = out[:-4] + ".in"
                 if not os.path.isfile(infile):
                     infile = None
-                name = nice_name(progsh) + "-" + os.path.basename(out)
-                prefix = "* COMPARISON TEST - " + name + " : "
+                name = f"{nice_name(progsh)}-{os.path.basename(out)}"
+                prefix = f"* COMPARISON TEST - {name} : "
                 if not QUIET:
                     output_str(prefix)
                 result = run_bash_script(progsh, infile, extra_env)
@@ -1214,7 +1214,7 @@ def extract_file_with_submission(archive_name, temp_dir):
     
     # Check that the file specified with --archive exists in cwd
     if not os.path.exists(os.path.join(current_path, ARCHIVE)):
-        print("- File not found: " + archive_name);
+        print(f"- File not found: {archive_name}")
         sys.exit(1)
     # Make object and get list of contents
     if archive_name.endswith('.zip'):
@@ -1233,7 +1233,7 @@ def extract_file_with_submission(archive_name, temp_dir):
         file_object = tarfile.open(name=archive_name, mode='r')
         content_list = file_object.getnames()
     else:
-        print("- File {} is not a recognised type of archive (only zip and tar files are supported)".format(ARCHIVE))
+        print(f"- File {ARCHIVE} is not a recognised type of archive (only zip and tar files are supported)")
         sys.exit(1)
 
     # If submission folder is inside (or looks like it), extract. Otherwise move on
@@ -1246,10 +1246,10 @@ def extract_file_with_submission(archive_name, temp_dir):
             break
     if not foundMatch:
         file_object.close()
-        print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the archive " + archive_name)
+        print(f"- Couldn't find a directory called {CONFIG['srcdir']} in the archive {archive_name}")
         sys.exit(1)
 
-    print("- Extracting {} to temp folder".format(archive_name))
+    print(f"- Extracting {archive_name} to temp folder")
     extract_to_temp(file_object, temp_dir)
 
 
@@ -1286,7 +1286,7 @@ def run():
     args = parser.parse_args()
 
     if args.testdir is None:
-        print("stacscheck " + VERSION)
+        print(f"stacscheck {VERSION}")
         sys.exit("You must give a directory of tests to run!")
 
     VERBOSE = args.verbose
@@ -1296,14 +1296,14 @@ def run():
     ARCHIVE = args.archive
 
     if not os.path.exists(args.testdir):
-        print("stacscheck " + VERSION)
-        print("There is no directory called '" + args.testdir + "'")
+        print(f"stacscheck {VERSION}")
+        print(f"There is no directory called '{args.testdir}'")
         print("Check you have the test directory name correct!")
         sys.exit(1)
 
     if not os.path.isdir(args.testdir):
-        print("stacscheck " + VERSION)
-        print("'" + args.testdir + "' is not a directory")
+        print(f"stacscheck {VERSION}")
+        print(f"'{args.testdir}' is not a directory")
         print("Check you have the test directory name correct!")
         sys.exit(1)
 
@@ -1318,7 +1318,7 @@ def run():
         sys.exit(1)
 
     if CONFIG['course'] != '' or CONFIG['practical'] != '':
-        print("Testing " + CONFIG['course'] + " " + CONFIG['practical'])
+        print(f"Testing {CONFIG['course']} {CONFIG['practical']}")
 
     try:
         # If a .zip/.tar/other name was specified, skip normal searching
@@ -1335,16 +1335,16 @@ def run():
 
         if len(testStore) == 0:
             # Use args.testdir as it is shorter
-            print("ERROR: No tests found in '" + args.testdir + "'")
+            print(f"ERROR: No tests found in '{args.testdir}'")
     except EnvironmentError as e:
-        print("Error during testing: " + str(e))
+        print(f"Error during testing: {e}")
 
     passed = len([t for t in testStore if t["pass"]])
     total = len(testStore)
-    finalmessage = str(passed) + " out of " + str(total) + " tests passed"
+    finalmessage = f"{passed} out of {total} tests passed"
 
     if total > 0 and passed == total:
-        print("🎉 " + finalmessage + " 🎉")
+        print(f"🎉 {finalmessage} 🎉")
     else:
         print(finalmessage)
 
@@ -1356,7 +1356,7 @@ def run():
         if args.htmlout is not None:
             with open(args.htmlout, "wb") as html:
                 htmloutput = render_template(JINJAPAGE, {
-                    'Practical': CONFIG['course'] + " " + CONFIG['practical'],
+                    'Practical': f"{CONFIG['course']} {CONFIG['practical']}",
                     'SubmissionID': args.subid,
                     'Tests': testStore,
                     'Finalmessage': finalmessage,
@@ -1365,7 +1365,7 @@ def run():
                 })
                 html.write(htmloutput.encode("utf8"))
     except EnvironmentError as e:
-        print("Error outputting HTML: " + str(e))
+        print(f"Error outputting HTML: {e}")
 
     try:
         if args.jsonout is not None:
@@ -1379,10 +1379,10 @@ def run():
                 jsonfile.write(jsonoutput)
                 jsonfile.write("\n")
     except EnvironmentError as e:
-        print("Error outputting json: " + str(e))
+        print(f"Error outputting json: {e}")
 
 if __name__ == "__main__":
     try:
         run()
     except EnvironmentError as e:
-        print("A fatal error has occurred: " + str(e))
+        print(f"A fatal error has occurred: {e}")
