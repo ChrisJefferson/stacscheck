@@ -1036,6 +1036,50 @@ def files_in_dir_matching_regex(directory, regex):
     return files
 
 # Accept a directory name relative to
+def run_simple_script_tests(testdir, pattern, test_type, prefix_template, extra_env,
+                            always_output=False):
+    """Run simple script tests (build/test/info) that use register_returnval_test.
+
+    Returns True if testing should continue, False if caller should return early.
+    """
+    global anyBuildTestFailed
+    scripts = files_in_dir_matching_regex(testdir, pattern)
+
+    for script in scripts:
+        # Check fail-fast (not for build tests, they handle failure differently)
+        if test_type != "Build" and FAILFAST and anyTestFailed:
+            return False
+
+        name = nice_name(script)
+        prefix = prefix_template.format(name)
+
+        # Print prefix (always for info, conditionally for others)
+        if always_output or not QUIET:
+            output_str(prefix)
+
+        result = run_bash_script(script, None, extra_env)
+        result["name"] = name
+        result["path"] = script
+        result["type"] = test_type
+        result["prefix"] = prefix
+        result["inputlines"] = ["No .in input file (search manually)."]
+
+        if always_output:
+            result["alwaysoutput"] = True
+
+        script_explain, _ = get_explain_content(script)
+        result["script_explain"] = script_explain
+
+        register_returnval_test(result)
+
+        # Build tests exit on failure
+        if test_type == "Build" and result["returnval"] != 0:
+            verbose_print("Exiting early due to failed " + script)
+            anyBuildTestFailed = True
+            return False
+
+    return True
+
 def run_tests_recursive(testdir):
     # First check for a build*.sh
     extra_env = {"TESTDIR" : testdir}
@@ -1050,84 +1094,20 @@ def run_tests_recursive(testdir):
         return
 
     # BUILDSCRIPTS
-    buildscripts = files_in_dir_matching_regex(testdir, r'build.*\.sh')
-
-    for buildsh in buildscripts:
-        name = nice_name(buildsh)
-        prefix = "* BUILD TEST - " + name + " : "
-        if not QUIET:
-            output_str(prefix)
-        buildshret = run_bash_script(buildsh, None, extra_env)
-        buildshret["name"] = name
-        buildshret["path"] = buildsh
-        buildshret["type"] = "Build"
-        buildshret["prefix"] = prefix
-
-        # State there is no fixed input file
-        buildshret["inputlines"] = ["No .in input file (search manually)."]
-
-        # Load explanation content
-        script_explain, _ = get_explain_content(buildsh)
-        buildshret["script_explain"] = script_explain
-
-        register_returnval_test(buildshret)
-        if buildshret["returnval"] != 0:
-            verbose_print("Exiting early due to failed " + buildsh)
-            global anyBuildTestFailed
-            anyBuildTestFailed = True
-            return
+    if not run_simple_script_tests(testdir, r'build.*\.sh', "Build",
+                                   "* BUILD TEST - {} : ", extra_env):
+        return
 
     if inside_TESTBASE:
         # TESTSCRIPTS
-        testscripts = files_in_dir_matching_regex(testdir, r'test.*\.sh')
-
-        for test in testscripts:
-            if FAILFAST and anyTestFailed:
-                return
-            name = nice_name(test)
-            prefix = "* TEST - " + name + " : "
-            if not QUIET:
-                output_str(prefix)
-            result = run_bash_script(test, None, extra_env)
-            result["name"] = name
-            result["path"] = test
-            result["type"] = "Test"
-            result["prefix"] = prefix
-
-            # State there is no fixed input file
-            result["inputlines"] = ["No .in input file (search manually)."]
-
-            # Load explanation content
-            script_explain, _ = get_explain_content(test)
-            result["script_explain"] = script_explain
-
-            register_returnval_test(result)
+        if not run_simple_script_tests(testdir, r'test.*\.sh', "Test",
+                                       "* TEST - {} : ", extra_env):
+            return
 
         # INFOSCRIPTS
-        infoscripts = files_in_dir_matching_regex(testdir, r'info.*\.sh')
-
-        for info in infoscripts:
-            if FAILFAST and anyTestFailed:
-                return
-            name = nice_name(info)
-            prefix = "* INFO 💡 - " + name + " : "
-            # INFO tests always show output, so always print prefix
-            output_str(prefix)
-            result = run_bash_script(info, None, extra_env)
-            result["name"] = name
-            result["path"] = info
-            result["type"] = "Info"
-            result["prefix"] = prefix
-            result["alwaysoutput"] = True
-
-            # State there is no fixed input file
-            result["inputlines"] = ["No .in input file (search manually)."]
-
-            # Load explanation content
-            script_explain, _ = get_explain_content(info)
-            result["script_explain"] = script_explain
-
-            register_returnval_test(result)
+        if not run_simple_script_tests(testdir, r'info.*\.sh', "Info",
+                                       "* INFO 💡 - {} : ", extra_env, always_output=True):
+            return
 
         # MULTISCRIPTS
         multiscripts = files_in_dir_matching_regex(testdir, r'multi.*\.sh')
