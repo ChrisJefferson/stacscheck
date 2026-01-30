@@ -572,6 +572,14 @@ testStore = []
 # Store if any build step failed
 anyBuildTestFailed = False
 
+# Flag for SIGINT received during test execution
+sigint_received = False
+
+def sigint_handler(signum, frame):
+    """Signal handler for SIGINT - sets flag instead of raising KeyboardInterrupt."""
+    global sigint_received
+    sigint_received = True
+
 CONFIG = {'course' : '', 'practical' : '', 'timeout': '60' }
 
 #### Beginning of functions
@@ -972,11 +980,43 @@ def run_program_popen(program, stdin, extra_env):
         # Either we have filled stdin, or we are putting nothing in it
         proc.stdin.close()
 
-        while (proc.poll() is None) and (time.time() - starttime < float(CONFIG['timeout'])):
-            time.sleep(0.1)
+        # Install signal handler to catch Ctrl+C during test execution
+        global sigint_received
+        sigint_received = False
+        old_handler = signal.signal(signal.SIGINT, sigint_handler)
+
+        interrupted = False
+        try:
+            while (proc.poll() is None) and (time.time() - starttime < float(CONFIG['timeout'])):
+                if sigint_received:
+                    interrupted = True
+                    break
+                time.sleep(0.1)
+        except KeyboardInterrupt:
+            interrupted = True
+        finally:
+            # Restore original signal handler
+            signal.signal(signal.SIGINT, old_handler)
+
+        # Handle Ctrl+C interruption
+        if interrupted and proc.poll() is None:
+            # Send SIGINT to the process group (same as Ctrl+C)
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+            except (ProcessLookupError, OSError):
+                pass
+            # Give it a moment to handle the signal
+            time.sleep(0.2)
+            # If still running, terminate it
+            if proc.poll() is None:
+                try:
+                    os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+                    proc.terminate()
+                except (ProcessLookupError, OSError):
+                    pass
 
         timeouthit = False
-        if (proc.poll() is None):
+        if not interrupted and (proc.poll() is None):
             output_str(f"!! {CONFIG['timeout']} second timeout reached\n")
             timeouthit = True
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
@@ -993,6 +1033,17 @@ def run_program_popen(program, stdin, extra_env):
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
         retdict["stdout"] = toUTF8Replace(bytes(retdict["stdout"]))
+
+        if interrupted:
+            # Print special message and dump output
+            print("\n\n!! Stopping user program (Ctrl+C pressed)")
+            if retdict["stdout"].strip():
+                print("--- stdout ---")
+                print(retdict["stdout"])
+            if retdict["stderr"].strip():
+                print("--- stderr ---")
+                print(retdict["stderr"])
+            sys.exit(130)  # Standard exit code for SIGINT
 
 
         retdict["returnval"] = proc.returncode
