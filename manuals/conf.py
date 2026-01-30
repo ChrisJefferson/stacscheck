@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Stacscheck'
-copyright = '2022, Chris Jefferson'
+copyright = '2022-2025, Chris Jefferson'
 author = 'Chris Jefferson'
 
 
