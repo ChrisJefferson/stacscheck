@@ -469,7 +469,6 @@ SUBMISSIONBASE = None
 PARENTBASE = None
 
 # Functions to convert to UTF-8 and print the string
-unicode = str
 def toUTF8Replace(bytes):
     if isinstance(bytes, str):
         return bytes
@@ -500,8 +499,7 @@ anyTestFailed = False
 
 def verbose_print(arg):
     if VERBOSE:
-        output_str(arg + "\n")
-        output_str("\n")
+        output_str(arg + "\n\n")
 
 
 # Check function for problems in practical
@@ -600,11 +598,6 @@ def try_parse_config_file(basedir):
         warn_print("no practical.config file found in directory or 10 parent directories")
         sys.exit(1)
 
-    # filename = os.path.join(basedir, "practical.config")
-    # if not os.path.isfile(filename):
-    #     print("'" + basedir + "' is not a valid test directory")
-    #     print("(the test directory does not contain a file called 'practical.config')")
-    #     sys.exit(1)
     try:
         config.read(filename)
     except IOError as e:
@@ -671,8 +664,6 @@ def find_all_directories_with_name(name, rootdir):
 # If 'srcdir' is not defined, assume current directory, else search for a directory called
 # CONFIG['srcdir'] (or check if we are already in it!)
 def find_code_directory(start_dir=None):
-    # if not 'srcdir' in CONFIG:  # ACELGA
-    #     return None
     # If there's a starting directory, start searching from there. Otherwise use cwd
     if start_dir is not None:
         current_dir = start_dir
@@ -1175,7 +1166,6 @@ def run_tests_recursive(testdir):
                     result["path"] = multi
                     result["type"] = "Multi"
                     result["prefix"] = prefix
-                    # result["alwaysoutput"] = True
 
                     # State there is no fixed input file
                     result["inputlines"] = ["No .in input file (search manually)."]
@@ -1263,12 +1253,6 @@ def extract_to_temp(sub_found, temp_dir):
     # something else is added that doesn't have these functions it will need changing.
 
 def extract_file_with_submission(archive_name, temp_dir):
-    files_with_srcdir = []
-    objects_with_srcdir = []
-
-    file_object = None
-    content_list = None
-
     current_path = os.path.abspath(os.getcwd())
     
     # Check that the file specified with --archive exists in cwd
@@ -1308,10 +1292,8 @@ def extract_file_with_submission(archive_name, temp_dir):
         print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the archive " + archive_name)
         sys.exit(1)
 
-    # print("- Extracting {} to {}.".format(files_with_srcdir[0], temp_dir))    # useful for testing
     print("- Extracting {} to temp folder".format(archive_name))
     extract_to_temp(file_object, temp_dir)
-    file_object.close()
 
 
 ##################################################################
@@ -1346,7 +1328,6 @@ def run():
 
     args = parser.parse_args()
 
-    # if len(args) != 1:
     if args.testdir is None:
         print("stacscheck " + VERSION)
         sys.exit("You must give a directory of tests to run!")
