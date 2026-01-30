@@ -35,7 +35,6 @@ import json
 import copy
 from threading import Thread
 import difflib
-from optparse import OptionParser, SUPPRESS_HELP
 import argparse
 import configparser
 import tempfile
@@ -162,7 +161,7 @@ JINJAPAGE = u"""
             </div>
 
         {% else %}
-            {% if test.inputlines != None %}
+            {% if test.inputlines is not none %}
                 <h2> Input </h2>
                 <div class="infocode">
                 {% for intext in test.inputlines %}
@@ -301,16 +300,17 @@ def print_file_contents(
         ignore_empty_lines=True
 ):
     try:
-        for line in open(file_loc, "rb"):
-            line = toUTF8Replace(line)
+        with open(file_loc, "rb") as f:
+            for line in f:
+                line = toUTF8Replace(line)
 
-            if ignore_empty_lines and line.strip() == "":
-                continue
+                if ignore_empty_lines and line.strip() == "":
+                    continue
 
-            if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
-                continue
+                if any(line.startswith(ignore_prefix) for ignore_prefix in ignore_prefixes):
+                    continue
 
-            output_str(line.rstrip() + "\n")
+                output_str(line.rstrip() + "\n")
     except IOError as e:
         warn_print("Error reading '" + str(file_loc) + "': " + e.strerror)
 
@@ -391,11 +391,11 @@ def try_parse_config_file(basedir):
     except IOError as e:
         print("I/O error reading practical.config: " + e.strerror)
         sys.exit(1)
-    except:
+    except configparser.Error:
         warn_print("practical.config is malformed")
         sys.exit(1)
 
-    if not 'info' in config.sections():
+    if 'info' not in config.sections():
         warn_print("practical.config does not have an '[info]' section")
         sys.exit(1)
 
@@ -415,18 +415,14 @@ def try_parse_config_file(basedir):
 
 
     for section in config.sections():
-        if not section in ['info', 'version']:
+        if section not in ['info', 'version']:
             warn_print("practical.config has an unexpected section: ", section)
             sys.exit(1)
-    
-    if not 'info' in config.sections():
-        warn_print("practical.config does not have an [info] section")
-        sys.exit(1)
 
     valid_options = ['course', 'practical', 'srcdir', 'timeout', 'version']
 
     for option in config.options('info'):
-        if not (option in valid_options):
+        if option not in valid_options:
             warn_print("Don't understand option '" + option + "'")
             sys.exit(1)
         CONFIG[option] = config.get('info', option)
@@ -440,12 +436,6 @@ def try_parse_config_file(basedir):
                 warn_print("'version' defined twice in practical.config")
                 sys.exit(1)
             CONFIG['version'] = config.get('version', option)
-
-
-    for section in config.sections():
-        if not(section in ['info', 'version']):
-            warn_print("practical.config contains invalid section: ", section)
-            sys.exit(1)
 
     return parentdir
 
@@ -465,7 +455,7 @@ def find_code_directory(start_dir=None):
     # if not 'srcdir' in CONFIG:  # ACELGA
     #     return None
     # If there's a starting directory, start searching from there. Otherwise use cwd
-    if not start_dir == None:
+    if start_dir is not None:
         current_dir = start_dir
     else:
         current_dir = os.path.realpath(os.getcwd())
@@ -651,7 +641,7 @@ def register_multival_test(test):
     testStore.append(test)
     
 
-# Register the result of a test whith a known output
+# Register the result of a test with a known output
 def register_diff_test(test, comparefile):
     with open(comparefile, 'rb') as stream:
         comparelines = toUTF8Replace(stream.read())
@@ -1008,7 +998,7 @@ def run_tests_recursive(testdir):
                 result["prefix"] = prefix
 
                 # Add contents of input file to result (DOESN'T WORK UNLESS THERE'S AN .IN FILE)
-                if (result["input"] != None):
+                if result["input"] is not None:
                     with open(result["input"], 'rb') as stream:
                         inputlines = toUTF8Replace(stream.read())
 
@@ -1067,19 +1057,19 @@ def extract_file_with_submission(archive_name, temp_dir):
         print("- File not found: " + archive_name);
         sys.exit(1)
     # Make object and get list of contents
-    if '.zip' in archive_name:
+    if archive_name.endswith('.zip'):
         file_object = zipfile.ZipFile(archive_name, mode='r')
         content_list = file_object.namelist()
-    elif '.tar.xz' in archive_name:
+    elif archive_name.endswith('.tar.xz'):
         file_object = tarfile.open(name=archive_name, mode='r:xz')
         content_list = file_object.getnames()
-    elif '.tar.gz' in archive_name:
+    elif archive_name.endswith('.tar.gz') or archive_name.endswith('.tgz'):
         file_object = tarfile.open(name=archive_name, mode='r:gz')
         content_list = file_object.getnames()
-    elif '.tar.bz2' in archive_name:
+    elif archive_name.endswith('.tar.bz2'):
         file_object = tarfile.open(name=archive_name, mode='r:bz2')
         content_list = file_object.getnames()
-    elif '.tar' in archive_name:
+    elif archive_name.endswith('.tar'):
         file_object = tarfile.open(name=archive_name, mode='r')
         content_list = file_object.getnames()
     else:
@@ -1094,7 +1084,7 @@ def extract_file_with_submission(archive_name, temp_dir):
         if submission_name in content:
             foundMatch = True
             break
-    if foundMatch == False:
+    if not foundMatch:
         file_object.close()
         print("- Couldn't find a directory called " + CONFIG['srcdir'] + " in the archive " + archive_name)
         sys.exit(1)
@@ -1118,9 +1108,9 @@ def run():
     # This isn't documented, because the output format isn't (yet) stable.
     # You can use this, but don't complain if the format changes in future.
     parser.add_argument("--json", dest="jsonout",
-                      help=SUPPRESS_HELP, metavar="FILE")
+                      help=argparse.SUPPRESS, metavar="FILE")
     parser.add_argument("--tryharder", dest="tryharder", default=False,
-                      action="store_true", help=SUPPRESS_HELP)
+                      action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
                       help="Output more information during testing")
@@ -1170,7 +1160,7 @@ def run():
     # If config file isn't found, try looking up. store where you find it
     PARENTBASE = try_parse_config_file(TESTBASE)
 
-    if not 'srcdir' in CONFIG:
+    if 'srcdir' not in CONFIG:
         print("A srcdir needs to be specified in practical.config.")
         sys.exit(1)
 
@@ -1184,7 +1174,6 @@ def run():
             run_tests_recursive(PARENTBASE)
         # Try running with compressed file specified with --archive
         else:
-            current_path = os.path.abspath(os.getcwd())
             # Extract files and run tests
             with tempfile.TemporaryDirectory() as temp_dir:
                 extract_file_with_submission(ARCHIVE, temp_dir)
