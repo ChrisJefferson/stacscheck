@@ -1,0 +1,3 @@
+- ERROR -
+This practical requires stacscheck version 4
+But this is stacscheck VERSION
