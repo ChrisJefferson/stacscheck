@@ -1,6 +1,6 @@
 Testing CS1234 Practical 1
 - Looking for submission in a directory called 'test_TESTDIR-noexec': Already in it!
-* TEST - test1 : fail
+* TEST - test1 : fail ❌
 --- ran script ---
 cat "$TESTDIR/info.txt"
 exit 1
@@ -8,7 +8,7 @@ exit 1
 I am a file
 ---
 
-* INFO - info1 : fail
+* INFO 💡 - info1 : fail ❌
 --- ran script ---
 cat "$TESTDIR/info.txt"
 echo 'failing'
@@ -18,13 +18,13 @@ I am a file
 failing
 ---
 
-* INFO - info2 : pass
+* INFO 💡 - info2 : pass ✅
 --- submission output ---
 I am a file
 passing
 ---
 
-* COMPARISON TEST - prog1-empty.out : fail
+* COMPARISON TEST - prog1-empty.out : fail ❌
 --- ran script ---
 cat "$TESTDIR/info.txt"
 exit 1
@@ -33,7 +33,7 @@ exit 1
 I am a file
 ---
 
-* BUILD TEST - build-subdir/build1 : fail
+* BUILD TEST - build-subdir/build1 : fail ❌
 --- ran script ---
 cat "$TESTDIR/info.txt"
 exit 1

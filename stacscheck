@@ -809,14 +809,14 @@ def register_returnval_test(test):
         test["pass"] = True
         # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
         if not QUIET or test.get("alwaysoutput", False):
-            print("pass")
+            print("pass ✅")
     else:
         test["pass"] = False
         # In quiet mode, print the prefix now since we didn't print it earlier
         # (unless it's an alwaysoutput test, which already printed prefix)
         if QUIET and "prefix" in test and not test.get("alwaysoutput", False):
             output_str(test["prefix"])
-        print("fail")
+        print("fail ❌")
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
@@ -876,7 +876,7 @@ def register_diff_test(test, comparefile):
     if comparelines == userlines:
         test["pass"] = True
         if not QUIET:
-            print("pass")
+            print("pass ✅")
 
     # If test failed print expected & real output (& possibly extras)
     else:
@@ -884,7 +884,7 @@ def register_diff_test(test, comparefile):
         # In quiet mode, print the prefix now since we didn't print it earlier
         if QUIET and "prefix" in test:
             output_str(test["prefix"])
-        print("fail")
+        print("fail ❌")
         # If verbose, print input to stdout
         maybe_print_test_input(test)
         # Create text for expected & real output
@@ -1133,7 +1133,7 @@ def run_tests_recursive(testdir):
             if FAILFAST and anyTestFailed:
                 return
             name = nice_name(info)
-            prefix = "* INFO - " + name + " : "
+            prefix = "* INFO 💡 - " + name + " : "
             # INFO tests always show output, so always print prefix
             output_str(prefix)
             result = run_bash_script(info, None, extra_env)
@@ -1401,8 +1401,14 @@ def run():
     except EnvironmentError as e:
         print("Error during testing: " + str(e))
 
-    finalmessage = str(len([t for t in testStore if t["pass"]])) + " out of " + str(len(testStore)) + " tests passed"
-    print(finalmessage)
+    passed = len([t for t in testStore if t["pass"]])
+    total = len(testStore)
+    finalmessage = str(passed) + " out of " + str(total) + " tests passed"
+
+    if total > 0 and passed == total:
+        print("🎉 " + finalmessage + " 🎉")
+    else:
+        print(finalmessage)
 
     if anyBuildTestFailed:
         print("Building is failing, so some tests were skipped")
