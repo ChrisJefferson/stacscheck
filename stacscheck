@@ -794,15 +794,28 @@ def print_explain_content(test):
             output_str(output_explain + "\n")
         output_str("---\n\n")
 
+def finalize_test(test):
+    """Common finalization for all test types: explain, fail tracking, store."""
+    # Print explanation content on failure (terminal only)
+    if not test["pass"]:
+        print_explain_content(test)
+
+    # Track if any test failed (for fail-fast)
+    global anyTestFailed
+    if not test["pass"]:
+        anyTestFailed = True
+
+    testStore.append(test)
+
 # Record that a test was run, printing as appropriate
 def register_returnval_test(test):
-    if test["returnval"] == 0:
-        test["pass"] = True
+    test["pass"] = (test["returnval"] == 0)
+
+    if test["pass"]:
         # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
         if not QUIET or test.get("alwaysoutput", False):
             print("pass ✅")
     else:
-        test["pass"] = False
         # In quiet mode, print the prefix now since we didn't print it earlier
         # (unless it's an alwaysoutput test, which already printed prefix)
         if QUIET and "prefix" in test and not test.get("alwaysoutput", False):
@@ -812,25 +825,16 @@ def register_returnval_test(test):
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
 
-    # Print explanation content on failure (terminal only)
-    if not test["pass"]:
-        print_explain_content(test)
-
-    # Track if any test failed (for fail-fast)
-    global anyTestFailed
-    if not test["pass"]:
-        anyTestFailed = True
-
-    testStore.append(test)
+    finalize_test(test)
 
 # Record that a test was run, printing as appropriate
 def register_multival_test(test):
-    if test["returnval"] == 0:
-        test["pass"] = True
+    test["pass"] = (test["returnval"] == 0)
+
+    if test["pass"]:
         if not QUIET:
             print(test["trafficlight"])
     else:
-        test["pass"] = False
         # In quiet mode, print the prefix now since we didn't print it earlier
         if QUIET and "prefix" in test:
             output_str(test["prefix"])
@@ -839,16 +843,7 @@ def register_multival_test(test):
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
 
-    # Print explanation content on failure (terminal only)
-    if not test["pass"]:
-        print_explain_content(test)
-
-    # Track if any test failed (for fail-fast)
-    global anyTestFailed
-    if not test["pass"]:
-        anyTestFailed = True
-
-    testStore.append(test)
+    finalize_test(test)
     
 
 # Register the result of a test with a known output
@@ -907,16 +902,7 @@ def register_diff_test(test, comparefile):
     test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
     assert isinstance(test["htmldiff"], str)
 
-    # Print explanation content on failure (terminal only)
-    if not test["pass"]:
-        print_explain_content(test)
-
-    # Track if any test failed (for fail-fast)
-    global anyTestFailed
-    if not test["pass"]:
-        anyTestFailed = True
-
-    testStore.append(test)
+    finalize_test(test)
 
 
 #################### FILE UTILITIES ######################
