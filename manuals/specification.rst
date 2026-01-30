@@ -83,9 +83,8 @@ end with ``sh``. In this section we will describe the different types of
 tests, see :ref:`Advice for writing tests <advice>` for some suggestions
 and best practices for writing good tests.
 
-There are four different types of tests. The type of a test effects how
-`stacscheck` runs it, and interprets the output. The beginning
-of the name of a script identifies its type:
+There are five different types of tests. The type of a test is determined by
+the beginning of the script's filename:
 
 -  Names starting ``build`` are *build scripts*. This type of test
    succeeds if the return value of the script is zero. If a build script
@@ -100,13 +99,16 @@ of the name of a script identifies its type:
    succeeds if the return value of the script is zero. If a test script
    fails, then the script's output is printed.
 
+-  Names starting ``multi`` are *multi-part tests*. These scripts output
+   JSON describing multiple test results. See :ref:`multi_tests` below.
+
 -  Names starting ``prog`` are *program scripts*. ``prog`` tests differ from the
    other formats, as other files are required. The ``prog`` is
    executed with an (optional) input file. The test passes if the output is equal
-   to a pre-specified output. What does “the same” mean? It’s a little
+   to a pre-specified output. What does "the same" mean? It's a little
    complicated, see :ref:`how outputs are compared <outputs_compared>`.
 
-   The exact behavior of `stacscheck` when it sees a file starting
+   The exact behavior of ``stacscheck`` when it sees a file starting
    ``prog`` is the following:
 
    -  For each file in the directory whose name ends in ``.out``
@@ -125,9 +127,10 @@ algorithm:
    running no more scripts or checking any subdirectories.
 -  Run each ``info`` script, printing any output
 -  Run each ``test`` script, printing output if any fails
+-  Run each ``multi`` script, processing the JSON output
 -  For each ``prog`` script, for each ``name.out`` file, run the
-   ``prog`` with ``name.in`` as input (if present), then compare against 
-   ``name.out``, failing the test if the output differs from 
+   ``prog`` with ``name.in`` as input (if present), then compare against
+   ``name.out``, failing the test if the output differs from
    ``name.out``
 -  For each sub-directory of the current directory, run this loop again
    in that subdirectory.
@@ -156,6 +159,53 @@ While the following are counted as different:
 
 If you are having trouble spotting the difference between two outputs,
 consider using the ``--html`` output, which will show a coloured diff.
+
+.. _multi_tests:
+
+Multi-part tests
+^^^^^^^^^^^^^^^^
+
+Multi-part tests (``multi*.sh``) allow a single script to report multiple
+test results. This is useful when you want to run a testing framework and
+report individual results, or when a single program needs to be tested in
+multiple ways.
+
+A multi script must output a JSON array to stdout. Each element in the array
+represents one test result and must contain:
+
+-  ``name``: A short name for this test (string)
+-  ``trafficlight``: The result indicator — one of ``GREEN``, ``YELLOW``,
+   ``AMBER``, or ``RED``
+-  ``returnval``: ``0`` for pass, non-zero for fail (integer)
+
+Optional fields:
+
+-  ``stdout``: Output text to display (string)
+-  ``stderr``: Error output to display (string)
+
+**Example multi script** (``multi-check.sh``)::
+
+   #!/bin/bash
+   # Run tests and output JSON results
+   cat << 'EOF'
+   [
+     {"name": "syntax-check", "trafficlight": "GREEN", "returnval": 0},
+     {"name": "style-check", "trafficlight": "YELLOW", "returnval": 0,
+      "stdout": "Warning: line 42 exceeds 80 characters"},
+     {"name": "memory-check", "trafficlight": "RED", "returnval": 1,
+      "stdout": "Memory leak detected in function foo()"}
+   ]
+   EOF
+
+**Traffic light meanings:**
+
+-  ``GREEN``: Test passed completely
+-  ``YELLOW``: Test passed with minor warnings
+-  ``AMBER``: Test passed with significant warnings
+-  ``RED``: Test failed
+
+In the terminal output, the traffic light value is displayed. In HTML output,
+the test row is coloured according to the traffic light.
 
 Environment variables
 ~~~~~~~~~~~~~~~~~~~~~

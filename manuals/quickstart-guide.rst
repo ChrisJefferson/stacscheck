@@ -50,15 +50,53 @@ Run in quiet mode, stopping at first failure::
 
    stacscheck -q --fail-fast tests
 
-Understanding the output
-------------------------
+HTML reports
+------------
 
-``stacscheck`` uses symbols to indicate test results:
+The ``--html`` option generates a detailed HTML report that is especially
+useful for reviewing test failures:
 
-* ✅ **pass** — The test succeeded
-* ❌ **fail** — The test failed
-* 💡 **INFO** — An informational test (output is always shown)
-* 🎉 — Celebration when all tests pass!
+::
+
+   stacscheck tests --html=report.html
+
+The HTML report includes:
+
+* **Summary header** showing how many tests passed
+* **Expandable test sections** — click "expand" to see details for any test
+* **Coloured diff tables** for ``prog`` tests, highlighting exactly what
+  differs between expected and actual output
+* **Explanation text** from ``.explain`` files (see :ref:`structure`)
+* **Colour-coded results**:
+
+  - Green background for passing tests
+  - Red background for failing tests
+  - Traffic light colours (GREEN/YELLOW/AMBER/RED) for multi-part tests
+
+Testing compressed submissions
+------------------------------
+
+The ``--archive`` option lets you test a compressed submission file directly,
+without manually extracting it first::
+
+   stacscheck --archive=submission.zip tests
+
+``stacscheck`` will:
+
+1. Extract the archive to a temporary directory
+2. Look for the ``srcdir`` folder within the extracted contents
+3. Run all tests against the extracted submission
+4. Clean up the temporary directory when finished
+
+**Supported archive formats:**
+
+* ``.zip`` — ZIP archives
+* ``.tar`` — uncompressed tar archives
+* ``.tar.gz`` or ``.tgz`` — gzip-compressed tar archives
+* ``.tar.bz2`` — bzip2-compressed tar archives
+* ``.tar.xz`` — xz-compressed tar archives
+
+This is particularly useful for batch testing multiple student submissions.
 
 If ``stacscheck`` is not installed, read on to find out about
 :ref:`Installing stacscheck <installing>`.
