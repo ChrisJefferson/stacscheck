@@ -54,7 +54,9 @@ General bash script advice
    ( for example, ``timeout 2 java IrcServerMain irc.example.com $PORT > /dev/null 2>&1 &``),
    then at the end of your test run ``wait`` to ensure the program finishes before the test returns.
 
--  The program ``shellcheck``Supporting spaces in filenames can be tricky (and you may not be interested in doing so), but one simple thing to do to support them it to enclose any 
+-  The program ``shellcheck`` can help find common errors in shell scripts.
+   Supporting spaces in filenames can be tricky, but enclosing variables
+   in quotes (e.g., ``"${TESTDIR}"``) handles most cases.
 
 Build tests
 -----------

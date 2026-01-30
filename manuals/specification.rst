@@ -1,7 +1,7 @@
 .. _structure:
 
-The Structure of a Stacsheck Test
-=================================
+The Structure of a Stacscheck Test
+==================================
 
 This Section assumes you already know how to use `stacscheck` and
 want to understand how `stacscheck` tests are designed. You
@@ -30,8 +30,22 @@ specifies the name of the directory which contains the code to be tested.
 . The reason ``srcdir`` is required is to make sure we start running
 tests from the correct place.
 
+``practical.config`` can optionally contain a ``timeout`` setting to limit
+how long each test can run:
+
+::
+
+   [info]
+   practical = My Practical
+   course = CS101
+   srcdir = src
+   timeout = 30
+
+The ``timeout`` value is in seconds. If not specified, the default is 60 seconds.
+When a test exceeds the timeout, it is terminated and marked as failed.
+
 ``practical.config`` can optionally contain a ``[version]`` section, if
-there is a required minimum version of `stacscheck```:
+there is a required minimum version of ``stacscheck``:
 
 ::
 
@@ -39,7 +53,7 @@ there is a required minimum version of `stacscheck```:
    required = 3.1.0
 
 The version is only used to provide a helpful error message to users with
-an out-of-date version of `stacscheck`.
+an out-of-date version of ``stacscheck``.
 
 The design of tests
 ~~~~~~~~~~~~~~~~~~~
@@ -123,6 +137,7 @@ are always run in alphabetical order.
 
 
 .. _outputs_compared:
+
 How outputs are compared
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -145,10 +160,59 @@ consider using the ``--html`` output, which will show a coloured diff.
 Environment variables
 ~~~~~~~~~~~~~~~~~~~~~
 
-`stacscheck` sets some unix environment variables which any test
-script can access.
+``stacscheck`` sets some Unix environment variables which any test
+script can access:
 
--  ``$TESTDIR``: The directory of the currently executing script
--  ``$TESTBASEDIR``: The directory containing ``practical.config``
--  ``$SCRATCHDIR``: A temporary directory which will be automatically
-   cleaned up when `stacscheck` finishes.
+-  ``$TESTDIR``: The directory of the currently executing script.
+-  ``$TESTROOTDIR``: The directory containing ``practical.config``.
+-  ``$SCRATCHDIR``: A temporary directory which is automatically
+   cleaned up after each test completes.
+
+Example usage in a test script::
+
+   # Copy a data file from the test directory
+   cp "${TESTDIR}/testdata.txt" .
+
+   # Use scratch space for temporary files
+   ./myprogram > "${SCRATCHDIR}/output.txt"
+
+Explanation files
+~~~~~~~~~~~~~~~~~
+
+You can provide helpful explanations for tests by creating ``.explain`` files.
+These files contain text that helps users understand what a test is checking
+and how to fix failures.
+
+To create an explanation file, use the same name as the test script but with
+a ``.explain`` extension instead of ``.sh``:
+
+-  ``test-memory.sh`` → ``test-memory.explain``
+-  ``build-compile.sh`` → ``build-compile.explain``
+-  ``prog-run.sh`` → ``prog-run.explain``
+
+For ``prog`` tests, you can also create output-specific explanations. If you
+have ``prog-run.sh`` with ``example.out``, you can create:
+
+-  ``prog-run.explain`` — shown for all outputs from this prog script
+-  ``example.explain`` — shown only for the ``example.out`` comparison
+
+If both exist, both are displayed (script-level first, then output-specific).
+
+**Display behavior:**
+
+-  **Terminal output**: Explanations are shown only when a test fails,
+   appearing after the failure output.
+-  **HTML output**: Explanations are always shown for every test,
+   regardless of pass or fail.
+
+**Example explanation file** (``test-memory.explain``)::
+
+   This test checks that your program correctly frees all allocated memory.
+
+   Common issues:
+   - Forgetting to call free() before returning
+   - Not freeing memory in error handling paths
+   - Memory leaks in loops
+
+   Try running your program with valgrind to find leaks:
+     valgrind --leak-check=full ./yourprogram
