@@ -1,0 +1,13 @@
+Testing TEST Ctrl-C Test
+- Looking for submission in a directory called 'src': found at 'testdir/src'
+* TEST - test-loop : 
+
+!! Stopping user program (Ctrl+C pressed)
+--- stdout ---
+Starting infinite loop test
+Line 1 of output
+Line 2 of output
+
+--- stderr ---
+This should be captured
+
