@@ -888,19 +888,10 @@ def register_diff_test(test, comparefile):
         # Print to stdout
         test["textdiff"] = textdiff
         textout = u"".join(test["textdiff"])
-        assert isinstance(textout, str)
         output_str(textout + "\n")
-
-
-
-        # Check things are 'str's
-
-        for l in test["textdiff"]:
-            assert isinstance(l, str)
 
     # Create table for html
     test["htmldiff"] = difflib.HtmlDiff().make_table(userlines, comparelines, u"Submission", u"Reference")
-    assert isinstance(test["htmldiff"], str)
 
     finalize_test(test)
 
