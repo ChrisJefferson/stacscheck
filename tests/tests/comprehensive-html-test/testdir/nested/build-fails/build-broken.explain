@@ -1,0 +1,2 @@
+This build test is designed to fail.
+When a build fails, subsequent tests in this directory are skipped.

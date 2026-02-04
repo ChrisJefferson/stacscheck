@@ -1,0 +1,80 @@
+Testing CS9999 HTML Test Suite
+- Looking for submission in a directory called 'comprehensive-html-test': Already in it!
+* BUILD TEST - build-pass : pass ✅
+* TEST - test-fail : fail ❌
+--- submission output ---
+Something went wrong!
+--- submission stderr output ---
+Error details on stderr
+---
+
+--- explanation ---
+This test is designed to fail to demonstrate the explanation feature.
+Check that your code handles the expected case correctly.
+---
+
+* TEST - test-pass : pass ✅
+* INFO 💡 - info-details : pass ✅
+--- submission output ---
+This is informational output
+It always displays regardless of pass/fail
+Useful for showing version info, environment details, etc.
+---
+
+* MULTI-PART-TEST - multi-traffic-01-green-pass : GREEN
+* MULTI-PART-TEST - multi-traffic-02-yellow-warn : YELLOW
+* MULTI-PART-TEST - multi-traffic-03-amber-issue : AMBER
+* MULTI-PART-TEST - multi-traffic-04-red-fail : RED
+--- submission output ---
+Critical error detected
+--- submission stderr output ---
+Memory leak in function process()
+---
+
+* TEST - nested/test-nested-fail : fail ❌
+--- submission output ---
+Nested test failed!
+---
+
+* TEST - nested/test-nested-pass : pass ✅
+* BUILD TEST - nested/build-fails/build-broken : fail ❌
+--- submission output ---
+Compilation error: missing semicolon on line 42
+--- submission stderr output ---
+Build failed!
+---
+
+--- explanation ---
+This build test is designed to fail.
+When a build fails, subsequent tests in this directory are skipped.
+---
+
+* TEST - nested/deeper/test-deep : pass ✅
+* INFO 💡 - nested/deeper/info-deep : pass ✅
+--- submission output ---
+Info from deep directory
+Path: nested/deeper
+---
+
+* COMPARISON TEST - prog-diff-fail/prog-run-compare.out : fail ❌
+--- expected output ---
+<correct>&output"here'
+x < y (the correct answer)
+--- submission output ---
+<wrong>&output"here
+x > y (should be x < y)
+---
+
+--- explanation ---
+This test is designed to fail to show the diff view.
+Note the HTML special characters: < > & " '
+
+This is the output-specific explanation.
+It appears alongside the script explanation.
+---
+
+* COMPARISON TEST - prog-escape/prog-run-special.out : pass ✅
+* COMPARISON TEST - prog-no-input/prog-run-test.out : pass ✅
+* COMPARISON TEST - prog-with-input/prog-run-test.out : pass ✅
+12 out of 17 tests passed
+Building is failing, so some tests were skipped

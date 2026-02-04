@@ -1,0 +1,302 @@
+{
+  "course": "CS9999",
+  "infotext": [
+    "- Looking for submission in a directory called 'comprehensive-html-test': ",
+    "Already in it!\n"
+  ],
+  "practical": "HTML Test Suite",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "build-pass",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/build-pass.sh",
+      "prefix": "* BUILD TEST - build-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Build successful!\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-fail",
+      "pass": false,
+      "path": "DIR/tests/comprehensive-html-test/testdir/test-fail.sh",
+      "prefix": "* TEST - test-fail : ",
+      "returnval": 1,
+      "script_explain": "This test is designed to fail to demonstrate the explanation feature.\nCheck that your code handles the expected case correctly.",
+      "stderr": "Error details on stderr\n",
+      "stdout": "Something went wrong!\n",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-pass",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/test-pass.sh",
+      "prefix": "* TEST - test-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Test output here\n",
+      "type": "Test"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "info-details",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/info-details.sh",
+      "prefix": "* INFO \ud83d\udca1 - info-details : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "This is informational output\nIt always displays regardless of pass/fail\nUseful for showing version info, environment details, etc.\n",
+      "type": "Info"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "multi-traffic-01-green-pass",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/multi-traffic.sh",
+      "prefix": "* MULTI-PART-TEST - multi-traffic-01-green-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stdout": "All checks passed!",
+      "trafficlight": "GREEN",
+      "type": "Multi"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "multi-traffic-02-yellow-warn",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/multi-traffic.sh",
+      "prefix": "* MULTI-PART-TEST - multi-traffic-02-yellow-warn : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stdout": "Minor style warning on line 42",
+      "trafficlight": "YELLOW",
+      "type": "Multi"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "multi-traffic-03-amber-issue",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/multi-traffic.sh",
+      "prefix": "* MULTI-PART-TEST - multi-traffic-03-amber-issue : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "Consider updating to new API",
+      "stdout": "Significant warning: deprecated function used",
+      "trafficlight": "AMBER",
+      "type": "Multi"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "multi-traffic-04-red-fail",
+      "pass": false,
+      "path": "DIR/tests/comprehensive-html-test/testdir/multi-traffic.sh",
+      "prefix": "* MULTI-PART-TEST - multi-traffic-04-red-fail : ",
+      "returnval": 1,
+      "script_explain": null,
+      "stderr": "Memory leak in function process()",
+      "stdout": "Critical error detected",
+      "trafficlight": "RED",
+      "type": "Multi"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "nested/test-nested-fail",
+      "pass": false,
+      "path": "DIR/tests/comprehensive-html-test/testdir/nested/test-nested-fail.sh",
+      "prefix": "* TEST - nested/test-nested-fail : ",
+      "returnval": 1,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Nested test failed!\n",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "nested/test-nested-pass",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/nested/test-nested-pass.sh",
+      "prefix": "* TEST - nested/test-nested-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Nested test passed!\n",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "nested/build-fails/build-broken",
+      "pass": false,
+      "path": "DIR/tests/comprehensive-html-test/testdir/nested/build-fails/build-broken.sh",
+      "prefix": "* BUILD TEST - nested/build-fails/build-broken : ",
+      "returnval": 1,
+      "script_explain": "This build test is designed to fail.\nWhen a build fails, subsequent tests in this directory are skipped.",
+      "stderr": "Build failed!\n",
+      "stdout": "Compilation error: missing semicolon on line 42\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "nested/deeper/test-deep",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/nested/deeper/test-deep.sh",
+      "prefix": "* TEST - nested/deeper/test-deep : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Deep in the directory tree!\n",
+      "type": "Test"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "nested/deeper/info-deep",
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/nested/deeper/info-deep.sh",
+      "prefix": "* INFO \ud83d\udca1 - nested/deeper/info-deep : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Info from deep directory\nPath: nested/deeper\n",
+      "type": "Info"
+    },
+    {
+      "comparelines": [
+        "<correct>&output\"here'\n",
+        "x < y (the correct answer)\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to0__0\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">&lt;wrong&gt;&amp;output\"here</span></td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\"><span class=\"diff_add\">&lt;correct&gt;&amp;output\"here'</span></td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from0_2\">2</td><td nowrap=\"nowrap\"><span class=\"diff_sub\">x&nbsp;&gt;&nbsp;y&nbsp;(should&nbsp;be&nbsp;x&nbsp;&lt;&nbsp;y)</span></td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to0_2\">2</td><td nowrap=\"nowrap\"><span class=\"diff_add\">x&nbsp;&lt;&nbsp;y&nbsp;(the&nbsp;correct&nbsp;answer)</span></td></tr>\n        </tbody>\n    </table>",
+      "input": null,
+      "inputlines": null,
+      "name": "prog-diff-fail/prog-run-compare.out",
+      "output_explain": "This is the output-specific explanation.\nIt appears alongside the script explanation.",
+      "pass": false,
+      "path": "DIR/tests/comprehensive-html-test/testdir/prog-diff-fail/prog-run.sh",
+      "prefix": "* COMPARISON TEST - prog-diff-fail/prog-run-compare.out : ",
+      "returnval": 0,
+      "script_explain": "This test is designed to fail to show the diff view.\nNote the HTML special characters: < > & \" '",
+      "stderr": "",
+      "stdout": "<wrong>&output\"here\nx > y (should be x < y)\n",
+      "textdiff": [
+        "--- expected output ---\n",
+        "<correct>&output\"here'\n",
+        "x < y (the correct answer)\n",
+        "--- submission output ---\n",
+        "<wrong>&output\"here\n",
+        "x > y (should be x < y)\n",
+        "---\n"
+      ],
+      "type": "Prog",
+      "userlines": [
+        "<wrong>&output\"here\n",
+        "x > y (should be x < y)\n"
+      ]
+    },
+    {
+      "comparelines": [
+        "<html>&amp;\"quotes\"&'apostrophes'</html>\n",
+        "x < y && y > z\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"from1_1\">1</td><td nowrap=\"nowrap\">&lt;html&gt;&amp;amp;\"quotes\"&amp;'apostrophes'&lt;/html&gt;</td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"to1_1\">1</td><td nowrap=\"nowrap\">&lt;html&gt;&amp;amp;\"quotes\"&amp;'apostrophes'&lt;/html&gt;</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from1_2\">2</td><td nowrap=\"nowrap\">x&nbsp;&lt;&nbsp;y&nbsp;&amp;&amp;&nbsp;y&nbsp;&gt;&nbsp;z</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to1_2\">2</td><td nowrap=\"nowrap\">x&nbsp;&lt;&nbsp;y&nbsp;&amp;&amp;&nbsp;y&nbsp;&gt;&nbsp;z</td></tr>\n        </tbody>\n    </table>",
+      "input": "DIR/tests/comprehensive-html-test/testdir/prog-escape/special.in",
+      "inputlines": [
+        "<html>&amp;\"quotes\"&'apostrophes'</html>\n",
+        "x < y && y > z\n"
+      ],
+      "name": "prog-escape/prog-run-special.out",
+      "output_explain": null,
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/prog-escape/prog-run.sh",
+      "prefix": "* COMPARISON TEST - prog-escape/prog-run-special.out : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "<html>&amp;\"quotes\"&'apostrophes'</html>\nx < y && y > z\n",
+      "type": "Prog",
+      "userlines": [
+        "<html>&amp;\"quotes\"&'apostrophes'</html>\n",
+        "x < y && y > z\n"
+      ]
+    },
+    {
+      "comparelines": [
+        "Output without input file\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to2__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\" id=\"from2_1\">1</td><td nowrap=\"nowrap\">Output&nbsp;without&nbsp;input&nbsp;file</td><td class=\"diff_next\"><a href=\"#difflib_chg_to2__top\">t</a></td><td class=\"diff_header\" id=\"to2_1\">1</td><td nowrap=\"nowrap\">Output&nbsp;without&nbsp;input&nbsp;file</td></tr>\n        </tbody>\n    </table>",
+      "input": null,
+      "inputlines": null,
+      "name": "prog-no-input/prog-run-test.out",
+      "output_explain": null,
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/prog-no-input/prog-run.sh",
+      "prefix": "* COMPARISON TEST - prog-no-input/prog-run-test.out : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Output without input file\n",
+      "type": "Prog",
+      "userlines": [
+        "Output without input file\n"
+      ]
+    },
+    {
+      "comparelines": [
+        "Hello World\n",
+        "This test has input\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to3__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"from3_1\">1</td><td nowrap=\"nowrap\">Hello&nbsp;World</td><td class=\"diff_next\"><a href=\"#difflib_chg_to3__top\">t</a></td><td class=\"diff_header\" id=\"to3_1\">1</td><td nowrap=\"nowrap\">Hello&nbsp;World</td></tr>\n            <tr><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"from3_2\">2</td><td nowrap=\"nowrap\">This&nbsp;test&nbsp;has&nbsp;input</td><td class=\"diff_next\"></td><td class=\"diff_header\" id=\"to3_2\">2</td><td nowrap=\"nowrap\">This&nbsp;test&nbsp;has&nbsp;input</td></tr>\n        </tbody>\n    </table>",
+      "input": "DIR/tests/comprehensive-html-test/testdir/prog-with-input/test.in",
+      "inputlines": [
+        "Hello World\n",
+        "This test has input\n"
+      ],
+      "name": "prog-with-input/prog-run-test.out",
+      "output_explain": null,
+      "pass": true,
+      "path": "DIR/tests/comprehensive-html-test/testdir/prog-with-input/prog-run.sh",
+      "prefix": "* COMPARISON TEST - prog-with-input/prog-run-test.out : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Hello World\nThis test has input\n",
+      "type": "Prog",
+      "userlines": [
+        "Hello World\n",
+        "This test has input\n"
+      ]
+    }
+  ]
+}
