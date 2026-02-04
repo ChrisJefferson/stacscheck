@@ -1,0 +1,110 @@
+Testing CS9999 HTML Test Suite
+- Looking for submission in a directory called 'comprehensive-html-test': Already in it!
+* BUILD TEST - build-pass : pass ✅
+* TEST - test-fail : fail ❌
+--- ran script ---
+# Failing test
+echo "Something went wrong!"
+echo "Error details on stderr" >&2
+exit 1
+--- submission output ---
+Something went wrong!
+--- submission stderr output ---
+Error details on stderr
+---
+
+--- explanation ---
+This test is designed to fail to demonstrate the explanation feature.
+Check that your code handles the expected case correctly.
+---
+
+* TEST - test-pass : pass ✅
+* INFO 💡 - info-details : pass ✅
+--- submission output ---
+This is informational output
+It always displays regardless of pass/fail
+Useful for showing version info, environment details, etc.
+---
+
+* MULTI-PART-TEST - multi-traffic-01-green-pass : GREEN
+* MULTI-PART-TEST - multi-traffic-02-yellow-warn : YELLOW
+* MULTI-PART-TEST - multi-traffic-03-amber-issue : AMBER
+* MULTI-PART-TEST - multi-traffic-04-red-fail : RED
+--- ran script ---
+# Multi test demonstrating traffic light colors
+cat << 'EOF'
+[
+  {"name": "green-pass", "trafficlight": "GREEN", "returnval": 0, "stdout": "All checks passed!"},
+  {"name": "yellow-warn", "trafficlight": "YELLOW", "returnval": 0, "stdout": "Minor style warning on line 42"},
+  {"name": "amber-issue", "trafficlight": "AMBER", "returnval": 0, "stdout": "Significant warning: deprecated function used", "stderr": "Consider updating to new API"},
+  {"name": "red-fail", "trafficlight": "RED", "returnval": 1, "stdout": "Critical error detected", "stderr": "Memory leak in function process()"}
+]
+EOF
+--- submission output ---
+Critical error detected
+--- submission stderr output ---
+Memory leak in function process()
+---
+
+* TEST - nested/test-nested-fail : fail ❌
+--- ran script ---
+# Nested failing test
+echo "Nested test failed!"
+exit 1
+--- submission output ---
+Nested test failed!
+---
+
+* TEST - nested/test-nested-pass : pass ✅
+* BUILD TEST - nested/build-fails/build-broken : fail ❌
+--- ran script ---
+# This build test fails
+echo "Compilation error: missing semicolon on line 42"
+echo "Build failed!" >&2
+exit 1
+--- submission output ---
+Compilation error: missing semicolon on line 42
+--- submission stderr output ---
+Build failed!
+---
+
+--- explanation ---
+This build test is designed to fail.
+When a build fails, subsequent tests in this directory are skipped.
+---
+
+Exiting early due to failed DIR/tests/comprehensive-html-test/testdir/nested/build-fails/build-broken.sh
+
+* TEST - nested/deeper/test-deep : pass ✅
+* INFO 💡 - nested/deeper/info-deep : pass ✅
+--- submission output ---
+Info from deep directory
+Path: nested/deeper
+---
+
+* COMPARISON TEST - prog-diff-fail/prog-run-compare.out : fail ❌
+--- ran script ---
+# This outputs wrong content to show a diff
+echo '<wrong>&output"here'
+echo "x > y (should be x < y)"
+--- expected output ---
+<correct>&output"here'
+x < y (the correct answer)
+--- submission output ---
+<wrong>&output"here
+x > y (should be x < y)
+---
+
+--- explanation ---
+This test is designed to fail to show the diff view.
+Note the HTML special characters: < > & " '
+
+This is the output-specific explanation.
+It appears alongside the script explanation.
+---
+
+* COMPARISON TEST - prog-escape/prog-run-special.out : pass ✅
+* COMPARISON TEST - prog-no-input/prog-run-test.out : pass ✅
+* COMPARISON TEST - prog-with-input/prog-run-test.out : pass ✅
+12 out of 17 tests passed
+Building is failing, so some tests were skipped

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CS9999 HTML Test Suite - &lt;unknown&gt;</title>
+    <style>
+        /* Diff table styles */
+        table.diff {
+            table-layout: inherit;
+            font-family: Courier, monospace;
+            border: medium;
+            word-wrap: break-word;
+        }
+        .code {font-family: Courier, monospace; border: medium; width: 2000px}
+        .diff_header {background-color: #3a3a3a; color: #ffffff}
+        td.diff_header {text-align: center;}
+        .diff_next {background-color: #ff00dd; display: none}
+        .diff_add {background-color: #24906c}
+        .diff_chg {background-color: #ffff77; color: #000}
+        .diff_sub {background-color: #e44c4b}
+
+        /* Traffic light colors for rows */
+        .GREEN {background-color: #2aa77d}
+        .YELLOW {background-color: #ffff77; color: #000}
+        .AMBER {background-color: #ffa54f; color: #000}
+        .RED {background-color: #e44c4b}
+        .pass-row {background-color: #2aa77d}
+        .fail-row {background-color: #e44c4b}
+
+        :target {background: yellow; color: #000}
+
+        /* Dark theme */
+        body {background-color: #292929; color: #ffffff; width: 100%; font-family: Arial, sans-serif;}
+
+        /* Typography */
+        .test_desc {font-size: 22px; font-weight: normal;}
+        .infocode {font-size: 14px; font-family: Courier, monospace; margin-left: 20px}
+        .compcode {font-size: 14px; font-family: Courier, monospace; margin-left: 20px}
+        .explaincode {font-size: 14px; margin-left: 20px; padding: 10px; background-color: #3a3a5a; border-left: 3px solid #6a6aff; white-space: pre-wrap;}
+        h1 {font-size: 28px; margin: 20px 0;}
+        h2 {font-size: 18px; font-weight: bold; margin-left: 20px}
+        h3 {font-size: 16px; margin-left: 20px;}
+
+        /* Table layout */
+        table {table-layout: fixed; border-collapse: collapse;}
+        td, th {white-space: normal; padding: 8px; text-align: left; border: 1px solid #444;}
+        th {font-weight: bold;}
+        #testtable {width: 100%;}
+        #testtable th:first-child {width: 80px;}
+        #testtable th:nth-child(2) {width: 120px;}
+
+        /* Collapsible content */
+        .collapsible {display: none;}
+        .collapsible[aria-hidden="false"] {display: table-row;}
+
+        /* Buttons */
+        .collapsebutton {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #4a4a4a;
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+        .collapsebutton:hover {background-color: #5a5a5a;}
+
+        /* Accessibility: visible focus indicators */
+        button:focus, a:focus {
+            outline: 3px solid #ffff00;
+            outline-offset: 2px;
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            background: #fff;
+            color: #000;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        .skip-link:focus {
+            left: 10px;
+            top: 10px;
+        }
+
+        /* Status indicators */
+        .status-pass {font-weight: bold;}
+        .status-fail {font-weight: bold;}
+    </style>
+</head>
+<body>
+    <a href="#test-results" class="skip-link">Skip to test results</a>
+
+    <header role="banner">
+        <h1>12 out of 17 tests passed</h1>
+    </header>
+
+    <main id="main-content">
+        <section aria-labelledby="info-heading">
+            <h2 id="info-heading">Stacscheck Info</h2>
+            <div class="infocode">- Looking for submission in a directory called &#39;comprehensive-html-test&#39;: <br>Already in it!
+<br></div>
+        </section>
+
+        <section id="test-results" aria-labelledby="results-heading">
+            <h2 id="results-heading">Test Results</h2>
+
+            <table id="testtable" aria-describedby="table-description">
+                <caption id="table-description" class="sr-only">
+                    Test results table. Each row shows a test status and name.
+                    Use the expand button to see details for each test.
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Details</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Test Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="test1" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-1"
+                                    onclick="toggleDetails(this, 'content-1')">
+                                <span class="sr-only">Show details for build-pass</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="build-pass">build-pass</td>
+                    </tr>
+                    <tr id="content-1" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Build successful!<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test2" class="fail-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-2"
+                                    onclick="toggleDetails(this, 'content-2')">
+                                <span class="sr-only">Show details for test-fail</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-fail">FAIL</span></td>
+                        <td class="test_desc" id="test-fail">test-fail</td>
+                    </tr>
+                    <tr id="content-2" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Something went wrong!<br></div><div class="infocode">Error details on stderr<br></div><h3>Explanation</h3>
+                                <div class="explaincode" role="note">This test is designed to fail to demonstrate the explanation feature.
+Check that your code handles the expected case correctly.</div></div>
+                        </td>
+                    </tr>
+                    <tr id="test3" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-3"
+                                    onclick="toggleDetails(this, 'content-3')">
+                                <span class="sr-only">Show details for test-pass</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="test-pass">test-pass</td>
+                    </tr>
+                    <tr id="content-3" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Test output here<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test4" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-4"
+                                    onclick="toggleDetails(this, 'content-4')">
+                                <span class="sr-only">Show details for info-details</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="info-details">info-details</td>
+                    </tr>
+                    <tr id="content-4" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">This is informational output<br>It always displays regardless of pass/fail<br>Useful for showing version info, environment details, etc.<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test5" class="GREEN">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-5"
+                                    onclick="toggleDetails(this, 'content-5')">
+                                <span class="sr-only">Show details for multi-traffic-01-green-pass</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span aria-label="Status: GREEN">GREEN</span></td>
+                        <td class="test_desc" id="multi-traffic-01-green-pass">multi-traffic-01-green-pass</td>
+                    </tr>
+                    <tr id="content-5" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Test Info</h3>
+                                <div class="infocode">All checks passed!<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test6" class="YELLOW">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-6"
+                                    onclick="toggleDetails(this, 'content-6')">
+                                <span class="sr-only">Show details for multi-traffic-02-yellow-warn</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span aria-label="Status: YELLOW">YELLOW</span></td>
+                        <td class="test_desc" id="multi-traffic-02-yellow-warn">multi-traffic-02-yellow-warn</td>
+                    </tr>
+                    <tr id="content-6" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Test Info</h3>
+                                <div class="infocode">Minor style warning on line 42<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test7" class="AMBER">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-7"
+                                    onclick="toggleDetails(this, 'content-7')">
+                                <span class="sr-only">Show details for multi-traffic-03-amber-issue</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span aria-label="Status: AMBER">AMBER</span></td>
+                        <td class="test_desc" id="multi-traffic-03-amber-issue">multi-traffic-03-amber-issue</td>
+                    </tr>
+                    <tr id="content-7" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Test Info</h3>
+                                <div class="infocode">Significant warning: deprecated function used<br></div><div class="infocode">Consider updating to new API<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test8" class="RED">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-8"
+                                    onclick="toggleDetails(this, 'content-8')">
+                                <span class="sr-only">Show details for multi-traffic-04-red-fail</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span aria-label="Status: RED">RED</span></td>
+                        <td class="test_desc" id="multi-traffic-04-red-fail">multi-traffic-04-red-fail</td>
+                    </tr>
+                    <tr id="content-8" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Test Info</h3>
+                                <div class="infocode">Critical error detected<br></div><div class="infocode">Memory leak in function process()<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test9" class="fail-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-9"
+                                    onclick="toggleDetails(this, 'content-9')">
+                                <span class="sr-only">Show details for nested/test-nested-fail</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-fail">FAIL</span></td>
+                        <td class="test_desc" id="nested/test-nested-fail">nested/test-nested-fail</td>
+                    </tr>
+                    <tr id="content-9" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Nested test failed!<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test10" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-10"
+                                    onclick="toggleDetails(this, 'content-10')">
+                                <span class="sr-only">Show details for nested/test-nested-pass</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="nested/test-nested-pass">nested/test-nested-pass</td>
+                    </tr>
+                    <tr id="content-10" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Nested test passed!<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test11" class="fail-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-11"
+                                    onclick="toggleDetails(this, 'content-11')">
+                                <span class="sr-only">Show details for nested/build-fails/build-broken</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-fail">FAIL</span></td>
+                        <td class="test_desc" id="nested/build-fails/build-broken">nested/build-fails/build-broken</td>
+                    </tr>
+                    <tr id="content-11" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Compilation error: missing semicolon on line 42<br></div><div class="infocode">Build failed!<br></div><h3>Explanation</h3>
+                                <div class="explaincode" role="note">This build test is designed to fail.
+When a build fails, subsequent tests in this directory are skipped.</div></div>
+                        </td>
+                    </tr>
+                    <tr id="test12" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-12"
+                                    onclick="toggleDetails(this, 'content-12')">
+                                <span class="sr-only">Show details for nested/deeper/test-deep</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="nested/deeper/test-deep">nested/deeper/test-deep</td>
+                    </tr>
+                    <tr id="content-12" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Deep in the directory tree!<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test13" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-13"
+                                    onclick="toggleDetails(this, 'content-13')">
+                                <span class="sr-only">Show details for nested/deeper/info-deep</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="nested/deeper/info-deep">nested/deeper/info-deep</td>
+                    </tr>
+                    <tr id="content-13" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Compiler Info</h3>
+                                <div class="infocode">Info from deep directory<br>Path: nested/deeper<br></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test14" class="fail-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-14"
+                                    onclick="toggleDetails(this, 'content-14')">
+                                <span class="sr-only">Show details for prog-diff-fail/prog-run-compare.out</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-fail">FAIL</span></td>
+                        <td class="test_desc" id="prog-diff-fail/prog-run-compare.out">prog-diff-fail/prog-run-compare.out</td>
+                    </tr>
+                    <tr id="content-14" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Output Comparison</h3>
+                                <div class="compcode">
+    <table class="diff" id="difflib_chg_to0__top"
+           cellspacing="0" cellpadding="0" rules="groups" >
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Submission</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Reference</th></tr></thead>
+        <tbody>
+            <tr><td class="diff_next" id="difflib_chg_to0__0"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="from0_1">1</td><td nowrap="nowrap"><span class="diff_sub">&lt;wrong&gt;&amp;output"here</span></td><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="to0_1">1</td><td nowrap="nowrap"><span class="diff_add">&lt;correct&gt;&amp;output"here'</span></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from0_2">2</td><td nowrap="nowrap"><span class="diff_sub">x&nbsp;&gt;&nbsp;y&nbsp;(should&nbsp;be&nbsp;x&nbsp;&lt;&nbsp;y)</span></td><td class="diff_next"></td><td class="diff_header" id="to0_2">2</td><td nowrap="nowrap"><span class="diff_add">x&nbsp;&lt;&nbsp;y&nbsp;(the&nbsp;correct&nbsp;answer)</span></td></tr>
+        </tbody>
+    </table></div><h3>Explanation</h3>
+                                <div class="explaincode" role="note">This test is designed to fail to show the diff view.
+Note the HTML special characters: &lt; &gt; &amp; &#34; &#39;
+This is the output-specific explanation.
+It appears alongside the script explanation.</div></div>
+                        </td>
+                    </tr>
+                    <tr id="test15" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-15"
+                                    onclick="toggleDetails(this, 'content-15')">
+                                <span class="sr-only">Show details for prog-escape/prog-run-special.out</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="prog-escape/prog-run-special.out">prog-escape/prog-run-special.out</td>
+                    </tr>
+                    <tr id="content-15" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Input</h3>
+                                <div class="infocode">&lt;html&gt;&amp;amp;&#34;quotes&#34;&amp;&#39;apostrophes&#39;&lt;/html&gt;
+<br>x &lt; y &amp;&amp; y &gt; z
+<br></div><h3>Output Comparison</h3>
+                                <div class="compcode">
+    <table class="diff" id="difflib_chg_to1__top"
+           cellspacing="0" cellpadding="0" rules="groups" >
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Submission</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Reference</th></tr></thead>
+        <tbody>
+            <tr><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="from1_1">1</td><td nowrap="nowrap">&lt;html&gt;&amp;amp;"quotes"&amp;'apostrophes'&lt;/html&gt;</td><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="to1_1">1</td><td nowrap="nowrap">&lt;html&gt;&amp;amp;"quotes"&amp;'apostrophes'&lt;/html&gt;</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from1_2">2</td><td nowrap="nowrap">x&nbsp;&lt;&nbsp;y&nbsp;&amp;&amp;&nbsp;y&nbsp;&gt;&nbsp;z</td><td class="diff_next"></td><td class="diff_header" id="to1_2">2</td><td nowrap="nowrap">x&nbsp;&lt;&nbsp;y&nbsp;&amp;&amp;&nbsp;y&nbsp;&gt;&nbsp;z</td></tr>
+        </tbody>
+    </table></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test16" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-16"
+                                    onclick="toggleDetails(this, 'content-16')">
+                                <span class="sr-only">Show details for prog-no-input/prog-run-test.out</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="prog-no-input/prog-run-test.out">prog-no-input/prog-run-test.out</td>
+                    </tr>
+                    <tr id="content-16" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Output Comparison</h3>
+                                <div class="compcode">
+    <table class="diff" id="difflib_chg_to2__top"
+           cellspacing="0" cellpadding="0" rules="groups" >
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Submission</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Reference</th></tr></thead>
+        <tbody>
+            <tr><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="from2_1">1</td><td nowrap="nowrap">Output&nbsp;without&nbsp;input&nbsp;file</td><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="to2_1">1</td><td nowrap="nowrap">Output&nbsp;without&nbsp;input&nbsp;file</td></tr>
+        </tbody>
+    </table></div></div>
+                        </td>
+                    </tr>
+                    <tr id="test17" class="pass-row">
+                        <td>
+                            <button class="collapsebutton"
+                                    aria-expanded="false"
+                                    aria-controls="content-17"
+                                    onclick="toggleDetails(this, 'content-17')">
+                                <span class="sr-only">Show details for prog-with-input/prog-run-test.out</span>
+                                <span aria-hidden="true">expand</span>
+                            </button>
+                        </td>
+                        <td class="test_desc"><span class="status-pass">PASS</span></td>
+                        <td class="test_desc" id="prog-with-input/prog-run-test.out">prog-with-input/prog-run-test.out</td>
+                    </tr>
+                    <tr id="content-17" class="collapsible" aria-hidden="true">
+                        <td colspan="3" class="code">
+                            <div class="test-details"><h3>Input</h3>
+                                <div class="infocode">Hello World
+<br>This test has input
+<br></div><h3>Output Comparison</h3>
+                                <div class="compcode">
+    <table class="diff" id="difflib_chg_to3__top"
+           cellspacing="0" cellpadding="0" rules="groups" >
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Submission</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">Reference</th></tr></thead>
+        <tbody>
+            <tr><td class="diff_next"><a href="#difflib_chg_to3__top">t</a></td><td class="diff_header" id="from3_1">1</td><td nowrap="nowrap">Hello&nbsp;World</td><td class="diff_next"><a href="#difflib_chg_to3__top">t</a></td><td class="diff_header" id="to3_1">1</td><td nowrap="nowrap">Hello&nbsp;World</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from3_2">2</td><td nowrap="nowrap">This&nbsp;test&nbsp;has&nbsp;input</td><td class="diff_next"></td><td class="diff_header" id="to3_2">2</td><td nowrap="nowrap">This&nbsp;test&nbsp;has&nbsp;input</td></tr>
+        </tbody>
+    </table></div></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p role="alert"><strong>Warning:</strong> Building is failing, some tests were skipped.</p>
+        </section>
+    </main>
+
+    <script>
+        function toggleDetails(button, contentId) {
+            var content = document.getElementById(contentId);
+            var isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+            // Toggle state
+            button.setAttribute('aria-expanded', !isExpanded);
+            content.setAttribute('aria-hidden', isExpanded);
+            content.style.display = isExpanded ? 'none' : 'table-row';
+
+            // Update button text
+            var buttonText = button.querySelector('[aria-hidden="true"]');
+            buttonText.textContent = isExpanded ? 'expand' : 'collapse';
+        }
+    </script>
+</body>
+</html>
