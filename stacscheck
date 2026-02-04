@@ -45,341 +45,97 @@ import inspect
 
 # Stacscheck
 
-# Minimal template engine (replaces jinja2 dependency)
-def render_template(template, context):
-    """Render a template string with the given context dict."""
+def html_escape(s):
+    """Escape HTML special characters."""
+    if s is None:
+        return ""
+    return (str(s)
+        .replace('&', '&amp;')
+        .replace('<', '&lt;')
+        .replace('>', '&gt;')
+        .replace('"', '&#34;')
+        .replace("'", '&#39;'))
 
-    def html_escape(s):
-        if s is None:
-            return ""
-        # Match jinja2's escaping (uses &#39; not &#x27; for apostrophe)
-        return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&#34;').replace("'", '&#39;')
 
-    def resolve_var(expr, local_ctx):
-        """Get raw value of expression (no escaping)."""
-        expr = expr.strip()
-        ctx = {**context, **local_ctx}
+def render_html_report(practical, submission_id, tests, final_message, any_build_failed, info_text):
+    """Generate HTML report for test results."""
+    parts = []
 
-        # Handle string literals
-        if (expr.startswith('"') and expr.endswith('"')) or \
-           (expr.startswith("'") and expr.endswith("'")):
-            return expr[1:-1]
-
-        # Navigate dotted path with method calls
-        parts = expr.split('.')
-        val = ctx.get(parts[0])
-        for part in parts[1:]:
-            if val is None:
-                break
-            if part.endswith('()'):
-                val = getattr(val, part[:-2], lambda: None)()
-            elif isinstance(val, dict):
-                val = val.get(part)
-            else:
-                val = getattr(val, part, None)
-        return val
-
-    def get_value(expr, local_ctx):
-        """Get escaped string value for output."""
-        expr = expr.strip()
-
-        # Handle 'x | safe' filter
-        if ' | safe' in expr:
-            expr = expr.replace(' | safe', '')
-            val = resolve_var(expr, local_ctx)
-            return str(val) if val is not None else ""
-
-        val = resolve_var(expr, local_ctx)
-        return html_escape(val)
-
-    def eval_condition(cond, local_ctx):
-        """Evaluate a condition like 'test.pass' or '"x" in test'."""
-        cond = cond.strip()
-
-        # Handle 'x and y'
-        if ' and ' in cond:
-            parts = cond.split(' and ', 1)
-            return eval_condition(parts[0], local_ctx) and eval_condition(parts[1], local_ctx)
-
-        # Handle 'x or y'
-        if ' or ' in cond:
-            parts = cond.split(' or ', 1)
-            return eval_condition(parts[0], local_ctx) or eval_condition(parts[1], local_ctx)
-
-        # Handle '"key" in dict'
-        if ' in ' in cond and ' not in ' not in cond:
-            key, _, obj = cond.partition(' in ')
-            key = key.strip().strip('"').strip("'")
-            obj_val = resolve_var(obj, local_ctx)
-            return key in obj_val if obj_val else False
-
-        # Handle 'x is not none'
-        if ' is not none' in cond.lower():
-            var = cond.split()[0]  # Get variable name before 'is'
-            return resolve_var(var, local_ctx) is not None
-
-        # Handle 'x != "value"'
-        if ' != ' in cond:
-            left, _, right = cond.partition(' != ')
-            return resolve_var(left, local_ctx) != resolve_var(right, local_ctx)
-
-        # Handle 'x == "value"'
-        if ' == ' in cond:
-            left, _, right = cond.partition(' == ')
-            return resolve_var(left, local_ctx) == resolve_var(right, local_ctx)
-
-        # Simple truthy check
-        return bool(resolve_var(cond, local_ctx))
-
-    def process(tmpl, local_ctx):
-        """Process template string, return rendered output."""
-        result = []
-        i = 0
-
-        while i < len(tmpl):
-            # Comment {# ... #}
-            if tmpl[i:i+2] == '{#':
-                end = tmpl.find('#}', i)
-                i = end + 2 if end != -1 else len(tmpl)
-                continue
-
-            # Variable {{ ... }}
-            if tmpl[i:i+2] == '{{':
-                strip_before = tmpl[i:i+3] == '{{-'
-                if strip_before and result:
-                    result[-1] = result[-1].rstrip()
-                start = i + 3 if strip_before else i + 2
-                end = tmpl.find('}}', start)
-                strip_after = tmpl[end-1] == '-'
-                expr = tmpl[start:end-1] if strip_after else tmpl[start:end]
-                result.append(get_value(expr, local_ctx))
-                i = end + 2
-                if strip_after:
-                    while i < len(tmpl) and tmpl[i] in ' \t\n':
-                        i += 1
-                continue
-
-            # Tag {% ... %}
-            if tmpl[i:i+2] == '{%':
-                strip_before = tmpl[i:i+3] == '{%-'
-                if strip_before and result:
-                    result[-1] = result[-1].rstrip()
-                start = i + 3 if strip_before else i + 2
-                end = tmpl.find('%}', start)
-                strip_after = tmpl[end-1] == '-'
-                tag = tmpl[start:end-1].strip() if strip_after else tmpl[start:end].strip()
-                i = end + 2
-                if strip_after:
-                    while i < len(tmpl) and tmpl[i] in ' \t\n':
-                        i += 1
-
-                # For loop
-                if tag.startswith('for '):
-                    match = tag[4:].split(' in ', 1)
-                    var_name, iterable_expr = match[0].strip(), match[1].strip()
-
-                    def find_for_tag(s, start):
-                        """Find {% for or {%- for, return position or len(s)."""
-                        p1 = s.find('{% for ', start)
-                        p2 = s.find('{%- for ', start)
-                        if p1 == -1: p1 = len(s)
-                        if p2 == -1: p2 = len(s)
-                        return min(p1, p2)
-
-                    def find_endfor_tag(s, start):
-                        """Find {% endfor or {%- endfor, return position or -1."""
-                        p1 = s.find('{% endfor', start)
-                        p2 = s.find('{%- endfor', start)
-                        if p1 == -1: return p2
-                        if p2 == -1: return p1
-                        return min(p1, p2)
-
-                    # Find matching endfor
-                    depth, body_end = 1, i
-                    body = ""
-                    while depth > 0 and body_end < len(tmpl):
-                        next_for = find_for_tag(tmpl, body_end)
-                        next_endfor = find_endfor_tag(tmpl, body_end)
-                        if next_endfor == -1: break
-                        if next_for < next_endfor:
-                            depth += 1
-                            body_end = next_for + 1
-                        else:
-                            depth -= 1
-                            if depth == 0:
-                                body = tmpl[i:next_endfor]
-                            body_end = next_endfor + 1
-
-                    # Get iterable value
-                    iterable = resolve_var(iterable_expr, local_ctx)
-
-                    for idx, item in enumerate(iterable or [], 1):
-                        loop_ctx = {**local_ctx, var_name: item, 'loop': {'index': idx}}
-                        result.append(process(body, loop_ctx))
-
-                    # Skip past endfor
-                    endfor_close = tmpl.find('%}', next_endfor)
-                    i = endfor_close + 2
-                    continue
-
-                # If/elif/else
-                if tag.startswith('if '):
-                    cond = tag[3:]
-
-                    def find_tag(s, tag_name, start):
-                        """Find {% tag or {%- tag, return position or -1."""
-                        p1 = s.find('{% ' + tag_name, start)
-                        p2 = s.find('{%- ' + tag_name, start)
-                        if p1 == -1: return p2
-                        if p2 == -1: return p1
-                        return min(p1, p2)
-
-                    def extract_tag_content(s, pos):
-                        """Extract content between {% and %}, handling - markers."""
-                        start = pos + 2
-                        if s[start:start+1] == '-':
-                            start += 1
-                        end = s.find('%}', start)
-                        content = s[start:end]
-                        # Strip trailing - (whitespace control marker)
-                        if content.rstrip().endswith('-'):
-                            content = content.rstrip()[:-1]
-                        return content.strip(), s.find('%}', pos) + 2
-
-                    # Find all branches and endif
-                    branches = []
-                    depth, pos = 1, i
-                    branch_start = i
-                    current_cond = cond
-
-                    while depth > 0 and pos < len(tmpl):
-                        next_if = find_tag(tmpl, 'if ', pos)
-                        next_elif = find_tag(tmpl, 'elif ', pos) if depth == 1 else -1
-                        next_else = find_tag(tmpl, 'else', pos) if depth == 1 else -1
-                        next_endif = find_tag(tmpl, 'endif', pos)
-
-                        if next_if == -1: next_if = len(tmpl)
-                        if next_elif == -1: next_elif = len(tmpl)
-                        if next_else == -1: next_else = len(tmpl)
-                        if next_endif == -1: break
-
-                        next_tag = min(next_if, next_elif, next_else, next_endif)
-
-                        if next_tag == next_if and next_if < len(tmpl):
-                            depth += 1
-                            pos = next_if + 1
-                        elif next_tag == next_elif:
-                            branches.append((current_cond, tmpl[branch_start:next_elif]))
-                            tag_content, branch_start = extract_tag_content(tmpl, next_elif)
-                            current_cond = tag_content[5:].strip()  # skip 'elif '
-                            pos = branch_start
-                        elif next_tag == next_else:
-                            branches.append((current_cond, tmpl[branch_start:next_else]))
-                            _, branch_start = extract_tag_content(tmpl, next_else)
-                            current_cond = True
-                            pos = branch_start
-                        else:  # endif
-                            depth -= 1
-                            if depth == 0:
-                                branches.append((current_cond, tmpl[branch_start:next_endif]))
-                                _, i = extract_tag_content(tmpl, next_endif)
-                            pos = next_endif + 1
-
-                    for branch_cond, branch_body in branches:
-                        if branch_cond is True or eval_condition(branch_cond, local_ctx):
-                            result.append(process(branch_body, local_ctx))
-                            break
-                    continue
-
-            # Plain text
-            next_tag = len(tmpl)
-            for marker in ['{{', '{%', '{#']:
-                pos = tmpl.find(marker, i)
-                if pos != -1 and pos < next_tag:
-                    next_tag = pos
-            result.append(tmpl[i:next_tag])
-            i = next_tag
-
-        return ''.join(result)
-
-    return process(template, {})
-
-# The HTML output
-JINJAPAGE = u"""
-<!DOCTYPE html>
+    # HTML head with CSS
+    parts.append(f'''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{Practical}} - {{ SubmissionID }}</title>
+    <title>{html_escape(practical)} - {html_escape(submission_id)}</title>
     <style>
         /* Diff table styles */
-        table.diff {
+        table.diff {{
             table-layout: inherit;
             font-family: Courier, monospace;
             border: medium;
             word-wrap: break-word;
-        }
-        .code {font-family: Courier, monospace; border: medium; width: 2000px}
-        .diff_header {background-color: #3a3a3a; color: #ffffff}
-        td.diff_header {text-align: center;}
-        .diff_next {background-color: #ff00dd; display: none}
-        .diff_add {background-color: #24906c}
-        .diff_chg {background-color: #ffff77; color: #000}
-        .diff_sub {background-color: #e44c4b}
+        }}
+        .code {{font-family: Courier, monospace; border: medium; width: 2000px}}
+        .diff_header {{background-color: #3a3a3a; color: #ffffff}}
+        td.diff_header {{text-align: center;}}
+        .diff_next {{background-color: #ff00dd; display: none}}
+        .diff_add {{background-color: #24906c}}
+        .diff_chg {{background-color: #ffff77; color: #000}}
+        .diff_sub {{background-color: #e44c4b}}
 
         /* Traffic light colors for rows */
-        .GREEN {background-color: #2aa77d}
-        .YELLOW {background-color: #ffff77; color: #000}
-        .AMBER {background-color: #ffa54f; color: #000}
-        .RED {background-color: #e44c4b}
-        .pass-row {background-color: #2aa77d}
-        .fail-row {background-color: #e44c4b}
+        .GREEN {{background-color: #2aa77d}}
+        .YELLOW {{background-color: #ffff77; color: #000}}
+        .AMBER {{background-color: #ffa54f; color: #000}}
+        .RED {{background-color: #e44c4b}}
+        .pass-row {{background-color: #2aa77d}}
+        .fail-row {{background-color: #e44c4b}}
 
-        :target {background: yellow; color: #000}
+        :target {{background: yellow; color: #000}}
 
         /* Dark theme */
-        body {background-color: #292929; color: #ffffff; width: 100%; font-family: Arial, sans-serif;}
+        body {{background-color: #292929; color: #ffffff; width: 100%; font-family: Arial, sans-serif;}}
 
         /* Typography */
-        .test_desc {font-size: 22px; font-weight: normal;}
-        .infocode {font-size: 14px; font-family: Courier, monospace; margin-left: 20px}
-        .compcode {font-size: 14px; font-family: Courier, monospace; margin-left: 20px}
-        .explaincode {font-size: 14px; margin-left: 20px; padding: 10px; background-color: #3a3a5a; border-left: 3px solid #6a6aff; white-space: pre-wrap;}
-        h1 {font-size: 28px; margin: 20px 0;}
-        h2 {font-size: 18px; font-weight: bold; margin-left: 20px}
-        h3 {font-size: 16px; margin-left: 20px;}
+        .test_desc {{font-size: 22px; font-weight: normal;}}
+        .infocode {{font-size: 14px; font-family: Courier, monospace; margin-left: 20px}}
+        .compcode {{font-size: 14px; font-family: Courier, monospace; margin-left: 20px}}
+        .explaincode {{font-size: 14px; margin-left: 20px; padding: 10px; background-color: #3a3a5a; border-left: 3px solid #6a6aff; white-space: pre-wrap;}}
+        h1 {{font-size: 28px; margin: 20px 0;}}
+        h2 {{font-size: 18px; font-weight: bold; margin-left: 20px}}
+        h3 {{font-size: 16px; margin-left: 20px;}}
 
         /* Table layout */
-        table {table-layout: fixed; border-collapse: collapse;}
-        td, th {white-space: normal; padding: 8px; text-align: left; border: 1px solid #444;}
-        th {font-weight: bold;}
-        #testtable {width: 100%;}
-        #testtable th:first-child {width: 80px;}
-        #testtable th:nth-child(2) {width: 120px;}
+        table {{table-layout: fixed; border-collapse: collapse;}}
+        td, th {{white-space: normal; padding: 8px; text-align: left; border: 1px solid #444;}}
+        th {{font-weight: bold;}}
+        #testtable {{width: 100%;}}
+        #testtable th:first-child {{width: 80px;}}
+        #testtable th:nth-child(2) {{width: 120px;}}
 
         /* Collapsible content */
-        .collapsible {display: none;}
-        .collapsible[aria-hidden="false"] {display: table-row;}
+        .collapsible {{display: none;}}
+        .collapsible[aria-hidden="false"] {{display: table-row;}}
 
         /* Buttons */
-        .collapsebutton {
+        .collapsebutton {{
             padding: 5px 10px;
             cursor: pointer;
             background-color: #4a4a4a;
             color: #fff;
             border: 1px solid #666;
             border-radius: 3px;
-        }
-        .collapsebutton:hover {background-color: #5a5a5a;}
+        }}
+        .collapsebutton:hover {{background-color: #5a5a5a;}}
 
         /* Accessibility: visible focus indicators */
-        button:focus, a:focus {
+        button:focus, a:focus {{
             outline: 3px solid #ffff00;
             outline-offset: 2px;
-        }
+        }}
 
         /* Screen reader only content */
-        .sr-only {
+        .sr-only {{
             position: absolute;
             width: 1px;
             height: 1px;
@@ -389,10 +145,10 @@ JINJAPAGE = u"""
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
             border: 0;
-        }
+        }}
 
         /* Skip link */
-        .skip-link {
+        .skip-link {{
             position: absolute;
             left: -9999px;
             background: #fff;
@@ -401,32 +157,34 @@ JINJAPAGE = u"""
             text-decoration: none;
             font-weight: bold;
             z-index: 1000;
-        }
-        .skip-link:focus {
+        }}
+        .skip-link:focus {{
             left: 10px;
             top: 10px;
-        }
+        }}
 
         /* Status indicators */
-        .status-pass {font-weight: bold;}
-        .status-fail {font-weight: bold;}
+        .status-pass {{font-weight: bold;}}
+        .status-fail {{font-weight: bold;}}
     </style>
 </head>
 <body>
     <a href="#test-results" class="skip-link">Skip to test results</a>
 
     <header role="banner">
-        <h1>{{ Finalmessage }}</h1>
+        <h1>{html_escape(final_message)}</h1>
     </header>
 
     <main id="main-content">
         <section aria-labelledby="info-heading">
             <h2 id="info-heading">Stacscheck Info</h2>
-            <div class="infocode">
-            {%- for line in InfoText %}
-                {{line}}<br>
-            {%- endfor %}
-            </div>
+            <div class="infocode">''')
+
+    # Info text lines
+    for line in info_text:
+        parts.append(f'{html_escape(line)}<br>')
+
+    parts.append('''</div>
         </section>
 
         <section id="test-results" aria-labelledby="results-heading">
@@ -444,116 +202,119 @@ JINJAPAGE = u"""
                         <th scope="col">Test Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                {%- for test in Tests %}
-                    <tr id="test{{ loop.index }}"
-                        {%- if "trafficlight" in test %} class="{{test.trafficlight}}"
-                        {%- elif test.pass %} class="pass-row"
-                        {%- else %} class="fail-row"
-                        {%- endif %}>
+                <tbody>''')
+
+    # Test rows
+    for idx, test in enumerate(tests, 1):
+        # Determine row class
+        if "trafficlight" in test:
+            row_class = html_escape(test["trafficlight"])
+        elif test.get("pass"):
+            row_class = "pass-row"
+        else:
+            row_class = "fail-row"
+
+        # Determine status display
+        if "trafficlight" in test:
+            status_html = f'<span aria-label="Status: {html_escape(test["trafficlight"])}">{html_escape(test["trafficlight"])}</span>'
+        elif test.get("pass"):
+            status_html = '<span class="status-pass">PASS</span>'
+        else:
+            status_html = '<span class="status-fail">FAIL</span>'
+
+        test_name = html_escape(test.get("name", ""))
+
+        parts.append(f'''
+                    <tr id="test{idx}" class="{row_class}">
                         <td>
                             <button class="collapsebutton"
                                     aria-expanded="false"
-                                    aria-controls="content-{{loop.index}}"
-                                    onclick="toggleDetails(this, 'content-{{loop.index}}')">
-                                <span class="sr-only">Show details for {{ test.name }}</span>
+                                    aria-controls="content-{idx}"
+                                    onclick="toggleDetails(this, 'content-{idx}')">
+                                <span class="sr-only">Show details for {test_name}</span>
                                 <span aria-hidden="true">expand</span>
                             </button>
                         </td>
-                        <td class="test_desc">
-                            {%- if "trafficlight" in test -%}
-                                <span aria-label="Status: {{test.trafficlight}}">{{test.trafficlight}}</span>
-                            {%- elif test.pass -%}
-                                <span class="status-pass">PASS</span>
-                            {%- else -%}
-                                <span class="status-fail">FAIL</span>
-                            {%- endif -%}
-                        </td>
-                        <td class="test_desc" id="{{ test.name }}">{{ test.name }}</td>
+                        <td class="test_desc">{status_html}</td>
+                        <td class="test_desc" id="{test_name}">{test_name}</td>
                     </tr>
-                    <tr id="content-{{loop.index}}" class="collapsible" aria-hidden="true">
+                    <tr id="content-{idx}" class="collapsible" aria-hidden="true">
                         <td colspan="3" class="code">
-                            <div class="test-details">
-                            {%- if test.type == "Multi" %}
-                                <h3>Test Info</h3>
-                                <div class="infocode">
-                                {%- for line in test.stdout.splitlines() %}
-                                    {{line}}<br>
-                                {%- endfor %}
-                                </div>
-                                {%- if test.stderr %}
-                                <div class="infocode">
-                                {%- for line in test.stderr.splitlines() %}
-                                    {{line}}<br>
-                                {%- endfor %}
-                                </div>
-                                {%- endif %}
+                            <div class="test-details">''')
 
-                            {%- elif test.type != "Prog" %}
-                                <h3>Compiler Info</h3>
-                                <div class="infocode">
-                                {%- for line in test.stdout.splitlines() %}
-                                    {{line}}<br>
-                                {%- endfor %}
-                                </div>
-                                {%- if test.stderr %}
-                                <div class="infocode">
-                                {%- for line in test.stderr.splitlines() %}
-                                    {{line}}<br>
-                                {%- endfor %}
-                                </div>
-                                {%- endif %}
+        test_type = test.get("type", "")
 
-                            {%- else %}
-                                {%- if test.inputlines is not none %}
-                                <h3>Input</h3>
-                                <div class="infocode">
-                                {%- for intext in test.inputlines %}
-                                    {{ intext }}<br>
-                                {%- endfor %}
-                                </div>
-                                {%- endif %}
-                                <h3>Output Comparison</h3>
-                                <div class="compcode">
-                                {%- if test.htmldiff %}
-                                    {{ test.htmldiff | safe }}
-                                {%- else %}
-                                    <div class="infocode">
-                                    {%- for line in test.stdout.splitlines() %}
-                                        {{line}}<br>
-                                    {%- endfor %}
-                                    </div>
-                                    {%- if test.stderr %}
-                                    <div class="infocode">
-                                    {%- for line in test.stderr.splitlines() %}
-                                        {{line}}<br>
-                                    {%- endfor %}
-                                    </div>
-                                    {%- endif %}
-                                {%- endif %}
-                                </div>
-                            {%- endif %}
+        if test_type == "Multi":
+            parts.append('<h3>Test Info</h3>\n                                <div class="infocode">')
+            for line in test.get("stdout", "").splitlines():
+                parts.append(f'{html_escape(line)}<br>')
+            parts.append('</div>')
+            if test.get("stderr"):
+                parts.append('<div class="infocode">')
+                for line in test["stderr"].splitlines():
+                    parts.append(f'{html_escape(line)}<br>')
+                parts.append('</div>')
 
-                            {%- if test.script_explain or test.output_explain %}
-                                <h3>Explanation</h3>
-                                <div class="explaincode" role="note">
-                                {%- if test.script_explain %}{{ test.script_explain }}{% endif -%}
-                                {%- if test.script_explain and test.output_explain %}
+        elif test_type != "Prog":
+            parts.append('<h3>Compiler Info</h3>\n                                <div class="infocode">')
+            for line in test.get("stdout", "").splitlines():
+                parts.append(f'{html_escape(line)}<br>')
+            parts.append('</div>')
+            if test.get("stderr"):
+                parts.append('<div class="infocode">')
+                for line in test["stderr"].splitlines():
+                    parts.append(f'{html_escape(line)}<br>')
+                parts.append('</div>')
 
-{% endif -%}
-                                {%- if test.output_explain %}{{ test.output_explain }}{% endif -%}
-                                </div>
-                            {%- endif %}
-                            </div>
+        else:  # Prog type
+            if test.get("inputlines") is not None:
+                parts.append('<h3>Input</h3>\n                                <div class="infocode">')
+                for intext in test["inputlines"]:
+                    parts.append(f'{html_escape(intext)}<br>')
+                parts.append('</div>')
+
+            parts.append('<h3>Output Comparison</h3>\n                                <div class="compcode">')
+            if test.get("htmldiff"):
+                # htmldiff is raw HTML, don't escape it
+                parts.append(test["htmldiff"])
+            else:
+                parts.append('<div class="infocode">')
+                for line in test.get("stdout", "").splitlines():
+                    parts.append(f'{html_escape(line)}<br>')
+                parts.append('</div>')
+                if test.get("stderr"):
+                    parts.append('<div class="infocode">')
+                    for line in test["stderr"].splitlines():
+                        parts.append(f'{html_escape(line)}<br>')
+                    parts.append('</div>')
+            parts.append('</div>')
+
+        # Explanation section
+        script_explain = test.get("script_explain")
+        output_explain = test.get("output_explain")
+        if script_explain or output_explain:
+            parts.append('<h3>Explanation</h3>\n                                <div class="explaincode" role="note">')
+            if script_explain:
+                parts.append(html_escape(script_explain))
+            if script_explain and output_explain:
+                parts.append('\n')
+            if output_explain:
+                parts.append(html_escape(output_explain))
+            parts.append('</div>')
+
+        parts.append('''</div>
                         </td>
-                    </tr>
-                {%- endfor %}
-                </tbody>
-            </table>
+                    </tr>''')
 
-            {%- if AnyBuildTestFailed %}
-            <p role="alert"><strong>Warning:</strong> Building is failing, some tests were skipped.</p>
-            {%- endif %}
+    parts.append('''
+                </tbody>
+            </table>''')
+
+    if any_build_failed:
+        parts.append('''
+            <p role="alert"><strong>Warning:</strong> Building is failing, some tests were skipped.</p>''')
+
+    parts.append('''
         </section>
     </main>
 
@@ -574,8 +335,9 @@ JINJAPAGE = u"""
     </script>
 </body>
 </html>
+''')
 
-"""
+    return ''.join(parts)
 
 # Store the base test directory
 TESTBASE = None
@@ -1527,14 +1289,14 @@ def run():
     try:
         if args.htmlout is not None:
             with open(args.htmlout, "wb") as html:
-                htmloutput = render_template(JINJAPAGE, {
-                    'Practical': f"{CONFIG['course']} {CONFIG['practical']}",
-                    'SubmissionID': args.subid,
-                    'Tests': testStore,
-                    'Finalmessage': finalmessage,
-                    'AnyBuildTestFailed': anyBuildTestFailed,
-                    'InfoText': INFO_PRINTED
-                })
+                htmloutput = render_html_report(
+                    practical=f"{CONFIG['course']} {CONFIG['practical']}",
+                    submission_id=args.subid,
+                    tests=testStore,
+                    final_message=finalmessage,
+                    any_build_failed=anyBuildTestFailed,
+                    info_text=INFO_PRINTED
+                )
                 html.write(htmloutput.encode("utf8"))
     except EnvironmentError as e:
         print(f"Error outputting HTML: {e}")
