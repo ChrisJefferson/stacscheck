@@ -140,8 +140,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-1"
                                     onclick="toggleDetails(this, 'content-1')">
-                                <span class="sr-only">Show details for test1</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for test1</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -159,8 +159,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-2"
                                     onclick="toggleDetails(this, 'content-2')">
-                                <span class="sr-only">Show details for info1</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for info1</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -178,8 +178,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-3"
                                     onclick="toggleDetails(this, 'content-3')">
-                                <span class="sr-only">Show details for info2</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for info2</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-pass">PASS</span></td>
@@ -197,8 +197,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-4"
                                     onclick="toggleDetails(this, 'content-4')">
-                                <span class="sr-only">Show details for prog1-empty.out</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for prog1-empty.out</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -225,8 +225,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-5"
                                     onclick="toggleDetails(this, 'content-5')">
-                                <span class="sr-only">Show details for build-subdir/build1</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for build-subdir/build1</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -255,7 +255,7 @@
             content.style.display = isExpanded ? 'none' : 'table-row';
 
             // Update button text
-            var buttonText = button.querySelector('[aria-hidden="true"]');
+            var buttonText = button.querySelector('.button-action');
             buttonText.textContent = isExpanded ? 'expand' : 'collapse';
         }
     </script>

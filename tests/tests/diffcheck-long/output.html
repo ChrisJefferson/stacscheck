@@ -140,8 +140,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-1"
                                     onclick="toggleDetails(this, 'content-1')">
-                                <span class="sr-only">Show details for catter/progcat-short.out</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for catter/progcat-short.out</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -200,8 +200,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-2"
                                     onclick="toggleDetails(this, 'content-2')">
-                                <span class="sr-only">Show details for catter2/progcat-short.out</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for catter2/progcat-short.out</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -260,8 +260,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-3"
                                     onclick="toggleDetails(this, 'content-3')">
-                                <span class="sr-only">Show details for stderrstdout/progcat-test.out</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for stderrstdout/progcat-test.out</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -327,7 +327,7 @@
             content.style.display = isExpanded ? 'none' : 'table-row';
 
             // Update button text
-            var buttonText = button.querySelector('[aria-hidden="true"]');
+            var buttonText = button.querySelector('.button-action');
             buttonText.textContent = isExpanded ? 'expand' : 'collapse';
         }
     </script>

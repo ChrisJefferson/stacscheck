@@ -232,8 +232,8 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
                                     aria-expanded="false"
                                     aria-controls="content-{idx}"
                                     onclick="toggleDetails(this, 'content-{idx}')">
-                                <span class="sr-only">Show details for {test_name}</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for {test_name}</span>
                             </button>
                         </td>
                         <td class="test_desc">{status_html}</td>
@@ -333,7 +333,7 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
             content.style.display = isExpanded ? 'none' : 'table-row';
 
             // Update button text
-            var buttonText = button.querySelector('[aria-hidden="true"]');
+            var buttonText = button.querySelector('.button-action');
             buttonText.textContent = isExpanded ? 'expand' : 'collapse';
         }
     </script>
