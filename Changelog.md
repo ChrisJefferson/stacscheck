@@ -1,3 +1,17 @@
+3.3.0 -> 3.4.0
+==============
+
+* Improve HTML reports with clearer structure, higher-contrast colours and keyboard-accessible expand/collapse buttons.
+* Generate HTML without Jinja2; stacscheck needs only Python 3.7 or later.
+* Add optional `.explain` files for test explanations, shown for failures in the terminal and for all tests in HTML.
+* Add `--quiet` (`-q`) and `--fail-fast`, and expose `$TESTROOTDIR` to test scripts.
+* Improve Ctrl+C handling for programs that resist termination.
+* Report incomplete output capture as a test failure, preserving captured output and generating reports instead of aborting the run.
+* Replace characters unsupported by the terminal encoding with `?`, and omit unsupported decorative emojis. HTML and JSON retain Unicode output.
+
+Existing test files and normal commands need no changes. Test comparisons still use
+the full captured output, regardless of what the terminal can display.
+
 3.2.1 -> 3.3.0
 ==============
 

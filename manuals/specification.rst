@@ -119,14 +119,19 @@ the beginning of the script's filename:
       -  If not, then run the program with no input, and check the
          output is the same as the ``.out`` file.
 
+All test types fail if output streams remain open beyond the capture deadline,
+or an error occurs while reading them, even if the script exits with zero or the
+captured output matches the expected output.
+The failure reason and output captured so far are included in the results.
+
 A ``stacscheck`` test is a directory of tests, possibly with tests also
 stored in subdirectories. ``stacscheck`` executes tests using the following
 algorithm:
 
 -  Run each ``build`` script. If any build fails, then return immediately,
    running no more scripts or checking any subdirectories.
--  Run each ``info`` script, printing any output
 -  Run each ``test`` script, printing output if any fails
+-  Run each ``info`` script, printing any output
 -  Run each ``multi`` script, processing the JSON output
 -  For each ``prog`` script, for each ``name.out`` file, run the
    ``prog`` with ``name.in`` as input (if present), then compare against

@@ -10,7 +10,7 @@ You can try running ``stacscheck`` to check if it is installed. You should
 see some output like this::
 
    $ stacscheck
-   stacscheck 3.3.0
+   stacscheck 3.4.0
    You must give a directory of tests to run!
 
 Remember that many courses require that ``stacscheck`` is run on a lab
@@ -23,7 +23,7 @@ Windows without additional setup. The easiest option is to install the
 Once you have installed WSL, you will have a fully functional Linux environment
 and can run ``stacscheck`` there.
 
-``stacscheck`` requires only Python 3 (no additional packages). Many systems
+``stacscheck`` requires Python 3.7 or later (no additional packages). Many systems
 come with Python 3 installed. Try running ``python3 --version`` to check.
 If Python is not installed, see the instructions on the
 `Python Wiki <https://wiki.python.org/moin/BeginnersGuide/Download>`_.

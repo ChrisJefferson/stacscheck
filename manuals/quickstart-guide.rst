@@ -24,9 +24,9 @@ Command line options
 
 **Output control:**
 
-* ``-v``, ``--verbose`` : Show all commands that ``stacscheck`` runs and their inputs
-* ``-q``, ``--quiet`` : Suppress output for passing tests (only show failures)
-* ``--html=FILE`` : Generate an HTML report to FILE with colored diffs and expandable sections
+* ``-v``, ``--verbose`` : Show more detail, including scripts and inputs for failed tests
+* ``-q``, ``--quiet`` : Suppress output for passing tests; info scripts still print their output
+* ``--html=FILE`` : Generate an HTML report to FILE with coloured diffs and expandable sections
 
 **Testing options:**
 
@@ -64,6 +64,7 @@ The HTML report includes:
 
 * **Summary header** showing how many tests passed
 * **Expandable test sections** — click "expand" to see details for any test
+  or use Tab to reach a button, then Enter or Space to expand or collapse it
 * **Coloured diff tables** for ``prog`` tests, highlighting exactly what
   differs between expected and actual output
 * **Explanation text** from ``.explain`` files (see :ref:`structure`)
@@ -72,6 +73,20 @@ The HTML report includes:
   - Green background for passing tests
   - Red background for failing tests
   - Traffic light colours (GREEN/YELLOW/AMBER/RED) for multi-part tests
+
+Program output and failures
+---------------------------
+
+If a program leaves output streams open beyond the capture deadline, or reading
+its output fails, ``stacscheck`` marks the affected test as failed and explains
+why. It preserves the output captured so far and includes the failure in the HTML report. Remaining
+tests run as usual, unless ``--fail-fast`` is set or a build failure prevents them
+from running.
+
+If your terminal cannot display a character from a program's output,
+``stacscheck`` prints ``?`` in its place. Unsupported decorative emojis are
+omitted. Test comparisons still use the full captured output, and HTML and JSON
+reports retain Unicode characters.
 
 Testing compressed submissions
 ------------------------------
