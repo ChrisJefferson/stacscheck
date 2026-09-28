@@ -62,6 +62,15 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
     """Generate HTML report for test results."""
     parts = []
 
+    def append_output(test):
+        for stream in ("stdout", "stderr"):
+            if stream == "stderr" and not test.get(stream):
+                continue
+            parts.append('<div class="infocode">')
+            for line in test.get(stream, "").splitlines():
+                parts.append(f'{html_escape(line)}<br>')
+            parts.append('</div>')
+
     # HTML head with CSS
     parts.append(f'''<!DOCTYPE html>
 <html lang="en">
@@ -248,27 +257,10 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
 
         test_type = test.get("type", "")
 
-        if test_type == "Multi":
-            parts.append('<h3>Test Info</h3>\n                                <div class="infocode">')
-            for line in test.get("stdout", "").splitlines():
-                parts.append(f'{html_escape(line)}<br>')
-            parts.append('</div>')
-            if test.get("stderr"):
-                parts.append('<div class="infocode">')
-                for line in test["stderr"].splitlines():
-                    parts.append(f'{html_escape(line)}<br>')
-                parts.append('</div>')
-
-        elif test_type != "Prog":
-            parts.append('<h3>Compiler Info</h3>\n                                <div class="infocode">')
-            for line in test.get("stdout", "").splitlines():
-                parts.append(f'{html_escape(line)}<br>')
-            parts.append('</div>')
-            if test.get("stderr"):
-                parts.append('<div class="infocode">')
-                for line in test["stderr"].splitlines():
-                    parts.append(f'{html_escape(line)}<br>')
-                parts.append('</div>')
+        if test_type != "Prog":
+            heading = "Test Info" if test_type == "Multi" else "Compiler Info"
+            parts.append(f'<h3>{heading}</h3>\n                                ')
+            append_output(test)
 
         else:  # Prog type
             if test.get("inputlines") is not None:
@@ -282,15 +274,7 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
                 # htmldiff is raw HTML, don't escape it
                 parts.append(test["htmldiff"])
             else:
-                parts.append('<div class="infocode">')
-                for line in test.get("stdout", "").splitlines():
-                    parts.append(f'{html_escape(line)}<br>')
-                parts.append('</div>')
-                if test.get("stderr"):
-                    parts.append('<div class="infocode">')
-                    for line in test["stderr"].splitlines():
-                        parts.append(f'{html_escape(line)}<br>')
-                    parts.append('</div>')
+                append_output(test)
             parts.append('</div>')
 
         # Explanation section
