@@ -15,17 +15,17 @@
         .diff_header {background-color: #3a3a3a; color: #ffffff}
         td.diff_header {text-align: center;}
         .diff_next {background-color: #ff00dd; display: none}
-        .diff_add {background-color: #24906c}
-        .diff_chg {background-color: #ffff77; color: #000}
-        .diff_sub {background-color: #e44c4b}
+        .diff_add {background-color: #205c46; color: #ffffff}
+        .diff_chg {background-color: #62551b; color: #ffffff}
+        .diff_sub {background-color: #80343e; color: #ffffff}
 
         /* Traffic light colors for rows */
-        .GREEN {background-color: #2aa77d}
-        .YELLOW {background-color: #ffff77; color: #000}
-        .AMBER {background-color: #ffa54f; color: #000}
-        .RED {background-color: #e44c4b}
-        .pass-row {background-color: #2aa77d}
-        .fail-row {background-color: #e44c4b}
+        .GREEN {background-color: #205c46; color: #ffffff}
+        .YELLOW {background-color: #62551b; color: #ffffff}
+        .AMBER {background-color: #79451d; color: #ffffff}
+        .RED {background-color: #80343e; color: #ffffff}
+        .pass-row {background-color: #205c46; color: #ffffff}
+        .fail-row {background-color: #80343e; color: #ffffff}
 
         :target {background: yellow; color: #000}
 
@@ -140,8 +140,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-1"
                                     onclick="toggleDetails(this, 'content-1')">
-                                <span class="sr-only">Show details for broken/build-background</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for broken/build-background</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-fail">FAIL</span></td>
@@ -159,8 +159,8 @@
                                     aria-expanded="false"
                                     aria-controls="content-2"
                                     onclick="toggleDetails(this, 'content-2')">
-                                <span class="sr-only">Show details for next/test-pass</span>
-                                <span aria-hidden="true">expand</span>
+                                <span class="button-action">expand</span>
+                                <span class="sr-only"> details for next/test-pass</span>
                             </button>
                         </td>
                         <td class="test_desc"><span class="status-pass">PASS</span></td>
@@ -189,7 +189,7 @@
             content.style.display = isExpanded ? 'none' : 'table-row';
 
             // Update button text
-            var buttonText = button.querySelector('[aria-hidden="true"]');
+            var buttonText = button.querySelector('.button-action');
             buttonText.textContent = isExpanded ? 'expand' : 'collapse';
         }
     </script>
