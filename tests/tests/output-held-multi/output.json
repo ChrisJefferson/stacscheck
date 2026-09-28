@@ -1,0 +1,41 @@
+{
+  "course": "",
+  "infotext": [
+    "- Looking for submission in a directory called 'output-held-multi': ",
+    "Already in it!\n"
+  ],
+  "practical": "",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "failure_reason": "The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.",
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "multi-background",
+      "pass": false,
+      "path": "DIR/tests/output-held-multi/testdir/multi-background.sh",
+      "prefix": "* MULTI-PART-TEST - multi-background : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "Multipart output before termination\n",
+      "stdout": "[{\"name\":\"looks successful\",\"returnval\":0,\"trafficlight\":\"GREEN\",\"stdout\":\"finished\",\"stderr\":\"\"}]\n",
+      "trafficlight": "RED",
+      "type": "Multi"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "next/test-pass",
+      "pass": true,
+      "path": "DIR/tests/output-held-multi/testdir/next/test-pass.sh",
+      "prefix": "* TEST - next/test-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "The next test ran\n",
+      "type": "Test"
+    }
+  ]
+}

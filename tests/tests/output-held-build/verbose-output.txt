@@ -1,0 +1,21 @@
+- Looking for submission in a directory called 'output-held-build': Already in it!
+* BUILD TEST - broken/build-background : fail ❌
+--- ran script ---
+# The child exits on its own even when testing a broken checker.
+(
+    exec 2>&-
+    echo 'Build output before termination'
+    sleep 25
+) &
+--- submission output ---
+Build output before termination
+---
+
+Failure: The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.
+
+Exiting early due to failed DIR/tests/output-held-build/testdir/broken/build-background.sh
+
+* TEST - next/test-pass : pass ✅
+1 out of 2 tests passed
+Building is failing, so some tests were skipped
+Exit status: 0

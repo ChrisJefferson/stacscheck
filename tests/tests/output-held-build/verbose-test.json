@@ -1,0 +1,40 @@
+{
+  "course": "",
+  "infotext": [
+    "- Looking for submission in a directory called 'output-held-build': ",
+    "Already in it!\n"
+  ],
+  "practical": "",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "failure_reason": "The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.",
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "broken/build-background",
+      "pass": false,
+      "path": "DIR/tests/output-held-build/testdir/broken/build-background.sh",
+      "prefix": "* BUILD TEST - broken/build-background : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "Build output before termination\n",
+      "type": "Build"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "next/test-pass",
+      "pass": true,
+      "path": "DIR/tests/output-held-build/testdir/next/test-pass.sh",
+      "prefix": "* TEST - next/test-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "The next test ran\n",
+      "type": "Test"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+- Looking for submission in a directory called 'output-held-stderr': Already in it!
+* COMPARISON TEST - prog-background-empty.out : fail ❌
+--- ran script ---
+# The child exits on its own even when testing a broken checker.
+(
+    exec 1>&-
+    echo 'WRONG OUTPUT' >&2
+    sleep 25
+) &
+--- no output expected ---
+--- submission output ---
+WRONG OUTPUT
+---
+
+Failure: The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.
+
+1 out of 2 tests passed
+Exit status: 0

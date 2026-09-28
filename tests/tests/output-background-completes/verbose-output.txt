@@ -1,0 +1,15 @@
+- Looking for submission in a directory called 'output-background-completes': Already in it!
+* COMPARISON TEST - prog-background-empty.out : fail ❌
+--- ran script ---
+# The child exits on its own even when testing a broken checker.
+(
+    echo 'WRONG OUTPUT'
+    sleep 0.2
+) &
+--- no output expected ---
+--- submission output ---
+WRONG OUTPUT
+---
+
+0 out of 1 tests passed
+Exit status: 0
