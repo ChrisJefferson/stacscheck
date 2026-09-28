@@ -1,0 +1,8 @@
+- Looking for submission in a directory called 'ctrl-c-stubborn': Already in it!
+* TEST - test-stubborn : 
+
+!! Stopping user program (Ctrl+C pressed)
+--- stdout ---
+Stubborn program ready
+
+Exit status: 130
