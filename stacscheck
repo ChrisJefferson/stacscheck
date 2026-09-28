@@ -364,6 +364,10 @@ def toUTF8Replace(bytes):
 def output_str(arg):
     print(toUTF8Replace(arg), end='')
 
+def print_decorated(template, *args, end="\n"):
+    text = template.encode(sys.stdout.encoding, errors="ignore").decode(sys.stdout.encoding)
+    print(text.strip().format(*args), end=end)
+
 # Print info and store in INFO_PRINTED (to keep for html, json, ...)
 INFO_PRINTED = []
 
@@ -711,13 +715,13 @@ def register_returnval_test(test):
     if test["pass"]:
         # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
         if not QUIET or test.get("alwaysoutput", False):
-            print("pass ✅")
+            print_decorated("pass ✅")
     else:
         # In quiet mode, print the prefix now since we didn't print it earlier
         # (unless it's an alwaysoutput test, which already printed prefix)
         if QUIET and "prefix" in test and not test.get("alwaysoutput", False):
             output_str(test["prefix"])
-        print("fail ❌")
+        print_decorated("fail ❌")
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
@@ -761,7 +765,7 @@ def register_diff_test(test, comparefile):
     if comparelines == userlines and not test.get("failure_reason"):
         test["pass"] = True
         if not QUIET:
-            print("pass ✅")
+            print_decorated("pass ✅")
 
     # If test failed print expected & real output (& possibly extras)
     else:
@@ -769,7 +773,7 @@ def register_diff_test(test, comparefile):
         # In quiet mode, print the prefix now since we didn't print it earlier
         if QUIET and "prefix" in test:
             output_str(test["prefix"])
-        print("fail ❌")
+        print_decorated("fail ❌")
         # If verbose, print input to stdout
         maybe_print_test_input(test)
         # Create text for expected & real output
@@ -1007,7 +1011,7 @@ def run_simple_script_tests(testdir, pattern, test_type, prefix_template, extra_
 
         # Print prefix (always for info, conditionally for others)
         if always_output or not QUIET:
-            output_str(prefix)
+            print_decorated(prefix_template, name, end=" ")
 
         result = run_bash_script(script, None, extra_env)
         result["name"] = name
@@ -1315,7 +1319,7 @@ def run():
     finalmessage = f"{passed} out of {total} tests passed"
 
     if total > 0 and passed == total:
-        print(f"🎉 {finalmessage} 🎉")
+        print_decorated("🎉 {} 🎉", finalmessage)
     else:
         print(finalmessage)
 
@@ -1353,6 +1357,7 @@ def run():
         print(f"Error outputting json: {e}")
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(errors="replace")
     try:
         run()
     except EnvironmentError as e:

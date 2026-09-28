@@ -1,0 +1,12 @@
+- Looking for submission in a directory called 'ascii-output-pass': Already in it!
+* TEST - test-pass : pass
+* INFO  - info-? : pass
+--- submission output ---
+Student stdout: caf? ? ?
+--- submission stderr output ---
+Student stderr: caf? ? ?
+---
+
+* COMPARISON TEST - prog-unicode-matching.out : pass
+3 out of 3 tests passed
+Exit status: 0

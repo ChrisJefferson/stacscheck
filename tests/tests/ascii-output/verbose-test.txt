@@ -1,0 +1,33 @@
+- Looking for submission in a directory called 'ascii-output': Already in it!
+* TEST - test-fail-? : fail
+--- ran script ---
+printf 'Failed output: caf? ? ?\n'
+exit 1
+--- submission output ---
+Failed output: caf? ? ?
+---
+
+--- explanation ---
+Explanation: caf? ? ?
+---
+
+* TEST - test-pass : pass
+* INFO  - info-? : pass
+--- submission output ---
+Student stdout: caf? ? ?
+--- submission stderr output ---
+Student stderr: caf? ? ?
+---
+
+* COMPARISON TEST - prog-unicode-matching.out : pass
+* COMPARISON TEST - prog-unicode-mismatching.out : fail
+--- ran script ---
+printf 'caf? ? ?\n'
+--- expected output ---
+caf? ? ?
+--- submission output ---
+caf? ? ?
+---
+
+3 out of 5 tests passed
+Exit status: 0

@@ -1,0 +1,103 @@
+{
+  "course": "",
+  "infotext": [
+    "- Looking for submission in a directory called 'ascii-output': ",
+    "Already in it!\n"
+  ],
+  "practical": "",
+  "subid": "<unknown>",
+  "tests": [
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-fail-\u03bb",
+      "pass": false,
+      "path": "DIR/tests/ascii-output/testdir/test-fail-\u03bb.sh",
+      "prefix": "* TEST - test-fail-\u03bb : ",
+      "returnval": 1,
+      "script_explain": "Explanation: caf\u00e9 \u03bb \u2705",
+      "stderr": "",
+      "stdout": "Failed output: caf\u00e9 \u03bb \u2705\n",
+      "type": "Test"
+    },
+    {
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "test-pass",
+      "pass": true,
+      "path": "DIR/tests/ascii-output/testdir/test-pass.sh",
+      "prefix": "* TEST - test-pass : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "",
+      "type": "Test"
+    },
+    {
+      "alwaysoutput": true,
+      "inputlines": [
+        "No .in input file (search manually)."
+      ],
+      "name": "info-\u03bb",
+      "pass": true,
+      "path": "DIR/tests/ascii-output/testdir/info-\u03bb.sh",
+      "prefix": "* INFO \ud83d\udca1 - info-\u03bb : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "Student stderr: caf\u00e9 \u03bb \u2705\n",
+      "stdout": "Student stdout: caf\u00e9 \u03bb \u2705\n",
+      "type": "Info"
+    },
+    {
+      "comparelines": [
+        "caf\u00e9 \u03bb \u2705\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to0__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"from0_1\">1</td><td nowrap=\"nowrap\">caf\u00e9&nbsp;\u03bb&nbsp;\u2705</td><td class=\"diff_next\"><a href=\"#difflib_chg_to0__top\">t</a></td><td class=\"diff_header\" id=\"to0_1\">1</td><td nowrap=\"nowrap\">caf\u00e9&nbsp;\u03bb&nbsp;\u2705</td></tr>\n        </tbody>\n    </table>",
+      "input": null,
+      "inputlines": null,
+      "name": "prog-unicode-matching.out",
+      "output_explain": null,
+      "pass": true,
+      "path": "DIR/tests/ascii-output/testdir/prog-unicode.sh",
+      "prefix": "* COMPARISON TEST - prog-unicode-matching.out : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "caf\u00e9 \u03bb \u2705\n",
+      "type": "Prog",
+      "userlines": [
+        "caf\u00e9 \u03bb \u2705\n"
+      ]
+    },
+    {
+      "comparelines": [
+        "caf\u00e9 \u03bc \u2705\n"
+      ],
+      "htmldiff": "\n    <table class=\"diff\" id=\"difflib_chg_to1__top\"\n           cellspacing=\"0\" cellpadding=\"0\" rules=\"groups\" >\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>\n        <thead><tr><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Submission</th><th class=\"diff_next\"><br /></th><th colspan=\"2\" class=\"diff_header\">Reference</th></tr></thead>\n        <tbody>\n            <tr><td class=\"diff_next\" id=\"difflib_chg_to1__0\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"from1_1\">1</td><td nowrap=\"nowrap\">caf\u00e9&nbsp;<span class=\"diff_chg\">\u03bb</span>&nbsp;\u2705</td><td class=\"diff_next\"><a href=\"#difflib_chg_to1__top\">t</a></td><td class=\"diff_header\" id=\"to1_1\">1</td><td nowrap=\"nowrap\">caf\u00e9&nbsp;<span class=\"diff_chg\">\u03bc</span>&nbsp;\u2705</td></tr>\n        </tbody>\n    </table>",
+      "input": null,
+      "inputlines": null,
+      "name": "prog-unicode-mismatching.out",
+      "output_explain": null,
+      "pass": false,
+      "path": "DIR/tests/ascii-output/testdir/prog-unicode.sh",
+      "prefix": "* COMPARISON TEST - prog-unicode-mismatching.out : ",
+      "returnval": 0,
+      "script_explain": null,
+      "stderr": "",
+      "stdout": "caf\u00e9 \u03bb \u2705\n",
+      "textdiff": [
+        "--- expected output ---\n",
+        "caf\u00e9 \u03bc \u2705\n",
+        "--- submission output ---\n",
+        "caf\u00e9 \u03bb \u2705\n",
+        "---\n"
+      ],
+      "type": "Prog",
+      "userlines": [
+        "caf\u00e9 \u03bb \u2705\n"
+      ]
+    }
+  ]
+}
