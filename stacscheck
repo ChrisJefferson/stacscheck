@@ -33,7 +33,8 @@ import re
 import time
 import json
 import copy
-from threading import Thread
+from threading import Event, Thread
+import select
 import difflib
 import argparse
 import configparser
@@ -241,6 +242,9 @@ def render_html_report(practical, submission_id, tests, final_message, any_build
                     <tr id="content-{idx}" class="collapsible" aria-hidden="true">
                         <td colspan="3" class="code">
                             <div class="test-details">''')
+
+        if test.get("failure_reason"):
+            parts.append(f'<h3>Failure reason</h3><p role="alert">{html_escape(test["failure_reason"])}</p>')
 
         test_type = test.get("type", "")
 
@@ -689,6 +693,8 @@ def finalize_test(test):
     """Common finalization for all test types: explain, fail tracking, store."""
     # Print explanation content on failure (terminal only)
     if not test["pass"]:
+        if test.get("failure_reason"):
+            output_str(f"Failure: {test['failure_reason']}\n\n")
         print_explain_content(test)
 
     # Track if any test failed (for fail-fast)
@@ -700,7 +706,7 @@ def finalize_test(test):
 
 # Record that a test was run, printing as appropriate
 def register_returnval_test(test):
-    test["pass"] = (test["returnval"] == 0)
+    test["pass"] = (test["returnval"] == 0) and not test.get("failure_reason")
 
     if test["pass"]:
         # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
@@ -720,7 +726,9 @@ def register_returnval_test(test):
 
 # Record that a test was run, printing as appropriate
 def register_multival_test(test):
-    test["pass"] = (test["returnval"] == 0)
+    test["pass"] = (test["returnval"] == 0) and not test.get("failure_reason")
+    if test.get("failure_reason"):
+        test["trafficlight"] = "RED"
 
     if test["pass"]:
         if not QUIET:
@@ -750,7 +758,7 @@ def register_diff_test(test, comparefile):
     test["userlines"] = userlines
 
     # If test passed just print pass
-    if comparelines == userlines:
+    if comparelines == userlines and not test.get("failure_reason"):
         test["pass"] = True
         if not QUIET:
             print("pass ✅")
@@ -804,27 +812,26 @@ def in_directory(basedir, childdir):
 
 # Read from a stream, recording result in a record
 # Caps the total amount read to ~1MB
-def read_stream(outdict, name, stream):
+def read_stream(outdict, name, stream, stopreading):
     stream_limit = 1024*1024
     outdict[name] = bytearray()
-    while True:
-        try:
-            chunk = stream.read(stream_limit - len(outdict[name]))
-            # End of file reached
-            if chunk == b'':
+    try:
+        while not stopreading.is_set():
+            if not select.select([stream], [], [], 0.1)[0]:
+                continue
+            chunk = os.read(stream.fileno(), 64*1024)
+            if not chunk:
                 return
 
-            # Add chunk
-            outdict[name].extend(chunk)
-
-            if len(outdict[name]) == stream_limit:
-                outdict[name] += b"\n ... Output truncated\n"
-                # Throw away rest of stream
-                while stream.read(1024) != b'':
-                    pass
-                return
-        except IOError:
-            pass
+            remaining = stream_limit - len(outdict[name])
+            if remaining > 0:
+                outdict[name].extend(chunk[:remaining])
+                if len(outdict[name]) == stream_limit:
+                    outdict[name] += b"\n ... Output truncated\n"
+    except OSError as e:
+        outdict[name + "_error"] = str(e)
+    finally:
+        stream.close()
 
 
 # This is an internal function, use run_program below
@@ -843,11 +850,12 @@ def run_program_popen(program, stdin, extra_env):
         starttime = time.time()
 
         retdict = dict()
+        stopreading = Event()
 
-        thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr))
+        thread_err = Thread(target=read_stream, args=(retdict, "stderr", proc.stderr, stopreading))
         thread_err.daemon = True
         thread_err.start()
-        thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout))
+        thread_out = Thread(target=read_stream, args=(retdict, "stdout", proc.stdout, stopreading))
         thread_out.daemon = True
         thread_out.start()
 
@@ -909,6 +917,28 @@ def run_program_popen(program, stdin, extra_env):
         thread_err.join(10)
         thread_out.join(10)
         proc.wait()
+        if thread_err.is_alive() or thread_out.is_alive():
+            retdict["failure_reason"] = (
+                "The program or one of its child processes left output streams open. "
+                "Captured output may be incomplete; this test has been marked as failed.")
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            except OSError as e:
+                retdict["failure_reason"] += f" Could not terminate remaining processes: {e}."
+            thread_err.join(1)
+            thread_out.join(1)
+
+        stopreading.set()
+        thread_err.join()
+        thread_out.join()
+        read_errors = [retdict.pop(name + "_error") for name in ("stdout", "stderr")
+                       if name + "_error" in retdict]
+        if read_errors:
+            retdict["failure_reason"] = (retdict.get("failure_reason", "") +
+                                       " Could not read program output: " + "; ".join(read_errors)).strip()
+
         retdict["stderr"] = toUTF8Replace(bytes(retdict["stderr"]))
         if timeouthit:
             retdict["stderr"] += "\n... Terminating due to timeout\n"
@@ -995,7 +1025,7 @@ def run_simple_script_tests(testdir, pattern, test_type, prefix_template, extra_
         register_returnval_test(result)
 
         # Build tests exit on failure
-        if test_type == "Build" and result["returnval"] != 0:
+        if test_type == "Build" and not result["pass"]:
             verbose_print(f"Exiting early due to failed {script}")
             anyBuildTestFailed = True
             return False
@@ -1040,6 +1070,16 @@ def run_tests_recursive(testdir):
             multiresult = run_bash_script(multi, None, extra_env)
             # Load explanation content for multi script (shared across all sub-tests)
             script_explain, _ = get_explain_content(multi)
+            if multiresult.get("failure_reason"):
+                name = nice_name(multi)
+                prefix = f"* MULTI-PART-TEST - {name} : "
+                if not QUIET:
+                    output_str(prefix)
+                multiresult.update(name=name, path=multi, type="Multi", prefix=prefix,
+                                   trafficlight="RED", script_explain=script_explain,
+                                   inputlines=["No .in input file (search manually)."])
+                register_multival_test(multiresult)
+                continue
             multicount = 1
             try:
                 for result in json.loads(multiresult["stdout"]):

@@ -1,0 +1,21 @@
+- Looking for submission in a directory called 'output-held-escaped': Already in it!
+* COMPARISON TEST - prog-background-empty.out : fail ❌
+--- ran script ---
+# Escape the process group but still exit on our own after a bounded time.
+perl -MPOSIX=setsid -e '
+    setsid() >= 0 or die "setsid failed: $!";
+    close STDERR;
+    $| = 1;
+    print "Output from escaped child\n";
+    sleep 25;
+' &
+--- no output expected ---
+--- submission output ---
+Output from escaped child
+---
+
+Failure: The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.
+
+* TEST - next/test-pass : pass ✅
+1 out of 2 tests passed
+Exit status: 0
