@@ -882,21 +882,18 @@ def run_program_popen(program, stdin, extra_env):
             signal.signal(signal.SIGINT, old_handler)
 
         # Handle Ctrl+C interruption
-        if interrupted and proc.poll() is None:
-            # Send SIGINT to the process group (same as Ctrl+C)
-            try:
-                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
-            except (ProcessLookupError, OSError):
-                pass
-            # Give it a moment to handle the signal
-            time.sleep(0.2)
-            # If still running, terminate it
-            if proc.poll() is None:
+        if interrupted:
+            # Escalate for the whole group, including children whose parent exited.
+            # setsid makes proc.pid the group ID, even after the leader exits.
+            for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGKILL):
                 try:
-                    os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
-                    proc.terminate()
-                except (ProcessLookupError, OSError):
-                    pass
+                    os.killpg(proc.pid, sig)
+                except ProcessLookupError:
+                    break
+                if sig != signal.SIGKILL:
+                    time.sleep(0.2)
+                    # Reap the leader: macOS rejects signalling a zombie-only group.
+                    proc.poll()
 
         timeouthit = False
         if not interrupted and (proc.poll() is None):
