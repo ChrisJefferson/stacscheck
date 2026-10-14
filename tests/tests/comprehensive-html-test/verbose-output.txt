@@ -1,7 +1,7 @@
 Testing CS9999 HTML Test Suite
 - Looking for submission in a directory called 'comprehensive-html-test': Already in it!
-* BUILD TEST - build-pass : pass ✅
-* TEST - test-fail : fail ❌
+* BUILD TEST - build-pass : pass
+* TEST - test-fail : fail
 --- ran script ---
 # Failing test
 echo "Something went wrong!"
@@ -18,8 +18,8 @@ This test is designed to fail to demonstrate the explanation feature.
 Check that your code handles the expected case correctly.
 ---
 
-* TEST - test-pass : pass ✅
-* INFO 💡 - info-details : pass ✅
+* TEST - test-pass : pass
+* INFO - info-details : pass
 --- submission output ---
 This is informational output
 It always displays regardless of pass/fail
@@ -46,7 +46,7 @@ Critical error detected
 Memory leak in function process()
 ---
 
-* TEST - nested/test-nested-fail : fail ❌
+* TEST - nested/test-nested-fail : fail
 --- ran script ---
 # Nested failing test
 echo "Nested test failed!"
@@ -55,8 +55,8 @@ exit 1
 Nested test failed!
 ---
 
-* TEST - nested/test-nested-pass : pass ✅
-* BUILD TEST - nested/build-fails/build-broken : fail ❌
+* TEST - nested/test-nested-pass : pass
+* BUILD TEST - nested/build-fails/build-broken : fail
 --- ran script ---
 # This build test fails
 echo "Compilation error: missing semicolon on line 42"
@@ -75,14 +75,14 @@ When a build fails, subsequent tests in this directory are skipped.
 
 Exiting early due to failed DIR/tests/comprehensive-html-test/testdir/nested/build-fails/build-broken.sh
 
-* TEST - nested/deeper/test-deep : pass ✅
-* INFO 💡 - nested/deeper/info-deep : pass ✅
+* TEST - nested/deeper/test-deep : pass
+* INFO - nested/deeper/info-deep : pass
 --- submission output ---
 Info from deep directory
 Path: nested/deeper
 ---
 
-* COMPARISON TEST - prog-diff-fail/prog-run-compare.out : fail ❌
+* COMPARISON TEST - prog-diff-fail/prog-run-compare.out : fail
 --- ran script ---
 # This outputs wrong content to show a diff
 echo '<wrong>&output"here'
@@ -103,8 +103,8 @@ This is the output-specific explanation.
 It appears alongside the script explanation.
 ---
 
-* COMPARISON TEST - prog-escape/prog-run-special.out : pass ✅
-* COMPARISON TEST - prog-no-input/prog-run-test.out : pass ✅
-* COMPARISON TEST - prog-with-input/prog-run-test.out : pass ✅
+* COMPARISON TEST - prog-escape/prog-run-special.out : pass
+* COMPARISON TEST - prog-no-input/prog-run-test.out : pass
+* COMPARISON TEST - prog-with-input/prog-run-test.out : pass
 12 out of 17 tests passed
 Building is failing, so some tests were skipped

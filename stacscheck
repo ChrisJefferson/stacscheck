@@ -699,13 +699,13 @@ def register_returnval_test(test):
     if test["pass"]:
         # Print pass if not quiet, or if alwaysoutput (INFO tests always show)
         if not QUIET or test.get("alwaysoutput", False):
-            print_decorated("pass ✅")
+            print_decorated("pass")
     else:
         # In quiet mode, print the prefix now since we didn't print it earlier
         # (unless it's an alwaysoutput test, which already printed prefix)
         if QUIET and "prefix" in test and not test.get("alwaysoutput", False):
             output_str(test["prefix"])
-        print_decorated("fail ❌")
+        print_decorated("fail")
 
     if not test["pass"] or test.get("alwaysoutput", False):
         print_test_or_info_output(test)
@@ -749,7 +749,7 @@ def register_diff_test(test, comparefile):
     if comparelines == userlines and not test.get("failure_reason"):
         test["pass"] = True
         if not QUIET:
-            print_decorated("pass ✅")
+            print_decorated("pass")
 
     # If test failed print expected & real output (& possibly extras)
     else:
@@ -757,7 +757,7 @@ def register_diff_test(test, comparefile):
         # In quiet mode, print the prefix now since we didn't print it earlier
         if QUIET and "prefix" in test:
             output_str(test["prefix"])
-        print_decorated("fail ❌")
+        print_decorated("fail")
         # If verbose, print input to stdout
         maybe_print_test_input(test)
         # Create text for expected & real output
@@ -1046,7 +1046,7 @@ def run_tests_recursive(testdir):
 
         # INFOSCRIPTS
         if not run_simple_script_tests(testdir, r'info.*\.sh', "Info",
-                                       "* INFO 💡 - {} : ", extra_env, always_output=True):
+                                       "* INFO - {} : ", extra_env, always_output=True):
             return
 
         # MULTISCRIPTS
@@ -1303,7 +1303,7 @@ def run():
     finalmessage = f"{passed} out of {total} tests passed"
 
     if total > 0 and passed == total:
-        print_decorated("🎉 {} 🎉", finalmessage)
+        print_decorated("{}", finalmessage)
     else:
         print(finalmessage)
 

@@ -1,5 +1,5 @@
 - Looking for submission in a directory called 'output-background-completes': Already in it!
-* COMPARISON TEST - prog-background-empty.out : fail ❌
+* COMPARISON TEST - prog-background-empty.out : fail
 --- no output expected ---
 --- submission output ---
 WRONG OUTPUT

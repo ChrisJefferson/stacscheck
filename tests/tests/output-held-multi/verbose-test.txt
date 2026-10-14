@@ -16,6 +16,6 @@ Multipart output before termination
 
 Failure: The program or one of its child processes left output streams open. Captured output may be incomplete; this test has been marked as failed.
 
-* TEST - next/test-pass : pass ✅
+* TEST - next/test-pass : pass
 1 out of 2 tests passed
 Exit status: 0
