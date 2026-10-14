@@ -9,7 +9,7 @@ Explanation: caf? ? ?
 ---
 
 * TEST - test-pass : pass
-* INFO  - info-? : pass
+* INFO - info-? : pass
 --- submission output ---
 Student stdout: caf? ? ?
 --- submission stderr output ---

@@ -43,7 +43,7 @@
       "name": "info-\u03bb",
       "pass": true,
       "path": "DIR/tests/ascii-output/testdir/info-\u03bb.sh",
-      "prefix": "* INFO \ud83d\udca1 - info-\u03bb : ",
+      "prefix": "* INFO - info-\u03bb : ",
       "returnval": 0,
       "script_explain": null,
       "stderr": "Student stderr: caf\u00e9 \u03bb \u2705\n",
