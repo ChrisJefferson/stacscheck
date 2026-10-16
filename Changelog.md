@@ -1,3 +1,9 @@
+3.4.0 -> 3.5.0
+==============
+
+* Remove some code duplication
+* Remove emojis
+
 3.3.0 -> 3.4.0
 ==============
 
